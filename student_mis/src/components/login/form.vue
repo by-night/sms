@@ -1,8 +1,8 @@
 <template>
   <div style="margin-top: 40px">
-    <el-form :rules="rules" ref="form" :model="form" label-width="20px" class="form">
+    <el-form ref="form" :model="form" label-width="20px" class="form">
       <!--账号-->
-      <el-form-item prop="username">
+      <el-form-item>
         <el-row>
           <el-col :span="2">
             <i class="el-icon-user"></i>
@@ -14,7 +14,7 @@
         </el-row>
       </el-form-item>
       <!--密码-->
-      <el-form-item prop="password">
+      <el-form-item>
         <el-row>
           <el-col :span="2">
             <a class="el-icon-lock"></a>
@@ -25,9 +25,12 @@
           </el-col>
         </el-row>
       </el-form-item>
-      <el-form-item style="margin-left: 150px">
-        <el-button type="primary" @click="checkLogin('form')">登陆</el-button>
-        <el-button @click="reset">重置</el-button>
+      <el-form-item>
+        <el-link :underline="false" style="float: right">忘记密码？</el-link>
+      </el-form-item>
+      <el-form-item style="margin-left: 160px">
+        <el-button @click="registered">注册</el-button>
+        <el-button type="primary" @click="login('form')">登陆</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -36,54 +39,67 @@
 <script>
     export default {
         name: "form",
+        props: ['level'],
         data() {
             return {
                 form: {
                     username: '',
-                    password: ''
-                },
-                rules: {
-                    username: [
-                        {required: true, message: '请输入账号', trigger: 'blur'}
-                    ],
-                    password: [
-                        {required: true, message: '请输入密码', trigger: 'blur'},
-                        {min: 5, max: 20, message: '长度必须在5-20之间', trigger: 'blur'}
-                    ]
+                    password: '',
+                    level: 1
                 }
             }
         },
         methods: {
+            login (formName) {
+              if(this.form.username === '') {
+                this.$message({
+                  message: '账号不能为空',
+                  type: 'warning'
+                })
+              } else if (this.form.password === '') {
+                this.$message({
+                  message: '密码不能为空',
+                  type: 'warning'
+                })
+              } else {
+                this.checkLogin(formName)
+              }
+            },
             checkLogin (formName) {
+              this.form.level = this.level;
+              let _this = this;
               this.$refs[formName].validate(valid => {
                 if (valid) {
-                  let _this = this
-                  this.axios.get('/api/mis/user/login',
-                    {params: this.form}
-                  ).then(response => {
-                    console.log(response)
-                    // // 把当前用户数据存入state
-                    // console.log(response)
-                    // _this.$store.commit('SAVE_USERINFO', response.data[0])
-                    // if (response.data) {
-                    //   _this.$message({
-                    //     message: '登录成功',
-                    //     type: 'success'
-                    //   })
-                    //   _this.$router.push('/index')
-                    // } else {
-                    //   _this.$alert('请检查用户名或密码！', '登录失败')
-                    // }
-                  }).catch(error => {
-                    console.log(error)
-                  })
-                } else {
-                  console.log('error')
+                  _this.axios.get('/api/mis/user/login', {params: this.form}).then(
+                    response => {
+                      console.log(response)
+                      let data = response.data;
+                      if(Object.keys(data).length > 0) {
+                        this.$message({
+                          message: '登录成功',
+                          type: 'success'
+                        });
+                        // 将数据存入state
+                       _this.$store.commit('SAVE_USERINFO', response.data);
+                       // 跳转到主页
+                        _this.$router.push('/dashboard')
+                      } else {
+                        this.$message({
+                          message: '登录失败，请检查用户名或密码',
+                          type: 'error'
+                        })
+                      }
+                    }).catch(() => {
+                      this.$message({
+                        message: '登录失败',
+                        type: 'error'
+                      })
+                  });
                 }
               })
             },
-            reset() {
-                this.form = {}
+            registered() {
+              this.$router.push("/registered")
             }
         }
     }

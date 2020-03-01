@@ -11,7 +11,7 @@
         <el-main style="background-color: #ededed; padding: 0">
           <Tabs></Tabs>
           <!--内容区-->
-          <el-card style="height: 94%; margin-left: 10px">
+          <el-card style="height: 94%; margin-left: 10px;">
             <router-view />
           </el-card>
         </el-main>
@@ -76,8 +76,13 @@ export default {
   .headColor {
     height: 70px;
     background-color: #5a8bff;
+    padding: 0;
+    margin: 0;
   }
   .asideWidth {
     transition: 0.2s
+  }
+  /deep/ .el-card__body {
+    padding: 0;
   }
 </style>

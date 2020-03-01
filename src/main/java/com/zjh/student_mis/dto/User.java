@@ -33,4 +33,32 @@ public class User {
    * 等级
    */
   private Integer level;
+  /**
+   * 未知
+   */
+  private String sexs;
+  /**
+   * 学校
+   */
+  private String school;
+  /**
+   * 入学时间
+   */
+  private String admissionTime;
+  /**
+   * 电子邮箱
+   */
+  private String email;
+  /**
+   * 专业
+   */
+  private String profession;
+  /**
+   * 联系电话
+   */
+  private String phone;
+  /**
+   *  性别
+   */
+  private Integer sex;
 }

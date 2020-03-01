@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Map;
  * Date2019/10/21 21:00
  **/
 @RestController
-@RequestMapping("/mis/user")
+@RequestMapping("/api/mis/user")
 public class UserController {
   @Autowired
   private UserService userService;
@@ -25,12 +24,12 @@ public class UserController {
     Map<String, Object> map = new HashMap<>();
     map.put("username", condition.get("username").toString());
     map.put("password", condition.get("password").toString());
-    return userService.getUserInfo(condition);
+    return userService.getUserInfo(map);
+  }
+  @GetMapping("/hello")
+  public String hello() {
+    return "hahaha";
   }
 
-  @GetMapping("/text")
-  public String hello () {
-    return "hello world";
-  }
 
 }

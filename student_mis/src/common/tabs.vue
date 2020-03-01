@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: white;margin-bottom: 10px;">
-    <el-tag class="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" closable >
+    <el-tag class="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="closable">
       {{tab.name}}
     </el-tag>
   </div>
@@ -11,15 +11,18 @@
     name: "tabs",
     data () {
       return {
+        closable: true,
         tabsName: [{name: '第一', path: '/list'}]
       }
     },
     methods: {
       // 删除标签
       tabRemove (item) {
-        this.tabsName = this.tabsName.filter(data => {
-          return data.name !== item.name
-        })
+        if(this.tabsName.length !== 1) {
+          this.tabsName = this.tabsName.filter(data => {
+            return data.name !== item.name
+          })
+        }
       },
       // 点击标签头时
       tabClick (item) {
@@ -27,27 +30,30 @@
         this.$router.push(item.path)
       },
       tabState (item) {
-        for (let i = 0; i < this.tabsName.length; i++) {
-          // // 已点击的标签
-          // let doc = document.getElementsByClassName('tag')[i];
-          // // 已点击的标签关闭按钮
-          // let tag = document.getElementsByClassName('el-tag__close')[i];
-          // if (this.tabsName[i].name === item.name) {
-          //   doc.style.backgroundColor = '#409eff';
-          //   doc.style.opacity = '0.8';
-          //   doc.style.color = 'white';
-          //   tag.style.color = 'white'
-          // } else {
-          //   doc.style.backgroundColor = 'white';
-          //   doc.style.color = '#409eff';
-          //   tag.style.color = '#409eff'
-          // }
-        }
+        // for (let i = 0; i < this.tabsName.length; i++) {
+        //   // 已点击的标签
+        //   let doc = document.getElementsByClassName('tag')[i];
+        //   // 已点击的标签关闭按钮
+        //   let tag = document.getElementsByClassName('el-tag__close')[i];
+        //   if (this.tabsName[i].name === item.name) {
+        //     doc.style.backgroundColor = '#409eff';
+        //     doc.style.opacity = '0.8';
+        //     doc.style.color = 'white';
+        //     tag.style.color = 'white'
+        //   } else {
+        //     doc.style.backgroundColor = 'white';
+        //     doc.style.color = '#409eff';
+        //     tag.style.color = '#409eff'
+        //   }
+        // }
       }
     },
     computed: {
       routeName () {
         return this.$route.name
+      },
+      tabsLength () {
+        return this.tabsName.length
       }
     },
     watch: {
@@ -69,6 +75,13 @@
           this.tabsName.push(routeInfo)
         } else {
           return true
+        }
+      },
+      tabsLength () {
+        if (this.tabsLength === 1) {
+          this.closable = false
+        } else {
+          this.closable = true
         }
       }
     }

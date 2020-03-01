@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 // 状态
 const state = {
-  collapse: {}
+  collapse: {},
+  userinfo: JSON.parse(localStorage.getItem('userinfo'))
 };
 
 // mutations 主要用来操作 state
@@ -15,8 +16,12 @@ const mutations = {
   SAVE_COLLAPSE (state, collapse) {
     state.collapse.state = collapse.state
     state.collapse.width = collapse.width
+  },
+  SAVE_USERINFO (state, userinfo) {
+    localStorage.setItem('userinfo', JSON.stringify(userinfo));
+    state.userinfo = userinfo
   }
-}
+};
 
 
 //创建store仓库暴露出去

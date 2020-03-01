@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+    <!-- Spring Boot 启动父依赖 -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -14,9 +15,11 @@
 	<name>student_mis</name>
 	<description>Demo project for Spring Boot</description>
 
-	<properties>
+    <properties>
+        <mybatis-spring-boot>1.2.0</mybatis-spring-boot>
+        <mysql-connector>5.1.39</mysql-connector>
 		<java.version>1.8</java.version>
-	</properties>
+    </properties>
 
 	<dependencies>
         <dependency>
@@ -28,15 +31,24 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
+
+		<!-- Spring Boot Web 依赖 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- MySQL 连接驱动依赖 -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.47</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.2</version>
 		</dependency>
 
 		<dependency>
@@ -52,6 +64,7 @@
 			<version>1.2.3</version>
 		</dependency>
 
+		<!-- Spring Boot Mybatis 依赖 -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -62,6 +75,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -74,7 +88,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	</dependencies>
+		<!-- Junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.testng</groupId>-->
+<!--            <artifactId>testng</artifactId>-->
+<!--            <version>RELEASE</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+    </dependencies>
 
 	<build>
 		<plugins>

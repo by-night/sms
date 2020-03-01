@@ -1,0 +1,168 @@
+.star {
+  display: block;
+  width: 5px;
+  height: 0px;
+  border-radius: 50%;
+  background: #FFF;
+  top: 100px;
+  left: 500px;
+  position: relative;
+  /*设置旋转元素的基点位置 x轴 y轴 */
+  transform-origin: 100% 0;
+  animation: star-ani 4s linear infinite;
+  -webkit-animation:star-ani 5s linear infinite;
+  /*发光*/
+  box-shadow: 0 0 5px 5px rgba(255, 255, 255, .3);
+  opacity: 0;
+  z-index: 2;
+}
+.star:after {
+  content: '';
+  display: block;
+  top: 0;
+  left: 4px;
+  border: 0px solid #fff;
+  border-width: 0px 90px 2px 90px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, .3);
+  transform: rotate(-45deg) translate3d(1px, 3px, 0);
+  box-shadow: 0 0 1px 0 rgba(255, 255, 255, .1);
+  transform-origin: 0% 100%;
+}
+.pink {
+  top: 80px;
+  left: 800px;
+  background: #fff;
+  animation-delay: 3s;
+  -webkit-animation-delay: 3s;
+  -moz-animation-delay: 3s;
+}
+.pink:after {
+  border-color: transparent transparent transparent #fff;
+  animation-delay: 3s;
+  -webkit-animation-delay: 3s;
+  -moz-animation-delay: 3s;
+}
+.blue {
+  top: 60px;
+  left: 1200px;
+  background: #fff;
+  animation-delay: 7s;
+  -webkit-animation-delay: 7s;
+  -moz-animation-delay: 7s;
+}
+.blue:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 7s;
+  -moz-animation-delay: 7s;
+  animation-delay: 7s;
+}
+.red {
+  top: 30px;
+  left: 1500px;
+  background: #fff;
+  animation-delay: 10s;
+  -webkit-animation-delay: 10s;
+  -moz-animation-delay: 10s;
+}
+.red:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 10s;
+  -moz-animation-delay: 10s;
+  animation-delay: 10s;
+}
+.black {
+   top: 20px;
+   left: 1100px;
+   background: #fff;
+   animation-delay: 6s;
+   -webkit-animation-delay: 6s;
+   -moz-animation-delay: 6s;
+ }
+.black:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 6s;
+  -moz-animation-delay: 6s;
+  animation-delay: 6s;
+}
+.green {
+  top: 80px;
+  left: 600px;
+  background: #fff;
+  animation-delay: 5s;
+  -webkit-animation-delay: 5s;
+  -moz-animation-delay: 5s;
+}
+.green:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 5s;
+  -moz-animation-delay: 5s;
+  animation-delay: 5s;
+}
+.white {
+  top: 50px;
+  left: 800px;
+  background: #fff;
+  animation-delay: 5s;
+  -webkit-animation-delay: 5s;
+  -moz-animation-delay: 5s;
+}
+.white:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 5s;
+  -moz-animation-delay: 5s;
+  animation-delay: 5s;
+}
+.yellow {
+  top: 90px;
+  left: 1000px;
+  background: #fff;
+  animation-delay: 5s;
+  -webkit-animation-delay: 3s;
+  -moz-animation-delay: 3s;
+}
+.yellow:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 3s;
+  -moz-animation-delay: 3s;
+  animation-delay: 3s;
+}
+.gray {
+  top: 0px;
+  left: 200px;
+  background: #fff;
+  animation-delay: 2s;
+  -webkit-animation-delay: 2s;
+  -moz-animation-delay: 2s;
+}
+.gray:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 2s;
+  -moz-animation-delay: 2s;
+  animation-delay: 2s;
+}
+@keyframes star-ani {
+  0% {
+    opacity: 0;
+    transform: scale(0) translate3d(0, 0, 0);
+  }
+  20%{
+    opacity: 0.8;
+    transform: scale(0.3) translate3d(-200px, 200px, 0);
+  }
+  40% {
+    opacity: 0.8;
+    transform: scale(0.6) translate3d(-250px, 250px, 0);
+  }
+  60% {
+    opacity: 0.8;
+    transform: scale(0.9) translate3d(-300px, 300px, 0);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.2) translate3d(-350px, 350px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.5) translate3d(-400px, 380px, 0);
+  }
+}

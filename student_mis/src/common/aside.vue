@@ -8,6 +8,10 @@
       class="aside"
       router
       >
+      <el-menu-item index="dashboard">
+        <i class="el-icon-location"></i>主页
+      </el-menu-item>
+
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>
@@ -38,6 +42,10 @@
           <el-menu-item index="3-1">选项3-1</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+
+      <el-menu-item index="setting" v-if="level === 0">
+        <i class="el-icon-location"></i>账号管理
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -47,7 +55,8 @@
         name: "aside",
         data () {
           return {
-            collapse: false
+            collapse: false,
+            level: -1,
           }
         },
         methods: {
@@ -56,6 +65,10 @@
             this.$emit('collapse', this.collapse)
           }
         },
+        mounted() {
+          this.userInfo = JSON.parse(localStorage.userinfo);
+          this.level = this.userInfo.level;
+        }
     }
 </script>
 <style>
