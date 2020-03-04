@@ -23,4 +23,13 @@ public class UserServiceImpl implements UserService {
     User user =  userMapper.getUserInfo(condition);
     return user;
   }
+
+  @Override
+  public boolean update(Map<String, Object> condition) {
+    Integer num = userMapper.checkPasswordCount(condition);
+    if (num != 0) {
+      userMapper.update(condition);
+    }
+    return num != 0;
+  }
 }

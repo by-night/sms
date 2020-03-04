@@ -39,7 +39,7 @@
                 tabName: 'student',
                 loading: false,
                 note: {
-                    backgroundImage: 'url(' + require('../../assets/hhh.jpg') + ')',
+                    backgroundImage: 'url(' + require('../../assets/home.jpg') + ')',
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: '100%'
                 },
@@ -62,36 +62,6 @@
                     flip.style.transform = 'rotateY(0)'
                 }, 240)
             },
-            effects () {
-              // this.starArr = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
-              // // 生成1-10随机数
-              // let num = Math.ceil(Math.random() * 10);
-              // this.starArr = this.starArr.slice(0, num);
-              // // let name = this.starArr[this.starArr.length];
-              // // this.starClass = `star ${name}`;
-              // // let doc = document.getElementsByClassName(`${this.starClass}`);
-              // // console.log(doc);
-              // let hundred = 100 + num*10;
-              // let thousand = num * 1000;
-              // this.starSty = `
-              //   top: ${hundred}px;
-              //   left: ${thousand}px;
-              //   background: #fff;
-              //   animation-delay: 3s;
-              //   -webkit-animation-delay: 3s;
-              //   -moz-animation-delay: 3s;`;
-              // // let doc = document.getElementsByClassName('star');
-              // // for (let i = 0; i < doc.length; i++) {
-              // //   doc[i].style.top = `${hundred}px`;
-              // //   doc[i].style.left = `${thousand}px`;
-              // // }
-              // // console.log(doc)
-            },
-        },
-        created () {
-          window.setInterval(() => {
-            setTimeout(this.effects(), 0)
-          }, 3000)
         },
         components: {
             Form

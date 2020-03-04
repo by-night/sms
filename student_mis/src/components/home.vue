@@ -11,8 +11,11 @@
         <el-main style="background-color: #ededed; padding: 0">
           <Tabs></Tabs>
           <!--内容区-->
-          <el-card style="height: 94%; margin-left: 10px;">
+          <el-card style="height: 94%;background-color: #f2f2f2">
             <router-view />
+            <div class="copyright">
+              Copyright @2020 庄江辉
+            </div>
           </el-card>
         </el-main>
       </el-container>
@@ -29,6 +32,7 @@ export default {
     name: "home",
     data () {
       return {
+        width: '240px',
         collapse: false
       }
     },
@@ -47,6 +51,7 @@ export default {
     },
     watch: {
       collapse () {
+        this.width = '240px';
         let collapseWidth = document.getElementsByClassName("asideWidth")[0];
         // 点击导航栏收缩
         if(!this.collapse) {
@@ -57,7 +62,8 @@ export default {
         let collapseInfo = {
           state: this.collapse,
           width: collapseWidth.style.width
-        }
+        };
+        this.width = collapseWidth.style.width;
         // 把collapse信息传入vuex
         this.$store.commit('SAVE_COLLAPSE', collapseInfo)
       }
@@ -84,5 +90,16 @@ export default {
   }
   /deep/ .el-card__body {
     padding: 0;
+  }
+  .copyright {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 24px;
+    line-height: 20px;
+    text-align: center;
+    width: 100%;
+    font-size: 12px;
+    color: #666;
   }
 </style>

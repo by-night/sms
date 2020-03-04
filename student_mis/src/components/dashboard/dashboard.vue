@@ -1,9 +1,11 @@
 <template>
   <div>
-    <el-card>
-      <div style="font-size: 18px;background-color: #f4fcfe;border-bottom: 1px solid #dcdcdc;height: 50px;line-height: 50px;padding: 0 20px 0 20px">
+    <el-card style="margin: 10px;" class="content">
+      <div class="title">
           <i class="el-icon-user-solid"></i> 个人信息
-          <div style="float: right"><el-link :underline="false">修改资料</el-link></div>
+          <div style="float: right">
+            <el-link :underline="false" class="edit">修改资料</el-link>
+          </div>
       </div>
       <el-row style="color: #666666">
         <el-col :span="3" style="margin-left: 10px">
@@ -33,9 +35,15 @@ export default {
     },
     methods: {
       getSchoolInfo () {
-        let userinfo = this.userInfo;
-        this.schoolInfo = userinfo.sex + ' | ' + userinfo.school + ' | ' + userinfo.profession + ' | ' + userinfo.admissionTime + '届'
-        this.myselfInfo = userinfo.phone + ' | ' + userinfo.email
+        let userInfo = this.userInfo;
+        let sexName = '';
+        if (userInfo.sex === 0) {
+          sexName = '男';
+        } else {
+          sexName = '女';
+        }
+        this.schoolInfo = sexName + ' | ' + userInfo.school + ' | ' + userInfo.profession + ' | ' + userInfo.admissionTime + '届本科'
+        this.myselfInfo = userInfo.phone + ' | ' + userInfo.email
       }
     },
     mounted() {
@@ -60,6 +68,22 @@ export default {
   }
   .distance {
     margin: 15px 0px;
+  }
+  .title {
+    font-size: 18px;
+    background-color: #f4fcfe;
+    border-bottom: 1px solid #dcdcdc;
+    height:50px;
+    line-height: 50px;
+    padding: 0 20px 0 20px;
+    color: #0089AB;
+  }
+  .content:hover {
+    background-color: #FAFBFD;
+    box-shadow: 5px 8px 6px 0px rgba(70,88,131,0.2);
+  }
+  .edit:hover {
+    transform:  scale(1.1)
   }
 </style>
 <style>

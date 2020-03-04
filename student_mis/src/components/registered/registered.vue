@@ -143,15 +143,13 @@
               this.axiosHelper.post('/api/user/mis', this.form).then(
                 response => {
                   if(response.status === 200) {
-                    this.$message({
-                      message: '注册成功',
-                      type: 'success'
+                    this.$message.success({
+                      message: '注册成功'
                     });
                     this.$router.push('/home');
                   } else {
-                    this.$message({
-                      message: '注册失败',
-                      type: 'error'
+                    this.$message.error({
+                      message: '注册失败'
                     })
                   }
               })

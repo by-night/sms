@@ -8,7 +8,7 @@
         <result column="id" property="id" jdbcType="INTEGER" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
-        <result column="real_name" property="realname" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
         <result column="level" property="level" jdbcType="INTEGER" />
         <result column="sexs" property="sexs" jdbcType="VARCHAR" />
         <result column="school" property="school" jdbcType="VARCHAR" />
@@ -26,6 +26,26 @@
         <where>
             username = #{condition.username}
             AND password = #{condition.password}
+            AND level = #{condition.level}
         </where>
+    </select>
+    <update id="update" parameterType="map">
+        UPDATE user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="condition.passwordAgain != null and condition.passwordAgain != ''">
+                password = #{condition.passwordAgain},
+            </if>
+        </trim>
+        <where>
+            <if test="condition.password != null and condition.password != ''">
+                password = #{condition.password}
+            </if>
+            <if test="condition.username != null and condition.username != ''">
+                AND username = #{condition.username}
+            </if>
+        </where>
+    </update>
+    <select id="checkPasswordCount" resultType="int" parameterType="map">
+        select count(0) from user where password = #{condition.password} AND username = #{condition.username}
     </select>
 </mapper>

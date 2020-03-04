@@ -26,9 +26,13 @@ public class User {
    */
   private String password;
   /**
+   * 确认密码
+   */
+  private String passwordAgain;
+  /**
    * 真实姓名
    */
-  private String realname;
+  private String realName;
   /**
    * 等级
    */

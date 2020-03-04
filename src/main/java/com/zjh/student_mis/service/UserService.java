@@ -19,4 +19,12 @@ public interface UserService {
   * @Date: 2019/10/21 21:05
   */
   User getUserInfo(Map<String, Object> condition);
+  /**
+   * description: 修改密码
+   * @params: condition
+   * @return: void
+   * @Author: zjh
+   * @Date: 2020/3/4 23:05
+   */
+  boolean update(Map<String, Object> condition);
 }

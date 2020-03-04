@@ -8,7 +8,7 @@
             <i class="el-icon-user"></i>
           </el-col>
           <el-col :span="22">
-            <el-input v-model="form.username" maxlength="15" @keyup.enter.native="checkLogin('form')" clearable autofocus
+            <el-input v-model="form.username" maxlength="15" @keyup.enter.native="loginDone('form')" clearable autofocus
                       placeholder="请输入账号"></el-input>
           </el-col>
         </el-row>
@@ -20,7 +20,7 @@
             <a class="el-icon-lock"></a>
           </el-col>
           <el-col :span="22">
-            <el-input type="password" @keyup.enter.native="checkLogin('form')" v-model="form.password" maxlength="30"
+            <el-input type="password" @keyup.enter.native="loginDone('form')" v-model="form.password" maxlength="30"
                       clearable placeholder="请输入密码" show-password></el-input>
           </el-col>
         </el-row>
@@ -30,7 +30,7 @@
       </el-form-item>
       <el-form-item style="margin-left: 160px">
         <el-button @click="registered">注册</el-button>
-        <el-button type="primary" @click="login('form')">登陆</el-button>
+        <el-button type="primary" @click="login('form')" :disabled="loginBtn">登陆</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -42,27 +42,39 @@
         props: ['level'],
         data() {
             return {
+                errNum: 0,
+                loginState: 0,
                 form: {
                     username: '',
                     password: '',
                     level: 1
-                }
+                },
+                time: '',
+                loginBtn: false,
             }
         },
         methods: {
+            loginDone (formName) {
+              // 登陆按钮可点击时才可enter
+              if (!this.loginBtn) {
+                this.login(formName);
+              }
+            },
             login (formName) {
+              // 登陆判断
               if(this.form.username === '') {
-                this.$message({
-                  message: '账号不能为空',
-                  type: 'warning'
+                this.$message.warning({
+                  message: '账号不能为空'
                 })
               } else if (this.form.password === '') {
-                this.$message({
-                  message: '密码不能为空',
-                  type: 'warning'
+                this.$message.warning({
+                  message: '密码不能为空'
                 })
               } else {
-                this.checkLogin(formName)
+                this.loginState++;
+                if (this.loginState === 1) {
+                  this.checkLogin(formName)
+                }
               }
             },
             checkLogin (formName) {
@@ -70,38 +82,53 @@
               let _this = this;
               this.$refs[formName].validate(valid => {
                 if (valid) {
-                  _this.axios.get('/api/mis/user/login', {params: this.form}).then(
+                  _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
                     response => {
-                      console.log(response)
+                      console.log(response);
+                      this.loginState = 0;
                       let data = response.data;
-                      if(Object.keys(data).length > 0) {
-                        this.$message({
-                          message: '登录成功',
-                          type: 'success'
-                        });
-                        // 将数据存入state
-                       _this.$store.commit('SAVE_USERINFO', response.data);
-                       // 跳转到主页
-                        _this.$router.push('/dashboard')
-                      } else {
-                        this.$message({
-                          message: '登录失败，请检查用户名或密码',
-                          type: 'error'
-                        })
-                      }
+                      this.click(_this, data);
                     }).catch(() => {
-                      this.$message({
-                        message: '登录失败',
-                        type: 'error'
-                      })
-                  });
+                    this.loginState = 0;
+                  })
                 }
               })
             },
+            click (_this, data) {
+              if(Object.keys(data).length > 0) {
+                this.$message.success({
+                  message: '登录成功'
+                });
+                _this.errNum = 0;
+                // 将数据存入state
+                this.$store.commit('SAVE_USERINFO', data);
+                // 跳转到主页
+                _this.$router.push('/dashboard');
+              } else {
+                this.$message.error({
+                  message: '登录失败，请检查用户名或密码'
+                });
+                this.errNum++;
+                this.errDone();
+              }
+            },
+            errDone () {
+              // 错误5次以上禁止5s
+              if (this.errNum > 5) {
+                this.time = setTimeout(() => {
+                  this.errNum = 0;
+                  this.loginBtn = false;
+                }, 5000);
+                this.loginBtn = true;
+                this.$message.warning({
+                  message: '连续错误5次，请5秒后重试'
+                });
+              }
+            },
             registered() {
               this.$router.push("/registered")
-            }
-        }
+            },
+        },
     }
 </script>
 

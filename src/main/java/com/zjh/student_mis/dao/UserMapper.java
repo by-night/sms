@@ -21,4 +21,20 @@ public interface UserMapper {
    * @Date: 2019/10/21 21:05
    */
   User getUserInfo(@Param("condition") Map<String, Object> condition);
+  /**
+   * description: 修改密码
+   * @params: condition
+   * @return: void
+   * @Author: zjh
+   * @Date: 2020/3/4 23:05
+   */
+  void update(@Param("condition") Map<String, Object> condition);
+  /**
+   * description: 查询是否与原密码相同
+   * @params: condition
+   * @return: Integer
+   * @Author: zjh
+   * @Date: 2020/3/4 23:05
+   */
+  Integer checkPasswordCount(@Param("condition") Map<String, Object> condition);
 }

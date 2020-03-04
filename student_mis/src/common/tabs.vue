@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: white;margin-bottom: 10px;">
+  <div style="background-color: white;">
     <el-tag class="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="closable">
       {{tab.name}}
     </el-tag>
@@ -78,11 +78,7 @@
         }
       },
       tabsLength () {
-        if (this.tabsLength === 1) {
-          this.closable = false
-        } else {
-          this.closable = true
-        }
+        this.closable = this.tabsLength !== 1;
       }
     }
   }

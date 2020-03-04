@@ -24,11 +24,16 @@ public class UserController {
     Map<String, Object> map = new HashMap<>();
     map.put("username", condition.get("username").toString());
     map.put("password", condition.get("password").toString());
+    map.put("level", condition.get("level"));
     return userService.getUserInfo(map);
   }
-  @GetMapping("/hello")
-  public String hello() {
-    return "hahaha";
+  @GetMapping("/edit/password")
+  public boolean update (@RequestParam Map<String, Object> condition) {
+    Map<String, Object> map = new HashMap<>();
+    map.put("username", condition.get("username").toString());
+    map.put("password", condition.get("password").toString());
+    map.put("passwordAgain", condition.get("passwordAgain").toString());
+    return userService.update(map);
   }
 
 
