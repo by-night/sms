@@ -1,4 +1,4 @@
-package com.zjh.student_mis.dto;
+package com.zjh.sms.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

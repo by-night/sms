@@ -1,4 +1,4 @@
-package com.zjh.student_mis.config;
+package com.zjh.sms.config;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;

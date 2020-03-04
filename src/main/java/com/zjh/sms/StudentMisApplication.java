@@ -1,4 +1,4 @@
-package com.zjh.student_mis;
+package com.zjh.sms;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

@@ -1,6 +1,6 @@
-package com.zjh.student_mis.dao;
+package com.zjh.sms.dao;
 
-import com.zjh.student_mis.dto.User;
+import com.zjh.sms.dto.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

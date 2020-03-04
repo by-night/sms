@@ -1,7 +1,7 @@
-package com.zjh.student_mis.controller;
+package com.zjh.sms.controller;
 
-import com.zjh.student_mis.dto.User;
-import com.zjh.student_mis.service.UserService;
+import com.zjh.sms.dto.User;
+import com.zjh.sms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

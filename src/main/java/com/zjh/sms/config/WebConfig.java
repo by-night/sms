@@ -1,4 +1,4 @@
-package com.zjh.student_mis.config;
+package com.zjh.sms.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

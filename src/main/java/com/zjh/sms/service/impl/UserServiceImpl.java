@@ -1,8 +1,8 @@
-package com.zjh.student_mis.service.impl;
+package com.zjh.sms.service.impl;
 
-import com.zjh.student_mis.dto.User;
-import com.zjh.student_mis.dao.UserMapper;
-import com.zjh.student_mis.service.UserService;
+import com.zjh.sms.dto.User;
+import com.zjh.sms.dao.UserMapper;
+import com.zjh.sms.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,4 +1,4 @@
-package com.zjh.student_mis.config;
+package com.zjh.sms.config;
 
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
