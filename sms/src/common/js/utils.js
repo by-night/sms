@@ -2,6 +2,29 @@
     Message
 } from 'element-ui'
 let util = function (Vue) {
+
+    Vue.prototype.getOpBtn = (h, text, type, click, disabled, directives,color) => {
+      //return h(" 定义的元素 "，{ 元素的性质 }，" 元素的内容"/[元素的内容])
+      return h('el-button', {
+        props: {
+          type: type,
+          size: 'small'
+        },
+        attrs: {
+          disabled: disabled,
+        },
+        on: {
+          click: () => {
+            click()
+          }
+        },
+        directives: directives,
+        style: {
+          color: color
+        }
+      }, text)
+    };
+
     // 为了实现Class的私有属性
     const showMessage = Symbol('showMessage')
     /**

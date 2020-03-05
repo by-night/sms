@@ -7,7 +7,8 @@ import edit from '../components/edit/edit'
 import first from '../components/first/first'
 import registered from '../components/registered/registered'
 import dashboard from '../components/dashboard/dashboard'
-import setting from '../components/setting/setting'
+import student from '../components/setting/student'
+import teacher from '../components/setting/teacher'
 
 Vue.use(Router)
 
@@ -43,9 +44,13 @@ export default new Router({
           name: '第二',
           component: edit,
         }, {
-          path: '/setting',
-          name: '账号管理',
-          component: setting,
+          path: '/student',
+          name: '学生账号',
+          component: student,
+        }, {
+          path: '/teacher',
+          name: '教师账号',
+          component: teacher,
         }
       ]
     }, {

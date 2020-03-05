@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 40px">
+  <div style="margin-top: 40px;">
     <el-form ref="form" :model="form" label-width="20px" class="form">
       <!--账号-->
       <el-form-item>
@@ -26,11 +26,16 @@
         </el-row>
       </el-form-item>
       <el-form-item>
-        <el-link :underline="false" style="float: right">忘记密码？</el-link>
+        <el-link v-if="keyValue !== 0" :underline="false" style="float: right">忘记密码？</el-link>
+        <div v-else style="height: 30px"></div>
       </el-form-item>
-      <el-form-item style="margin-left: 160px">
+
+      <el-form-item style="margin-left: 160px" v-if="keyValue === 2">
         <el-button @click="registered">注册</el-button>
         <el-button type="primary" @click="login('form')" :disabled="loginBtn">登陆</el-button>
+      </el-form-item>
+      <el-form-item v-else>
+        <el-button @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">登&#12288&#12288陆</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -39,7 +44,7 @@
 <script>
     export default {
         name: "form",
-        props: ['level'],
+        props: ['keyValue'],
         data() {
             return {
                 errNum: 0,
@@ -47,13 +52,20 @@
                 form: {
                     username: '',
                     password: '',
-                    level: 1
+                    keyValue: 1
                 },
                 time: '',
                 loginBtn: false,
             }
         },
         methods: {
+            clearForm () {
+              this.form =  {
+                username: '',
+                password: '',
+                keyValue: 1
+              };
+            },
             loginDone (formName) {
               // 登陆按钮可点击时才可enter
               if (!this.loginBtn) {
@@ -78,7 +90,7 @@
               }
             },
             checkLogin (formName) {
-              this.form.level = this.level;
+              this.form.keyValue = this.keyValue;
               let _this = this;
               this.$refs[formName].validate(valid => {
                 if (valid) {
@@ -150,5 +162,14 @@
 <style scoped>
   /deep/ .form {
     margin-right: 20px;
+  }
+  /deep/ .loginMain {
+    font-size: 18px;
+    width: 200px;
+    border-radius: 100px;
+    margin-left: 63px;
+  }
+  /deep/ .el-tabs {
+    border-radius: 8px !important;
   }
 </style>

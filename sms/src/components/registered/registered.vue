@@ -1,51 +1,41 @@
 <template>
-  <div>
-    <div style="" class="card">
-      <div class="header">———  注册  ———</div>
-      <el-card style="padding: 10px 20px">
-        <el-form ref="rulesForm" :rules="rules" :model="form" label-width="90px">
-          <el-form-item label="用户名:" prop="username">
-            <el-input v-model="form.username" clearable maxlength="20"></el-input>
-          </el-form-item>
-          <el-form-item label="登录密码:" prop="password">
-            <el-input v-model="form.password" type="password" maxlength="15" show-password clearable></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码:" prop="passwordAgain">
-            <el-input v-model="form.passwordAgain" type="password" maxlength="15" show-password clearable></el-input>
-          </el-form-item>
-          <el-form-item label="姓名:" prop="realName">
-            <el-input v-model="form.realName" maxlength="15" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="性别:">
-            <el-select v-model="form.sex">
-              <el-option v-for="item in sexArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="学校:">
-            <el-input v-model="form.school" maxlength="15" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="入学时间:">
-            <el-input v-model="form.admission_time" maxlength="15" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="电子邮箱:" prop="email">
-            <el-input v-model="form.email" maxlength="30" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="专业:">
-            <el-input v-model="form.profession" maxlength="15" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="联系方式:" prop="phone">
-            <el-input v-model="form.phone" maxlength="15" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="验证码:" prop="code">
-            <el-input v-model="form.code" maxlength="30" clearable></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="registered('rulesForm')" style="width: 300px;margin:20px 0 0 40px">立即注册</el-button>
-          </el-form-item>
-        </el-form>
-      </el-card>
-    </div>
-  </div>
+  <el-form ref="rulesForm" :rules="rules" :model="form" label-width="90px">
+    <el-form-item label="用户名:" prop="username">
+      <el-input v-model="form.username" clearable maxlength="20"></el-input>
+    </el-form-item>
+    <el-form-item label="登录密码:" prop="password">
+      <el-input v-model="form.password" type="password" maxlength="15" show-password clearable></el-input>
+    </el-form-item>
+    <el-form-item label="确认密码:" prop="passwordAgain">
+      <el-input v-model="form.passwordAgain" type="password" maxlength="15" show-password clearable></el-input>
+    </el-form-item>
+    <el-form-item label="姓名:" prop="realName">
+      <el-input v-model="form.realName" maxlength="15" clearable></el-input>
+    </el-form-item>
+    <el-form-item label="性别:">
+      <el-select v-model="form.sex" style="width: 100%">
+        <el-option v-for="item in sexArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="学校:">
+      <el-input v-model="form.school" maxlength="15" clearable></el-input>
+    </el-form-item>
+    <el-form-item label="入学时间:">
+      <el-input v-model="form.admission_time" maxlength="15" clearable></el-input>
+    </el-form-item>
+    <el-form-item label="电子邮箱:" prop="email">
+      <el-input v-model="form.email" maxlength="30" clearable></el-input>
+    </el-form-item>
+    <el-form-item label="专业:">
+      <el-input v-model="form.profession" maxlength="15" clearable></el-input>
+    </el-form-item>
+    <el-form-item label="联系方式:" prop="phone">
+      <el-input v-model="form.phone" maxlength="15" clearable></el-input>
+    </el-form-item>
+    <el-form-item label="验证码:" prop="code">
+      <el-input v-model="form.code" maxlength="30" clearable></el-input>
+    </el-form-item>
+</el-form>
 </template>
 
 <script>

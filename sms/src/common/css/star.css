@@ -58,7 +58,7 @@
 }
 .red {
   top: 30px;
-  left: 1500px;
+  left: 1400px;
   background: #fff;
   animation-delay: 10s;
   -webkit-animation-delay: 10s;
@@ -102,15 +102,29 @@
   top: 50px;
   left: 800px;
   background: #fff;
-  animation-delay: 5s;
-  -webkit-animation-delay: 5s;
-  -moz-animation-delay: 5s;
+  animation-delay: 1s;
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
 }
 .white:after {
   border-color: transparent transparent transparent #fff;
-  -webkit-animation-delay: 5s;
-  -moz-animation-delay: 5s;
-  animation-delay: 5s;
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+}
+.orange {
+  top: 50px;
+  left: 1350px;
+  background: #fff;
+  animation-delay: 500ms;
+  -webkit-animation-delay: 500ms;
+  -moz-animation-delay: 500ms;
+}
+.orange:after {
+  border-color: transparent transparent transparent #fff;
+  -webkit-animation-delay: 500ms;
+  -moz-animation-delay: 500ms;
+  animation-delay: 500ms;
 }
 .yellow {
   top: 90px;

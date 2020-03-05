@@ -8,18 +8,22 @@
     <div class="star white"></div>
     <div class="star yellow"></div>
     <div class="star gray"></div>
+    <div class="star orange"></div>
     <div class="title">
       <h2>
         <i class="el-icon-eleme"></i>学生成绩管理系统
       </h2>
     </div>
     <div class="loginForm">
-      <el-tabs type="border-card" v-model="tabName" @tab-click="tabClick">
+      <el-tabs type="border-card" v-model="tabName" @tab-click="tabClick" style="height: 380px">
         <el-tab-pane label="学生" name="student">
-          <Form class="flip" :level="level"></Form>
+          <Form class="flip" :keyValue="keyValue" ref="student_tab"></Form>
         </el-tab-pane>
         <el-tab-pane label="教师" name="teacher">
-          <Form :level="level"></Form>
+          <Form :keyValue="keyValue" ref="teacher_tab"></Form>
+        </el-tab-pane>
+        <el-tab-pane label="管理员" name="admin">
+          <Form :keyValue="keyValue" ref="admin_tab"></Form>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -35,7 +39,7 @@
             return {
                 starClass: 'star',
                 starArr: '',
-                level: 1,
+                keyValue: 2,
                 tabName: 'student',
                 loading: false,
                 note: {
@@ -49,10 +53,15 @@
         methods: {
             tabClick(data) {
                 if(data.label === '学生') {
-                  this.level = 1
+                  this.keyValue = 2
                 } else if(data.label === '教师') {
-                  this.level = 2
+                  this.keyValue = 1
+                } else if(data.label === '管理员') {
+                  this.keyValue = 0
                 }
+                this.$refs.student_tab.clearForm();
+                this.$refs.teacher_tab.clearForm();
+                this.$refs.admin_tab.clearForm();
                 let flip = document.querySelector('.el-tabs');
                 flip.style.transition = '0.3s';
                 // 翻转90度

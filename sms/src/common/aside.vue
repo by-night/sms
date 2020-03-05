@@ -43,9 +43,23 @@
         </el-menu-item-group>
       </el-submenu>
 
-      <el-menu-item index="setting" v-if="level === 0">
-        <i class="el-icon-location"></i>账号管理
-      </el-menu-item>
+      <!--<el-menu-item index="setting" v-if="level === 0">-->
+        <!--<i class="el-icon-location"></i>账号管理-->
+      <!--</el-menu-item>-->
+
+
+      <el-submenu index="setting" v-if="level === 0">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span>账号管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="student">学生账号</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>
+          <el-menu-item index="teacher">教师账号</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

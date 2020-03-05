@@ -1,4 +1,20 @@
 .el-dialog__header {
   padding: 16px 20px 10px;
   background-color: #E8E8E8;
+  -webkit-border-radius: 8px 8px 0 0 !important;
+  -moz-border-radius: 8px 8px 0 0 !important;
+  -ms-border-radius: 8px 8px 0 0 !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+.el-dialog {
+  -webkit-border-radius: 8px !important;
+  -moz-border-radius: 8px !important;
+  -ms-border-radius: 8px !important;
+  border-radius: 8px !important;
+}
+.el-dialog__headerbtn:hover .el-dialog__close{
+  color: #5A8BFF;
+}
+.el-dialog__body{
+  padding: 20px !important;
 }

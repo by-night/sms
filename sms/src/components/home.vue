@@ -11,7 +11,7 @@
         <el-main style="background-color: #ededed; padding: 0">
           <Tabs></Tabs>
           <!--内容区-->
-          <el-card style="height: 94%;background-color: #f2f2f2">
+          <el-card style="height: 93%;background-color: #f2f2f2">
             <router-view />
             <div class="copyright">
               Copyright @2020 庄江辉

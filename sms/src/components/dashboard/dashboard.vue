@@ -42,7 +42,11 @@ export default {
         } else {
           sexName = '女';
         }
-        this.schoolInfo = sexName + ' | ' + userInfo.school + ' | ' + userInfo.profession + ' | ' + userInfo.admissionTime + '届本科'
+        if (userInfo.level === 1) {
+          this.schoolInfo = sexName + ' | ' + userInfo.school + ' | ' + userInfo.profession
+        } else {
+          this.schoolInfo = sexName +  ' | ' + userInfo.school + ' | ' + userInfo.profession + ' | ' + userInfo.admissionTime + '届本科'
+        }
         this.myselfInfo = userInfo.phone + ' | ' + userInfo.email
       }
     },
