@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.User.TeacherMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.dto.User" >
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="sexs" property="sexs" jdbcType="VARCHAR" />
+        <result column="school" property="school" jdbcType="VARCHAR" />
+        <result column="admission_time" property="admissionTime" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="addTeacher" parameterType="com.zjh.sms.dto.User">
+        INSERT INTO teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null and username != ''">username,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="realName != null and realName != ''">real_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="realName != null and realName != ''">#{realName},</if>
+        </trim>
+    </insert>
+    <delete id="delete" parameterType="map">
+        DELETE FROM
+        teacher
+        <where>
+            id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+    <update id="update" parameterType="com.zjh.sms.dto.User">
+        UPDATE teacher
+        <trim prefix="set" suffixOverrides=",">
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="realName != null and realName != ''">
+                real_name = #{realName},
+            </if>
+        </trim>
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+    <select id="getTeacherList" resultMap="BaseUserMap" parameterType="int">
+        SELECT
+        id,
+        username,
+        password,
+        real_name
+        FROM teacher
+        <where>
+            <if test="condition.code != null and condition.code != ''">
+                AND (username LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%'))
+            </if>
+        </where>
+    </select>
+</mapper>

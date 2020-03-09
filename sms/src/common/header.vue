@@ -6,7 +6,6 @@
       <div class="font" v-html="day"></div>
       <!--头像-->
       <div class="headerStr">
-        <!--<img src="../assets/header.jpg" width="50" height="50" class="image">-->
         {{firstStr}}
       </div>
       <!--用户名-->
@@ -39,7 +38,13 @@
         },
         methods: {
             exit() {
-              this.$router.push("/")
+              this.$confirm('是否确定退出?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                this.$router.push("/");
+              })
             },
             editPassword () {
               this.$refs.edit_password.init();

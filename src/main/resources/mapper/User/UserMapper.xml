@@ -3,7 +3,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zjh.sms.dao.UserMapper" >
+<mapper namespace="com.zjh.sms.dao.User.UserMapper" >
     <resultMap id="BaseUserMap" type="com.zjh.sms.dto.User" >
         <result column="id" property="id" jdbcType="INTEGER" />
         <result column="username" property="username" jdbcType="VARCHAR" />
@@ -46,32 +46,6 @@
             AND password = #{condition.password}
         </where>
     </select>
-    <insert id="addStudent" parameterType="com.zjh.sms.dto.User">
-        INSERT INTO student
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="username != null and username != ''">username,</if>
-            <if test="password != null and password != ''">password,</if>
-            <if test="realName != null and realName != ''">real_name,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="username != null and username != ''">#{username},</if>
-            <if test="password != null and password != ''">#{password},</if>
-            <if test="realName != null and realName != ''">#{realName},</if>
-        </trim>
-    </insert>
-    <insert id="addTeacher" parameterType="com.zjh.sms.dto.User">
-        INSERT INTO teacher
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="username != null and username != ''">username,</if>
-            <if test="password != null and password != ''">password,</if>
-            <if test="realName != null and realName != ''">real_name,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="username != null and username != ''">#{username},</if>
-            <if test="password != null and password != ''">#{password},</if>
-            <if test="realName != null and realName != ''">#{realName},</if>
-        </trim>
-    </insert>
     <update id="update" parameterType="map">
         UPDATE student
         <trim prefix="set" suffixOverrides=",">
@@ -90,19 +64,5 @@
     </update>
     <select id="checkPasswordCount" resultType="int" parameterType="map">
         select count(0) from student where password = #{condition.password} AND username = #{condition.username}
-    </select>
-    <select id="getStudentList" resultType="map" parameterType="int">
-        SELECT
-         username,
-         password,
-         real_name
-        FROM student
-    </select>
-    <select id="getTeacherList" resultType="map" parameterType="int">
-        SELECT
-         username,
-         password,
-         real_name
-        FROM teacher
     </select>
 </mapper>

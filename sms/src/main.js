@@ -12,12 +12,14 @@ import './common/js/drag'
 // 引入element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import VueCookies from 'vue-cookies'
 
-Vue.config.productionTip = false
-Vue.use(ElementUI)
-Vue.use(Util)
-Vue.prototype.axios = axios
-Vue.prototype.axiosHelper = axiosHelper
+Vue.config.productionTip = false;
+Vue.use(ElementUI);
+Vue.use(Util);
+Vue.use(VueCookies);
+Vue.prototype.axios = axios;
+Vue.prototype.axiosHelper = axiosHelper;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

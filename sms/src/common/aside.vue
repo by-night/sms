@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-header style="background-color: #4777e7 !important">
+      <img src="../assets/hea.png" alt=""/>
       <i class="el-icon-menu collapse" @click="isCollapse"></i>
     </el-header>
     <el-menu

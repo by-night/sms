@@ -17,13 +17,13 @@
     <div class="loginForm">
       <el-tabs type="border-card" v-model="tabName" @tab-click="tabClick" style="height: 380px">
         <el-tab-pane label="学生" name="student">
-          <Form class="flip" :keyValue="keyValue" ref="student_tab"></Form>
+          <Form class="flip" ref="student_tab"></Form>
         </el-tab-pane>
         <el-tab-pane label="教师" name="teacher">
-          <Form :keyValue="keyValue" ref="teacher_tab"></Form>
+          <Form ref="teacher_tab"></Form>
         </el-tab-pane>
         <el-tab-pane label="管理员" name="admin">
-          <Form :keyValue="keyValue" ref="admin_tab"></Form>
+          <Form ref="admin_tab"></Form>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -52,16 +52,20 @@
         },
         methods: {
             tabClick(data) {
+                let keyValue = 2;
                 if(data.label === '学生') {
-                  this.keyValue = 2
+                  keyValue = 2;
+                  this.$refs.student_tab.clearForm(keyValue);
+                  this.$refs.student_tab.getCookies();
                 } else if(data.label === '教师') {
-                  this.keyValue = 1
+                  keyValue = 1;
+                  this.$refs.teacher_tab.clearForm(keyValue);
+                  this.$refs.teacher_tab.getCookies();
                 } else if(data.label === '管理员') {
-                  this.keyValue = 0
+                  keyValue = 0;
+                  this.$refs.admin_tab.clearForm(keyValue);
+                  this.$refs.admin_tab.getCookies();
                 }
-                this.$refs.student_tab.clearForm();
-                this.$refs.teacher_tab.clearForm();
-                this.$refs.admin_tab.clearForm();
                 let flip = document.querySelector('.el-tabs');
                 flip.style.transition = '0.3s';
                 // 翻转90度
@@ -74,7 +78,7 @@
         },
         components: {
             Form
-        }
+        },
     }
 </script>
 <style>

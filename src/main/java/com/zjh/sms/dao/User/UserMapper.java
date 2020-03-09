@@ -1,11 +1,9 @@
-package com.zjh.sms.dao;
+package com.zjh.sms.dao.User;
 
-import com.github.pagehelper.PageRowBounds;
 import com.zjh.sms.dto.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,37 +52,7 @@ public interface UserMapper {
    * @Author: zjh
    * @Date: 2020/3/4 23:05
    */
-  Integer checkPasswordCount(@Param("condition") Map<String, Object> condition);    /**
-   /**
-   * description: 新增学生账号信息
-   * @param user
-   * @return void
-   * @author zjh
-   * @date 2020/3/4 23:05
-   */
-  void addStudent(User user);
-  /**
-   * description: 新增教师账号信息
-   * @param user
-   * @return void
-   * @author zjh
-   * @date 2020/3/4 23:05
-   */
-  void addTeacher(User user);
-  /**
-   * description: 获取学生账号信息列表
-   * @param rowBounds
-   * @author zjh
-   * @return java.util.List<com.zjh.sms.dto.User>
-   * @date 2020/3/4 23:05
-   */
-  List<User> getStudentList(PageRowBounds rowBounds);
-  /**
-   * description: 获取教师账号信息列表
-   * @param rowBounds
-   * @author zjh
-   * @return java.util.List<com.zjh.sms.dto.User>
-   * @date 2020/3/4 23:05
-   */
-  List<User> getTeacherList(PageRowBounds rowBounds);
+  Integer checkPasswordCount(@Param("condition") Map<String, Object> condition);
+
+
 }

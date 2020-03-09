@@ -8,8 +8,22 @@
             <i class="el-icon-user"></i>
           </el-col>
           <el-col :span="22">
-            <el-input v-model="form.username" maxlength="15" @keyup.enter.native="loginDone('form')" clearable autofocus
-                      placeholder="请输入账号"></el-input>
+            <el-dropdown trigger="click" v-if="dealCookie.length > 0">
+              <el-input v-model="form.username" maxlength="15" @keyup.enter.native="loginDone('form')"
+                      style="width: 300px" clearable autofocus placeholder="请输入账号"></el-input>
+
+               <el-dropdown-menu :style="{width: '300px', marginLeft: '50px', height: dealCookie.length < 3 ? `${dealCookie.length*36}px`:'100px'}" slot="dropdown">
+                <el-scrollbar style="height:100%;" wrapStyle="overflow-x:hidden;padding-right:12px;" viewStyle="">
+                  <el-dropdown-item v-for="cookies in dealCookie" @click.native="clickCookies(cookies)">
+                    {{cookies.username}}
+                    <i title="删除账号信息" class="deleteCook el-icon-close" @click.stop="deleteCookies(cookies)"></i>
+                  </el-dropdown-item>
+                </el-scrollbar>
+               </el-dropdown-menu>
+            </el-dropdown>
+
+            <el-input v-else v-model="form.username" maxlength="15" @keyup.enter.native="loginDone('form')"
+                      style="width: 300px" clearable autofocus placeholder="请输入账号"></el-input>
           </el-col>
         </el-row>
       </el-form-item>
@@ -25,17 +39,26 @@
           </el-col>
         </el-row>
       </el-form-item>
+
       <el-form-item>
-        <el-link v-if="keyValue !== 0" :underline="false" style="float: right">忘记密码？</el-link>
-        <div v-else style="height: 30px"></div>
+        <el-checkbox v-model="isKeep" style="height: 50px; float: right;margin-top: -20px">记住密码</el-checkbox>
       </el-form-item>
 
-      <el-form-item style="margin-left: 160px" v-if="keyValue === 2">
+      <!--<el-form-item>-->
+        <!--<el-link v-if="keyValue !== 0" :underline="false" style="float: right">忘记密码？</el-link>-->
+        <!--<div v-else style="height: 30px"></div>-->
+      <!--</el-form-item>-->
+
+      <el-form-item style="margin-left: 160px" v-if="form.level === 2">
         <el-button @click="registered">注册</el-button>
         <el-button type="primary" @click="login('form')" :disabled="loginBtn">登陆</el-button>
       </el-form-item>
       <el-form-item v-else>
-        <el-button @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">登&#12288&#12288陆</el-button>
+        <el-button @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">
+          <span>
+          登&#12288陆
+          </span>
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -44,27 +67,35 @@
 <script>
     export default {
         name: "form",
-        props: ['keyValue'],
         data() {
             return {
+                isKeep: true,
                 errNum: 0,
                 loginState: 0,
                 form: {
                     username: '',
                     password: '',
-                    keyValue: 1
+                    level: 2
                 },
                 time: '',
                 loginBtn: false,
+                dealCookie: [],
             }
         },
         methods: {
-            clearForm () {
+            clearForm (level) {
               this.form =  {
                 username: '',
                 password: '',
-                keyValue: 1
+                level
               };
+            },
+            clickCookies (data) {
+              this.form = {
+                username: data.username,
+                password: data.password,
+                level: data.level
+              }
             },
             loginDone (formName) {
               // 登陆按钮可点击时才可enter
@@ -90,18 +121,19 @@
               }
             },
             checkLogin (formName) {
-              this.form.keyValue = this.keyValue;
               let _this = this;
               this.$refs[formName].validate(valid => {
                 if (valid) {
                   _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
                     response => {
-                      console.log(response);
                       this.loginState = 0;
                       let data = response.data;
                       this.click(_this, data);
                     }).catch(() => {
                     this.loginState = 0;
+                    this.$message.error({
+                      message: '登录失败，请检查用户名或密码'
+                    });
                   })
                 }
               })
@@ -114,6 +146,18 @@
                 _this.errNum = 0;
                 // 将数据存入state
                 this.$store.commit('SAVE_USERINFO', data);
+                let obj = {
+                  username: data.username,
+                  password: data.password,
+                  level: data.level
+                };
+                if (this.isKeep) {
+                  // 设置cookies
+                  this.$cookies.set(`sms_${data.username}`, obj)
+                } else {
+                  // 删除cookies
+                  this.$cookies.remove(`sms_${data.username}`)
+                }
                 // 跳转到主页
                 _this.$router.push('/dashboard');
               } else {
@@ -140,7 +184,31 @@
             registered() {
               this.$router.push("/registered")
             },
+            // 获取本项目的所有cookies
+            getCookies() {
+              this.dealCookie = [];
+              // 获取所有cookies
+              let cookieArr = this.$cookies.keys();
+              // 筛选本项目的cookies的key
+              this.dealCookie = cookieArr.map(data => {
+                if (data.indexOf('sms_') !== -1) {
+                  // 根据key获取cookies的值
+                  return this.$cookies.get(data);
+                }
+              });
+              this.dealCookie = this.dealCookie.filter(data => {
+                return data.level === this.form.level
+              });
+            },
+            deleteCookies (data) {
+              let keyName = `sms_${data.username}`;
+              this.$cookies.remove(keyName);
+              this.getCookies();
+            }
         },
+      mounted () {
+          this.getCookies();
+      }
     }
 </script>
 
@@ -169,7 +237,39 @@
     border-radius: 100px;
     margin-left: 63px;
   }
+  .loginMain span {
+     cursor: pointer;
+     display: inline-block;
+     position: relative;
+     transition: 0.4s;
+  }
+  .loginMain span:after {
+    font-size: 28px;
+    /*>>符号*/
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: -8px;
+    right: -35px;
+    transition: 0.4s;
+  }
+  .loginMain:hover span {
+    padding-right: 35px;
+  }
+  .loginMain:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
   /deep/ .el-tabs {
     border-radius: 8px !important;
+  }
+  .deleteCook {
+    float: right;
+    margin-top: 10px;
+    margin-right: -20px;
+  }
+  .deleteCook:hover {
+    transform: scale(1.2);
+    font-weight: bold;
   }
 </style>

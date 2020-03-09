@@ -60,6 +60,7 @@
         this.dialog = true;
       },
       clearForm () {
+        this.title = '';
         this.type = '';
         this.form = {
           username: '',
@@ -82,7 +83,7 @@
       },
       addMethod () {
         this.axiosHelper.post(
-          '/api/mis/user/student', this.form).then(() => {
+          '/api/mis/user/teacher', this.form).then(() => {
           this.$message.success({
             message: '新增成功'
           });
@@ -97,7 +98,7 @@
       },
       editMethod () {
         this.axiosHelper.put(
-          '/api/mis/user/student', this.form).then(() => {
+          '/api/mis/user/teacher', this.form).then(() => {
           this.$message.success({
             message: '修改成功'
           });

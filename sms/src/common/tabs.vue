@@ -1,7 +1,7 @@
 <template>
   <div style="background-color: white;">
-    <el-tag class="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="closable">
-      {{tab.name}}
+    <el-tag class="tag" style="text-align: center;" ref="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="closable">
+      <span>{{tab.name}}</span>
     </el-tag>
   </div>
 </template>
@@ -11,8 +11,8 @@
     name: "tabs",
     data () {
       return {
-        closable: true,
-        tabsName: [{name: '第一', path: '/list'}]
+        closable: false,
+        tabsName: [{name: '主页', path: '/dashboard'}]
       }
     },
     methods: {
@@ -23,13 +23,18 @@
             return data.name !== item.name
           })
         }
+        // 跳转到前一个标签
+        let path = this.tabsName[this.tabsName.length - 1]
+        this.$router.push(path);
+
       },
       // 点击标签头时
       tabClick (item) {
-        this.tabState(item)
+        this.tabState(item);
         this.$router.push(item.path)
       },
       tabState (item) {
+        // 选中时颜色
         // for (let i = 0; i < this.tabsName.length; i++) {
         //   // 已点击的标签
         //   let doc = document.getElementsByClassName('tag')[i];
@@ -86,8 +91,15 @@
 
 <style scoped>
  .tag {
-   cursor: pointer;
-   margin: 15px 0 -2px 12px;
+   margin: 10px 0 1px 12px;
    border: #ebebeb 1px solid;
+ }
+ /deep/ .tag:hover {
+   cursor: pointer;
+   color: #409eff !important;
+   background-color: #ecf5ff !important;
+ }
+ /deep/ .tag:active {
+   transform: scale(0.95);
  }
 </style>

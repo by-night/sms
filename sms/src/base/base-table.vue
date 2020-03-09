@@ -328,7 +328,7 @@
     border-right: 1px solid #E7E7E7;
     border-radius: 4px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   /* 穿透渲染 */
   .el-table /deep/ td {
