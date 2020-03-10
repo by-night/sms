@@ -2,7 +2,7 @@
   <div style="margin-top: 40px;">
     <el-form ref="form" :model="form" label-width="20px" class="form">
       <!--账号-->
-      <el-form-item>
+      <el-form-item style="margin-top: 60px">
         <el-row>
           <el-col :span="2">
             <i class="el-icon-user"></i>
@@ -12,12 +12,23 @@
               <el-input v-model="form.username" maxlength="15" @keyup.enter.native="loginDone('form')"
                       style="width: 300px" clearable autofocus placeholder="请输入账号"></el-input>
 
-               <el-dropdown-menu :style="{width: '300px', marginLeft: '50px', height: dealCookie.length < 3 ? `${dealCookie.length*36}px`:'100px'}" slot="dropdown">
+               <el-dropdown-menu :style="{width: '300px', marginLeft: '50px', height: dealCookie.length < 3 ? `${dealCookie.length*50}px`:'100px'}" slot="dropdown">
                 <el-scrollbar style="height:100%;" wrapStyle="overflow-x:hidden;padding-right:12px;" viewStyle="">
-                  <el-dropdown-item v-for="cookies in dealCookie" @click.native="clickCookies(cookies)">
-                    {{cookies.username}}
-                    <i title="删除账号信息" class="deleteCook el-icon-close" @click.stop="deleteCookies(cookies)"></i>
-                  </el-dropdown-item>
+                  <el-dropdown-item v-for="cookies in dealCookie" @click.native="clickCookies(cookies)" style="height: 50px">
+                    <div>
+                      <!--用户账号icon-->
+                      <div class="userIcon el-icon-user-solid"></div>
+                      <!--显示cookies账号密码-->
+                      <div>
+                        <div>{{cookies.username}}</div>
+                        <div>
+                          <div class="circle" v-for="item in circleArr"></div>
+                        </div>
+                      </div>
+                      <!--删除账号信息按钮-->
+                      <div title="删除账号信息" class="deleteCook el-icon-close" @click.stop="deleteCookies(cookies)"></div>
+                    </div>
+                   </el-dropdown-item>
                 </el-scrollbar>
                </el-dropdown-menu>
             </el-dropdown>
@@ -41,7 +52,10 @@
       </el-form-item>
 
       <el-form-item>
-        <el-checkbox v-model="isKeep" style="height: 50px; float: right;margin-top: -20px">记住密码</el-checkbox>
+        <div style="float: right;margin-top: -20px">
+          <!--<el-link v-if="form.level !== 0" style="margin-right: 20px;margin-top: -3px" :underline="false">忘记密码？</el-link>-->
+          <el-checkbox v-model="isKeep" style="height: 50px;">记住密码</el-checkbox>
+        </div>
       </el-form-item>
 
       <!--<el-form-item>-->
@@ -49,17 +63,21 @@
         <!--<div v-else style="height: 30px"></div>-->
       <!--</el-form-item>-->
 
-      <el-form-item style="margin-left: 160px" v-if="form.level === 2">
-        <el-button @click="registered">注册</el-button>
-        <el-button type="primary" @click="login('form')" :disabled="loginBtn">登陆</el-button>
-      </el-form-item>
-      <el-form-item v-else>
+      <!--<el-form-item style="margin-left: 160px" v-if="form.level === 2">-->
+        <!--<el-button @click="registered">注册</el-button>-->
+        <!--<el-button type="primary" @click="login('form')" :disabled="loginBtn">登陆</el-button>-->
+      <!--</el-form-item>-->
+      <el-form-item>
         <el-button @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">
           <span>
           登&#12288陆
           </span>
         </el-button>
       </el-form-item>
+
+      <div>
+        <el-link v-if="form.level === 2" @click="registered" style="margin: -64px 0 0 6px;color: #909399;font-size: 14px" :underline="false">注册账号</el-link>
+      </div>
     </el-form>
   </div>
 </template>
@@ -69,6 +87,7 @@
         name: "form",
         data() {
             return {
+                circleArr: [1,2,3,4,5,6],
                 isKeep: true,
                 errNum: 0,
                 loginState: 0,
@@ -190,10 +209,10 @@
               // 获取所有cookies
               let cookieArr = this.$cookies.keys();
               // 筛选本项目的cookies的key
-              this.dealCookie = cookieArr.map(data => {
+              cookieArr.forEach(data => {
                 if (data.indexOf('sms_') !== -1) {
                   // 根据key获取cookies的值
-                  return this.$cookies.get(data);
+                  this.dealCookie.push(this.$cookies.get(data));
                 }
               });
               this.dealCookie = this.dealCookie.filter(data => {
@@ -235,7 +254,8 @@
     font-size: 18px;
     width: 200px;
     border-radius: 100px;
-    margin-left: 63px;
+    margin-left: 70px;
+    margin-top: -10px;
   }
   .loginMain span {
      cursor: pointer;
@@ -265,11 +285,30 @@
   }
   .deleteCook {
     float: right;
-    margin-top: 10px;
-    margin-right: -20px;
+    height: 10px;
+    width: 10px;
+    margin-top: -18px;
+    /*float: right;*/
+    /*margin-top: -70px;*/
+    /*margin-right: -10px;*/
   }
   .deleteCook:hover {
     transform: scale(1.2);
     font-weight: bold;
+  }
+  .circle {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: gray;
+    float: left;
+    margin: 1px;
+  }
+  .userIcon {
+    font-size: 18px;
+    float: left;
+    height: 50px;
+    width: 35px;
+    line-height: 50px;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: white;">
-    <el-tag class="tag" style="text-align: center;" ref="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="closable">
+    <el-tag class="tag" :style="{width: tab.name==='主页'?'62px':''}" ref="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="tab.name !== '主页'">
       <span>{{tab.name}}</span>
     </el-tag>
   </div>
@@ -11,22 +11,20 @@
     name: "tabs",
     data () {
       return {
-        closable: false,
         tabsName: [{name: '主页', path: '/dashboard'}]
       }
     },
     methods: {
       // 删除标签
       tabRemove (item) {
-        if(this.tabsName.length !== 1) {
+        if (item.name !== '主页') {
           this.tabsName = this.tabsName.filter(data => {
             return data.name !== item.name
-          })
-        }
+          });
         // 跳转到前一个标签
-        let path = this.tabsName[this.tabsName.length - 1]
+        let path = this.tabsName[this.tabsName.length - 1];
         this.$router.push(path);
-
+      }
       },
       // 点击标签头时
       tabClick (item) {
@@ -57,9 +55,6 @@
       routeName () {
         return this.$route.name
       },
-      tabsLength () {
-        return this.tabsName.length
-      }
     },
     watch: {
       routeName () {
@@ -82,9 +77,6 @@
           return true
         }
       },
-      tabsLength () {
-        this.closable = this.tabsLength !== 1;
-      }
     }
   }
 </script>
@@ -93,6 +85,7 @@
  .tag {
    margin: 10px 0 1px 12px;
    border: #ebebeb 1px solid;
+   text-align: center;
  }
  /deep/ .tag:hover {
    cursor: pointer;

@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-header style="background-color: #4777e7 !important">
-      <img src="../assets/hea.png" alt=""/>
-      <i class="el-icon-menu collapse" @click="isCollapse"></i>
+      <img src="../assets/header.png" alt="" width="40" height="40" style="margin: 10px 30px" />
+      <i class="el-icon-menu collapse" @click="isCollapse" style="margin-right: 20px"></i>
     </el-header>
     <el-menu
       :collapse="collapse"
@@ -10,44 +10,26 @@
       router
       >
       <el-menu-item index="dashboard">
-        <i class="el-icon-location"></i>主页
+        <i class="el-icon-s-home"></i>主页
       </el-menu-item>
 
-      <el-submenu index="1">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>导航一</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="list">选项1</el-menu-item>
-          <el-menu-item index="edit">选项2</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
+      <el-menu-item index="score">
+        <i class="el-icon-s-unfold"></i>成绩查询
+      </el-menu-item>
 
-      <el-submenu index="2">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span>导航二</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="2-2">选项2-2</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
+      <el-menu-item index="point">
+        <i class="el-icon-s-opportunity"></i>绩点查询
+      </el-menu-item>
 
-      <el-submenu index="3">
-        <template slot="title">
-          <i class="el-icon-document"></i>
-          <span>导航三</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="3-1">选项3-1</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-
-      <!--<el-menu-item index="setting" v-if="level === 0">-->
-        <!--<i class="el-icon-location"></i>账号管理-->
-      <!--</el-menu-item>-->
-
+      <!--<el-submenu index="1">-->
+        <!--<template slot="title">-->
+          <!--<i class="el-icon-location"></i>-->
+          <!--<span>导航一</span>-->
+        <!--</template>-->
+        <!--<el-menu-item-group>-->
+          <!--<el-menu-item index="list">选项1</el-menu-item>-->
+        <!--</el-menu-item-group>-->
+      <!--</el-submenu>-->
 
       <el-submenu index="setting" v-if="level === 0">
         <template slot="title">

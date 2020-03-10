@@ -2,15 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '../components/login/login'
 import home from '../components/home'
-import list from '../components/list/list'
-import edit from '../components/edit/edit'
-import first from '../components/first/first'
+import score from '../components/score/score'
+import point from '../components/point/point'
+import first from '../components/score/score'
 import registered from '../components/registered/registered'
 import dashboard from '../components/dashboard/dashboard'
 import student from '../components/setting/student'
 import teacher from '../components/setting/teacher'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -36,13 +36,13 @@ export default new Router({
           component: first
         },
         {
-          path: '/list',
-          name: '第一',
-          component: list,
+          path: '/score',
+          name: '成绩查询',
+          component: score,
         }, {
-          path: '/edit',
-          name: '第二',
-          component: edit,
+          path: '/point',
+          name: '绩点查询',
+          component: point,
         }, {
           path: '/student',
           name: '学生账号',
