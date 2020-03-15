@@ -42,7 +42,7 @@ public class StudentServiceImpl implements StudentService {
   @Override
   public PagingResult<User> getStudentList(RowBounds rowBounds, Map<String, Object> condition) {
     PageRowBounds pageRowBounds = new PageRowBounds(rowBounds.getOffset(), rowBounds.getLimit());
-    List<User> formFlowList = studentMapper.getStudentList(pageRowBounds, condition);
-    return new PagingResult<>(formFlowList, pageRowBounds.getTotal());
+    List<User> StudentInfoList = studentMapper.getStudentList(pageRowBounds, condition);
+    return new PagingResult<>(StudentInfoList, pageRowBounds.getTotal());
   }
 }

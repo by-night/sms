@@ -44,5 +44,4 @@ public class StudentController {
     RowBounds rowBounds = new RowBounds(offset, limit);
     return studentService.getStudentList(rowBounds, condition);
   }
-
 }

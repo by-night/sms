@@ -26,7 +26,27 @@
     },
   }
 </script>
-
 <style scoped>
-
+  .header {
+    background-color: #94c7fe;
+    height: 50px;
+    line-height: 50px;
+    color: white;
+    font-size: 20px;
+    padding-left: 50px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
+  }
+  .card {
+    width: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
 </style>

@@ -51,4 +51,5 @@ public interface StudentService {
    * @date 2020/3/4 23:05
    */
   PagingResult<User> getStudentList(RowBounds rowBounds, Map<String, Object> condition);
+
 }

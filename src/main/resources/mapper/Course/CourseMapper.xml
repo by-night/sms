@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.Course.CourseMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.dto.Course" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="credits" property="credits" jdbcType="DECIMAL" />
+        <result column="point" property="point" jdbcType="DECIMAL" />
+        <result column="number" property="number" jdbcType="INTEGER" />
+        <result column="score" property="score" jdbcType="INTEGER" />
+        <result column="year" property="year" jdbcType="INTEGER" />
+        <result column="term" property="term" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="professional" property="professional" jdbcType="VARCHAR" />
+    </resultMap>
+    <insert id="addCourse" parameterType="com.zjh.sms.dto.Course">
+        INSERT INTO course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="name != null and name != ''">`name`,</if>
+            <if test="number != null and number != ''">`number`,</if>
+            <if test="credits != null and credits != ''">`credits`,</if>
+            <if test="point != null and point != ''">`point`,</if>
+            <if test="score != null and score != ''">`score`,</if>
+            <if test="year != null and year != ''">`year`,</if>
+            <if test="type != null and type != ''">`type`,</if>
+            <if test="term != null and term != ''">term,</if>
+            <if test="professional != null and professional != ''">professional,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="number != null and number != ''">#{number},</if>
+            <if test="credits != null and credits != ''">#{credits},</if>
+            <if test="point != null and point != ''">#{point},</if>
+            <if test="score != null and score != ''">#{score},</if>
+            <if test="year != null and year != ''">#{year},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="term != null and term != ''">#{term},</if>
+            <if test="professional != null and professional != ''">#{professional},</if>
+        </trim>
+    </insert>
+    <delete id="delete" parameterType="map">
+        DELETE FROM
+        course
+        <where>
+            id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+    <update id="update" parameterType="com.zjh.sms.dto.User">
+        UPDATE course
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                `name` = #{name},
+            </if>
+            <if test="number != null and number != ''">
+                `number` = #{number},
+            </if>
+            <if test="credits != null and credits != ''">
+                credits = #{credits},
+            </if>
+            <if test="point != null and point != ''">
+                point = #{point},
+            </if>
+            <if test="score != null and score != ''">
+                score = #{score},
+            </if>
+            <if test="year != null and year != ''">
+                `year`= #{year},
+            </if>
+            <if test="type != null and type != ''">
+                `type` = #{type},
+            </if>
+            <if test="term != null and term != ''">
+                term = #{term},
+            </if>
+            <if test="professional != null and professional != ''">
+                professional = #{professional},
+            </if>
+        </trim>
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+    <select id="getCourseList" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+            *
+        FROM course
+        <where>
+            <if test="condition.code != null and condition.code != ''">
+                name LIKE CONCAT('%',#{condition.code},'%') OR professional LIKE CONCAT('%',#{condition.code},'%')
+            </if>
+        </where>
+        ORDER BY id desc
+    </select>
+    <select id="checkCodeCount" resultType="int">
+        select count(0) from course
+    </select>
+
+</mapper>
+

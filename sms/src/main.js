@@ -13,7 +13,7 @@ import './common/js/drag'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueCookies from 'vue-cookies'
-
+import 'jquery'
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(Util);

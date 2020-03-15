@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.Score.ScoreMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.dto.Course" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="credits" property="credits" jdbcType="DECIMAL" />
+        <result column="point" property="point" jdbcType="DECIMAL" />
+        <result column="number" property="number" jdbcType="INTEGER" />
+        <result column="score" property="score" jdbcType="INTEGER" />
+        <result column="year" property="year" jdbcType="INTEGER" />
+        <result column="term" property="term" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="professional" property="professional" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="no" property="no" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="getCourseByMap" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+        a.*,
+        c.real_name,
+        c.id as no
+        FROM course a
+        LEFT JOIN teacher_course AS b
+        ON a.name = b.name
+        LEFT JOIN student c
+        ON a.professional = c.profession
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                 b.profession LIKE CONCAT('%',#{condition.profession},'%')
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND b.grade LIKE CONCAT('%',#{condition.grade},'%')
+            </if>
+            <if test="condition.username != null and condition.username != ''">
+                AND b.username = #{condition.username}
+            </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
+

@@ -20,7 +20,7 @@
             <el-table-column v-if="showIndex===true" type="index" label="序号"  width="60" align="center">
             </el-table-column>
             <el-table-column v-for="(col, index) in columns"
-                             :key="index + Math.random()"
+                             :key="index"
                              :min-width="col.minWidth"
                              :show-overflow-tooltip="overflow"
                              :prop="col.prop"
@@ -63,7 +63,7 @@
             <el-table-column v-if="showIndex===true" type="index" label="序号" width="60" align="center">
             </el-table-column>
             <el-table-column v-for="(col, index) in columns"
-                             :key="index+Math.random()"
+                             :key="index"
                              :min-width="col.minWidth"
                              :show-overflow-tooltip="overflow"
                              :prop="col.prop"

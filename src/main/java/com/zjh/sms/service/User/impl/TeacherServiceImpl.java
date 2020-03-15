@@ -41,7 +41,7 @@ public class TeacherServiceImpl implements TeacherService {
   @Override
   public PagingResult<User> getTeacherList(RowBounds rowBounds, Map<String, Object> condition) {
     PageRowBounds pageRowBounds = new PageRowBounds(rowBounds.getOffset(), rowBounds.getLimit());
-    List<User> formFlowList = teacherMapper.getTeacherList(pageRowBounds, condition);
-    return new PagingResult<>(formFlowList, pageRowBounds.getTotal());
+    List<User> TeacherInfoList = teacherMapper.getTeacherList(pageRowBounds, condition);
+    return new PagingResult<>(TeacherInfoList, pageRowBounds.getTotal());
   }
 }

@@ -3,32 +3,33 @@
     <el-row style="margin-bottom: 10px">
       <el-button type="primary" size="small" @click="addMethod">新增</el-button>
       <el-button type="danger" size="small" @click="deleteSelect">删除</el-button>
-      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入账号或姓名" clearable @keyup.enter.native="filterData">
+      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入课程名或专业" clearable @keyup.enter.native="filterData">
         <el-button slot="append" @click="filterData" type="primary">过滤</el-button>
       </el-input>
     </el-row>
     <VmBaseTable
       :setTableHigh="true"
       @on-select-change="select"
-      ref="student_table"
+      ref="course_table"
       :data="dataTable"
       :columns="dataColumns"
+      overflow
       @page-change="pageChange"
       showCheck
       showIndex
       :tableHigh="tableHigh"
     ></VmBaseTable>
-    <VmStudent ref="student_model" @search="search"></VmStudent>
+    <VmCourse ref="course_model" @search="search"></VmCourse>
   </el-card>
 </template>
 
 <script>
-  import VmStudent from './model/student-model'
+  import VmCourse from './model/course-model'
   import VmBaseTable from '../../base/base-table'
   export default {
     name: "student",
     components: {
-      VmBaseTable, VmStudent
+      VmBaseTable, VmCourse
     },
     data () {
       return {
@@ -39,25 +40,86 @@
           $offset: 0,
           code: ''
         },
-        tableHigh: '65vh',
+        tableHigh: '66vh',
         selectValue: [],
         dataTable: [],
         dataColumns: [
           {
-            label: '账号',
-            prop: 'username',
+            label: '课程名',
+            prop: 'name',
             style: 'center',
             minWidth: '120'
           }, {
-            label: '密码',
-            prop: 'password',
+            label: '学分',
+            prop: 'credits',
+            style: 'center',
+            minWidth: '60',
+            render (h, params) {
+              if (params.row.credits % 1 === 0) {
+                return h('div', {}, `${params.row.credits}.0`)
+              } else {
+                return h('div', {}, params.row.credits)
+              }
+            }
+          }, {
+            label: '绩点',
+            prop: 'point',
+            style: 'center',
+            minWidth: '60',
+            render (h, params) {
+              if (params.row.point % 1 === 0) {
+                return h('div', {}, `${params.row.point}.0`)
+              } else {
+                return h('div', {}, params.row.point)
+              }
+            }
+          }, {
+            label: '课时',
+            prop: 'number',
+            style: 'center',
+            minWidth: '60',
+          }, {
+            label: '满分',
+            prop: 'score',
+            style: 'center',
+            minWidth: '60',
+          }, {
+            label: '类型',
+            prop: 'type',
+            style: 'center',
+            minWidth: '70',
+            render (h, params) {
+              if (params.row.type === 1) {
+                return h('div', {}, '必修')
+              } else if (params.row.type === 2) {
+                return h('div', {}, '选修')
+              }
+            }
+          }, {
+            label: '专业',
+            prop: 'professional',
             style: 'center',
             minWidth: '120',
           }, {
-            label: '真实姓名',
-            prop: 'realName',
+            label: '届时',
+            prop: 'year',
             style: 'center',
             minWidth: '100',
+            render (h, params) {
+              return h('div', {}, `${params.row.year}届`)
+            }
+          }, {
+            label: '学期',
+            prop: 'term',
+            style: 'center',
+            minWidth: '100',
+            render (h, params) {
+              if (params.row.type === 1) {
+                return h('div', {}, '上学期')
+              } else if (params.row.type === 2) {
+                return h('div', {}, '下学期')
+              }
+            }
           }, {
             label: '操作',
             style: 'center',
@@ -82,9 +144,10 @@
       search() {
         let that = this;
         this.axiosHelper.get(
-          '/api/mis/user/student/getStudentList',
+          '/api/sms/course/getCourseList',
           {params: that.searchValue}
         ).then(response => {
+          console.log(response)
           this.dataTable = response.data.items;
           this.table.total = response.data.totalCount
         }).catch(error => {
@@ -101,8 +164,8 @@
       filterData() {
         this.searchValue.$offset = 0;
         // 跳转到第一页
-        if (this.$refs['student_table'] !== undefined) {
-          this.$refs['student_table'].currentPageToOne();
+        if (this.$refs['course_table'] !== undefined) {
+          this.$refs['course_table'].currentPageToOne();
         }
         this.search()
       },
@@ -112,7 +175,7 @@
         let params = {
           type
         };
-        this.$refs['student_model'].init(params);
+        this.$refs['course_model'].init(params);
       },
       editMethod(row) {
         let type = 'edit';
@@ -120,7 +183,7 @@
           type,
           row
         };
-        this.$refs['student_model'].init(params);
+        this.$refs['course_model'].init(params);
       },
       select(selection) {
         this.delBtn = selection.length <= 0;
@@ -131,9 +194,7 @@
       },
       deleteSelect () {
         let ids = this.table.getIds();
-        if (ids.length > 0) {
-          this.deleteTable(ids);
-        }
+        this.deleteTable(ids);
       },
       deleteTable(ids) {
         let _this = this;
@@ -151,7 +212,7 @@
       },
       deleteMethod(params, _this) {
         _this.axiosHelper.delete(
-          '/api/mis/user/student/' + params
+          '/api/sms/course/' + params
         ).then(response => {
           let status = response.status;
           if (status === 200) {
@@ -172,7 +233,7 @@
       }
     },
     mounted () {
-      this.table = this.$refs['student_table'];
+      this.table = this.$refs['course_table'];
       this.search();
     }
   }

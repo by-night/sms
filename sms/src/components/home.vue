@@ -1,14 +1,14 @@
 <template>
   <div class="home">
     <el-container>
-      <el-aside class="asideWidth">
-        <Aside @collapse="isCollapse"></Aside>
-      </el-aside>
+      <el-header class="headColor">
+        <Header @click_collapse="clickCollapse"></Header>
+      </el-header>
       <el-container class="header">
-        <el-header class="headColor">
-          <Header></Header>
-        </el-header>
-        <el-main style="background-color: #ededed; padding: 0">
+        <el-aside class="asideWidth">
+          <Aside @collapse="isCollapse" ref="aside"></Aside>
+        </el-aside>
+        <el-main style="background-color: #ededed; padding: 0; height: 100%">
           <Tabs></Tabs>
           <!--内容区-->
           <el-card style="height: 93%;background-color: #f2f2f2">
@@ -37,6 +37,9 @@ export default {
       }
     },
     methods: {
+      clickCollapse () {
+        this.$refs.aside.isCollapse();
+      },
       isCollapse (collapse) {
         this.collapse = collapse
       }
@@ -57,7 +60,7 @@ export default {
         if(!this.collapse) {
           collapseWidth.style.width = '240px';
         } else {
-          collapseWidth.style.width = '64px'
+          collapseWidth.style.width = '58px'
         }
         let collapseInfo = {
           state: this.collapse,
@@ -86,7 +89,11 @@ export default {
     margin: 0;
   }
   .asideWidth {
-    transition: 0.2s
+    /*background-image: linear-gradient(rgba(90,139,255,1), white);*/
+    border-right: 1px solid #e6e6e6;
+    width: 240px;
+    transition: 0.2s;
+    height: 100%
   }
   /deep/ .el-card__body {
     padding: 0;

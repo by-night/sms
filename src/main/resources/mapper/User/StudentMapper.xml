@@ -10,7 +10,6 @@
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="real_name" property="realName" jdbcType="VARCHAR" />
         <result column="level" property="level" jdbcType="INTEGER" />
-        <result column="sexs" property="sexs" jdbcType="VARCHAR" />
         <result column="school" property="school" jdbcType="VARCHAR" />
         <result column="admission_time" property="admissionTime" jdbcType="VARCHAR" />
         <result column="email" property="email" jdbcType="VARCHAR" />
@@ -63,14 +62,11 @@
     </update>
     <select id="getStudentList" resultMap="BaseUserMap" parameterType="map">
         SELECT
-        id,
-        username,
-        password,
-        real_name
+        *
         FROM student
         <where>
             <if test="condition.code != null and condition.code != ''">
-                AND (username LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%'))
+                username LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%')
             </if>
         </where>
     </select>

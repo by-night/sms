@@ -14,7 +14,7 @@
 
                <el-dropdown-menu :style="{width: '300px', marginLeft: '50px', height: dealCookie.length < 3 ? `${dealCookie.length*50}px`:'100px'}" slot="dropdown">
                 <el-scrollbar style="height:100%;" wrapStyle="overflow-x:hidden;padding-right:12px;" viewStyle="">
-                  <el-dropdown-item v-for="cookies in dealCookie" @click.native="clickCookies(cookies)" style="height: 50px">
+                  <el-dropdown-item v-for="cookies in dealCookie" :key="cookies.username" @click.native="clickCookies(cookies)" style="height: 50px">
                     <div>
                       <!--用户账号icon-->
                       <div class="userIcon el-icon-user-solid"></div>
@@ -22,7 +22,7 @@
                       <div>
                         <div>{{cookies.username}}</div>
                         <div>
-                          <div class="circle" v-for="item in circleArr"></div>
+                          <div class="circle" v-for="(item, index) in circleArr" :key="index">{{item}}</div>
                         </div>
                       </div>
                       <!--删除账号信息按钮-->
@@ -53,30 +53,22 @@
 
       <el-form-item>
         <div style="float: right;margin-top: -20px">
-          <!--<el-link v-if="form.level !== 0" style="margin-right: 20px;margin-top: -3px" :underline="false">忘记密码？</el-link>-->
           <el-checkbox v-model="isKeep" style="height: 50px;">记住密码</el-checkbox>
         </div>
       </el-form-item>
 
-      <!--<el-form-item>-->
-        <!--<el-link v-if="keyValue !== 0" :underline="false" style="float: right">忘记密码？</el-link>-->
-        <!--<div v-else style="height: 30px"></div>-->
-      <!--</el-form-item>-->
-
-      <!--<el-form-item style="margin-left: 160px" v-if="form.level === 2">-->
-        <!--<el-button @click="registered">注册</el-button>-->
-        <!--<el-button type="primary" @click="login('form')" :disabled="loginBtn">登陆</el-button>-->
-      <!--</el-form-item>-->
       <el-form-item>
-        <el-button @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">
+        <el-button v-if="loadingBtn === ''" @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">
           <span>
-          登&#12288陆
+            登&#12288陆
           </span>
         </el-button>
+        <el-button v-else @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">
+          {{loadingBtn}}
+        </el-button>
       </el-form-item>
-
       <div>
-        <el-link v-if="form.level === 2" @click="registered" style="margin: -64px 0 0 6px;color: #909399;font-size: 14px" :underline="false">注册账号</el-link>
+        <el-link v-if="form.level === 2" @click="registered" class="registered" :underline="false">注册账号</el-link>
       </div>
     </el-form>
   </div>
@@ -84,12 +76,15 @@
 
 <script>
     export default {
-        name: "form",
+        name: "Form",
         data() {
             return {
-                circleArr: [1,2,3,4,5,6],
+                // 按钮内容
+                loadingBtn: '',
+                circleArr: ['','','','','',''],
                 isKeep: true,
                 errNum: 0,
+                // 按钮只点击一次
                 loginState: 0,
                 form: {
                     username: '',
@@ -97,6 +92,7 @@
                     level: 2
                 },
                 time: '',
+                // 是否禁用按钮
                 loginBtn: false,
                 dealCookie: [],
             }
@@ -143,16 +139,24 @@
               let _this = this;
               this.$refs[formName].validate(valid => {
                 if (valid) {
-                  _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
-                    response => {
+                  this.loadingBtn = '登陆中 ...';
+                  this.loginBtn = true;
+                  this.$nextTick(() => {
+                    _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
+                      response => {
+                        this.loadingBtn = '登陆成功';
+                        this.loginBtn = false;
+                        this.loginState = 0;
+                        let data = response.data;
+                        this.click(_this, data);
+                      }).catch(() => {
+                      this.loadingBtn = '';
+                      this.loginBtn = false;
                       this.loginState = 0;
-                      let data = response.data;
-                      this.click(_this, data);
-                    }).catch(() => {
-                    this.loginState = 0;
-                    this.$message.error({
-                      message: '登录失败，请检查用户名或密码'
-                    });
+                      this.$message.error({
+                        message: '登录失败，请检查用户名或密码'
+                      });
+                    })
                   })
                 }
               })
@@ -188,6 +192,7 @@
               }
             },
             errDone () {
+              // todo 后端做
               // 错误5次以上禁止5s
               if (this.errNum > 5) {
                 this.time = setTimeout(() => {
@@ -227,6 +232,9 @@
         },
       mounted () {
           this.getCookies();
+      },
+      created () {
+          this.loadingBtn = '';
       }
     }
 </script>
@@ -265,7 +273,7 @@
   }
   .loginMain span:after {
     font-size: 28px;
-    /*>>符号*/
+    /*  \00bb: ">>"符号  */
     content: '\00bb';
     position: absolute;
     opacity: 0;
@@ -288,9 +296,6 @@
     height: 10px;
     width: 10px;
     margin-top: -18px;
-    /*float: right;*/
-    /*margin-top: -70px;*/
-    /*margin-right: -10px;*/
   }
   .deleteCook:hover {
     transform: scale(1.2);
@@ -310,5 +315,10 @@
     height: 50px;
     width: 35px;
     line-height: 50px;
+  }
+  .registered {
+    margin: -64px 0 0 6px;
+    color: #909399;
+    font-size: 14px;
   }
 </style>

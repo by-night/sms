@@ -8,7 +8,7 @@
 
 <script>
   export default {
-    name: "tabs",
+    name: "Tabs",
     data () {
       return {
         tabsName: [{name: '主页', path: '/dashboard'}]
@@ -87,6 +87,25 @@
    border: #ebebeb 1px solid;
    text-align: center;
  }
+ /*.tag span:after {*/
+   /*content: "123";*/
+   /*background-color: red;*/
+   /*width: 100%;*/
+   /*position: relative;*/
+   /*left: 50px;*/
+   /*top: 0;*/
+   /*overflow: hidden;*/
+ /*}*/
+ /*.tag:active {*/
+   /*padding-right: 200px;*/
+ /*}*/
+ .tag span {
+   cursor: pointer;
+   display: inline-block;
+   position: relative;
+   transition: 0.4s;
+ }
+
  /deep/ .tag:hover {
    cursor: pointer;
    color: #409eff !important;

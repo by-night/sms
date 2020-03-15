@@ -1,5 +1,7 @@
 <template>
   <div style="color: white">
+    <img src="../assets/header.png" alt="" width="40" height="40" style="margin: 10px 90px 10px 50px;float: left" />
+    <i class="el-icon-menu collapse" @click="clickCollapse" style="margin-right: 20px;float: left"></i>
     <div class="misName">学生成绩管理系统</div>
     <div style="float: right; margin-right: 16px">
       <!--日期-->
@@ -28,17 +30,20 @@
 <script>
   import password from './password/password'
     export default {
-        name: "header",
+        name: "Header",
         data() {
             return {
                 userInfo: {},
                 day: '',
-                firstStr: ''
+                firstStr: '',
             }
         },
         methods: {
+          clickCollapse () {
+            this.$emit('click_collapse')
+          },
             exit() {
-              this.$confirm('是否确定退出?', '提示', {
+              this.$confirm('是否注销当前用户?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -59,7 +64,6 @@
         },
         mounted() {
           this.userInfo = JSON.parse(localStorage.userinfo);
-          console.log(this.userInfo)
           this.firstStr = this.userInfo.realName.substr(0, 1);
         },
         components: {
@@ -69,6 +73,20 @@
 </script>
 
 <style scoped>
+  /* 旋转的关闭按钮*/
+  .collapse {
+    font-size: 25px;
+    float: right;
+    line-height: 60px;
+    transition: 0.2s;
+    transform: rotate(-180deg);
+    cursor: pointer;
+  }
+  /* 旋转的关闭按钮*/
+  .collapse:hover{
+    transition: 0.2s;
+    transform: rotate(180deg)
+  }
   .font {
     font-size: 18px;
     margin-right: 80px;
@@ -81,7 +99,7 @@
     margin-top: 5px
   }
   .misName {
-    margin-left: 22px;
+    margin-left: 50px;
     float: left;
     font-size: 24px;
     line-height: 60px

@@ -38,10 +38,6 @@ public class User {
    */
   private Integer level;
   /**
-   * 未知
-   */
-  private String sexs;
-  /**
    * 学校
    */
   private String school;
