@@ -1,6 +1,9 @@
 package com.zjh.sms.controller.Score;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.zjh.sms.dto.Course;
+import com.zjh.sms.dto.Score;
 import com.zjh.sms.dto.User;
 import com.zjh.sms.service.Course.CourseService;
 import com.zjh.sms.service.Score.ScoreService;
@@ -9,6 +12,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -30,5 +34,10 @@ public class ScoreController {
                                              @RequestParam(required = false, name = "$offset", defaultValue = "0") Integer offset) {
     RowBounds rowBounds = new RowBounds(offset, limit);
     return scoreService.getCourseList(rowBounds, condition);
+  }
+  @PostMapping
+  private void addEntry(@RequestBody JSONArray UserScore) {
+    List<Score> list = JSONObject.parseArray(UserScore.toJSONString(), Score.class);
+    scoreService.addEntry(list);
   }
 }

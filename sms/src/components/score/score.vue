@@ -1,10 +1,11 @@
 <template>
   <div>
     <el-card class="cardStyle">
-      <el-button @click="change" size="small" style="margin-bottom: 15px">筛选</el-button>
-      <el-button @click="batchMethod" type="info" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px">批量编辑</el-button>
-      <el-button type="primary" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px">成绩录入</el-button>
-
+      <div v-if="userInfo.level !== 2">
+        <el-button @click="change" size="small" style="margin-bottom: 15px">筛选</el-button>
+        <el-button @click="batchMethod" type="info" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px">批量编辑</el-button>
+        <el-button @click="addEntry" type="primary" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px">成绩录入</el-button>
+      </div>
       <transition>
         <div v-if="show" style="background-color: white;height: 90px;;box-sizing: border-box">
           <el-form ref="form" :model="form" label-width="80px">
@@ -39,7 +40,9 @@
         :data="dataTable"
         :columns="dataColumns"
         @page-change="pageChange"
+        @on-select-change="select"
         showIndex
+        showCheck
         :tableHigh="tableHigh"
       ></VmBaseTable>
     </el-card>
@@ -64,6 +67,7 @@
           profession: '',
           grade: '',
           term: '',
+          courseName: ''
         },
         table: null,
         searchValue: {
@@ -72,6 +76,7 @@
           code: ''
         },
         selectValue: [],
+        selection: [],
         dataTable: [],
         dataColumns: [
           {
@@ -103,7 +108,7 @@
                     },
                     blur() {
                       params.row.creditsByUser = params.row.scoreByUser>=params.row.score*0.6?params.row.credits:0;
-                      params.row.pointByUser = params.row.scoreByUser>0?(params.row.scoreByUser/10-5).toFixed(1):0;
+                      params.row.pointByUser = params.row.scoreByUser>59?(params.row.scoreByUser/10-5).toFixed(1):0;
                       that.showInput = '';
                     }
                   }
@@ -118,11 +123,7 @@
             style: 'center',
             minWidth: '60',
             render (h, params) {
-              if (params.row.creditsByUser % 1 === 0) {
-                return h('div', {}, `${params.row.creditsByUser}.0`)
-              } else {
-                return h('div', {}, params.row.creditsByUser)
-              }
+              return h('div', {}, params.row.creditsByUser)
             }
           }, {
             label: '绩点',
@@ -130,11 +131,7 @@
             style: 'center',
             minWidth: '60',
             render (h, params) {
-              if (params.row.pointByUser % 1 === 0) {
-                return h('div', {}, `${params.row.pointByUser}.0`)
-              } else {
-                return h('div', {}, params.row.pointByUser)
-              }
+              return h('div', {}, params.row.pointByUser)
             }
           }, {
             label: '类型',
@@ -189,12 +186,35 @@
           profession: '',
           grade: '',
           term: '',
+          courseName: ''
         };
         this.show = !this.show
       },
       clickAndClose () {
         this.click();
         this.change();
+      },
+      clickMethod (obj) {
+
+        this.axiosHelper.get(
+          '/api/sms/score/getCourseList',
+          {params: obj}).then(response => {
+          // let obj1 = {
+          //   scoreByUser: '',
+          //   creditsByUser: 0,
+          //   pointByUser: 0
+          // };
+          this.dataTable = response.data.items;
+          // this.dataTable = data.map(item => {
+          //   return {...item, ...obj1}
+          // });
+          this.table.total = response.data.totalCount;
+          console.log(this.dataTable)
+        }).catch(error => {
+          this.$message.error({
+            message: '失败'
+          }, error)
+        })
       },
       click () {
         let userInfo = JSON.parse(localStorage.userinfo);
@@ -204,26 +224,10 @@
           profession: this.form.profession,
           grade: this.form.grade,
           username: userInfo.username,
-          courseName: this.form.courseName
+          courseName: this.form.courseName,
         };
-        this.axiosHelper.get(
-          '/api/sms/score/getCourseList',
-          {params: obj}).then(response => {
-            let obj1 = {
-              scoreByUser: '',
-              creditsByUser: 0,
-              pointByUser: 0
-            };
-            let data = response.data.items;
-            this.dataTable = data.map(item => {
-              return {...item, ...obj1}
-            });
-            this.table.total = response.data.totalCount;
-        }).catch(error => {
-          this.$message.error({
-            message: '失败'
-          }, error)
-        })
+        console.log(obj)
+        this.clickMethod(obj);
       },
       pageChange(page) {
         this.searchValue.$limit = page.limit;
@@ -236,14 +240,51 @@
       },
       batchMethod () {
         this.batch = true;
+      },
+      select (selection) {
+        this.selection = selection;
+      },
+      addEntry () {
+        if (this.selection.length > 0) {
+          this.axiosHelper.post('/api/sms/score', this.selection).then(response => {
+            this.click();
+            this.batch = false;
+            this.showInput = false;
+          })
+        } else {
+          this.$message.warning({
+            message: '请选择项目'
+          })
+        }
+      },
+      getStudentCourseInfo () {
+        let obj = {
+          $limit: 10,
+          $offset: 0,
+          studentName: this.userInfo.username,
+        };
+        this.clickMethod(obj)
       }
     },
     mounted () {
       this.table = this.$refs['score_table'];
+      if (this.userInfo.level === 2) {
+        this.getStudentCourseInfo();
+        this.dataColumns = this.dataColumns.filter(data => {
+          return data.label !== '操作'
+        })
+      }
+    },
+    created () {
+      this.userInfo = JSON.parse(localStorage.userinfo);
     },
     computed: {
       tableHigh () {
-        return this.show ? '53vh' : '66vh'
+        if (this.userInfo.level === 2) {
+          return '72vh'
+        } else {
+          return this.show ? '53vh' : '66vh'
+        }
       }
     }
   }

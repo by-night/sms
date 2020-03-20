@@ -5,6 +5,7 @@ import com.zjh.sms.dao.Course.CourseMapper;
 import com.zjh.sms.dao.Score.ScoreMapper;
 import com.zjh.sms.dao.User.StudentMapper;
 import com.zjh.sms.dto.Course;
+import com.zjh.sms.dto.Score;
 import com.zjh.sms.dto.User;
 import com.zjh.sms.service.Score.ScoreService;
 import com.zjh.sms.utils.PagingResult;
@@ -31,5 +32,20 @@ public class ScoreServiceImpl implements ScoreService {
     PageRowBounds pageRowBounds = new PageRowBounds(rowBounds.getOffset(), rowBounds.getLimit());
     List<Course> CourseList = scoreMapper.getCourseByMap(pageRowBounds, condition);
     return new PagingResult<>(CourseList, pageRowBounds.getTotal());
+  }
+
+  @Override
+  public void addEntry(List<Score> list) {
+      for (Score score : list) {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("StudentName", score.getStudentName());
+        condition.put("CourseName", score.getName());
+        Integer num = scoreMapper.checkCount(condition);
+        if (num == 0) {
+          scoreMapper.addEntry(score);
+        } else {
+          scoreMapper.updateEntry(score);
+        }
+      }
   }
 }

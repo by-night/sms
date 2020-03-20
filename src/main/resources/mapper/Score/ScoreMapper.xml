@@ -17,17 +17,27 @@
         <result column="professional" property="professional" jdbcType="VARCHAR" />
         <result column="real_name" property="realName" jdbcType="VARCHAR" />
         <result column="no" property="no" jdbcType="VARCHAR" />
+        <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+        <result column="pointByUser" property="pointByUser" jdbcType="VARCHAR" />
+        <result column="creditsByUser" property="creditsByUser" jdbcType="VARCHAR" />
+        <result column="scoreByUser" property="scoreByUser" jdbcType="VARCHAR" />
     </resultMap>
     <select id="getCourseByMap" resultMap="BaseUserMap" parameterType="map">
         SELECT
         a.*,
         c.real_name,
-        c.id as no
+        c.id as no,
+        c.username as student_name,
+        d.point as pointByUser,
+        d.credits as creditsByUser,
+        d.score as scoreByUser
         FROM course a
         LEFT JOIN teacher_course AS b
         ON a.name = b.name
         LEFT JOIN student c
         ON a.professional = c.profession
+        LEFT JOIN student_course d
+        ON c.username = d.username
         <where>
             <if test="condition.profession != null and condition.profession != ''">
                  b.profession LIKE CONCAT('%',#{condition.profession},'%')
@@ -41,8 +51,69 @@
             <if test="condition.courseName != null and condition.courseName != ''">
                 AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
             </if>
+            <if test="condition.studentName != null and condition.studentName != ''">
+                AND d.username = #{condition.studentName}
+            </if>
         </where>
     </select>
-
+    <insert id="addEntry" parameterType="com.zjh.sms.dto.Score">
+        INSERT INTO student_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">username,</if>
+            <if test="name != null and name != ''">`name`,</if>
+            <if test="creditsByUser != null and creditsByUser != ''">`credits`,</if>
+            <if test="pointByUser != null and pointByUser != ''">`point`,</if>
+            <if test="scoreByUser != null and scoreByUser != ''">`score`,</if>
+            <if test="year != null and year != ''">`year`,</if>
+            <if test="term != null and term != ''">term,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">#{studentName},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="creditsByUser != null and creditsByUser != ''">#{creditsByUser},</if>
+            <if test="pointByUser != null and pointByUser != ''">#{pointByUser},</if>
+            <if test="scoreByUser != null and scoreByUser != ''">#{scoreByUser},</if>
+            <if test="year != null and year != ''">#{year},</if>
+            <if test="term != null and term != ''">#{term},</if>
+        </trim>
+    </insert>
+    <update id="updateEntry" parameterType="com.zjh.sms.dto.Score">
+        UPDATE student_course
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                `name` = #{name},
+            </if>
+            <if test="creditsByUser != null and creditsByUser != ''">
+                credits = #{creditsByUser},
+            </if>
+            <if test="pointByUser != null and pointByUser != ''">
+                point = #{pointByUser},
+            </if>
+            <if test="scoreByUser != null and scoreByUser != ''">
+                score = #{scoreByUser},
+            </if>
+            <if test="year != null and year != ''">
+                `year`= #{year},
+            </if>
+            <if test="term != null and term != ''">
+                term = #{term},
+            </if>
+        </trim>
+        <where>
+            <if test="studentName != null and studentName != ''">
+                username = #{studentName}
+            </if>
+            <if test="name != null and name != ''">
+                AND `name` = #{name}
+            </if>
+        </where>
+    </update>
+    <select id="checkCount" resultType="int" parameterType="map">
+        select count(0) from student_course
+        <where>
+            username = #{condition.StudentName}
+            AND `name` = #{condition.CourseName}
+        </where>
+    </select>
 </mapper>
 

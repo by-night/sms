@@ -61,4 +61,20 @@ public class Course {
    * 学号
    */
   private String no;
+  /**
+   * 学生账号
+   */
+  private String studentName;
+  /**
+   * 查询的学生绩点
+   */
+  private String pointByUser;
+  /**
+   * 查询的学生分数
+   */
+  private String scoreByUser;
+  /**
+   * 查询的学生学分
+   */
+  private String creditsByUser;
 }

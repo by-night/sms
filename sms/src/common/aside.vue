@@ -5,19 +5,19 @@
       class="aside"
       router
       >
-      <el-menu-item index="dashboard">
+      <el-menu-item index="dashboard" :class="{active: $route.name === '主页'}">
         <i class="el-icon-s-home"></i>&#12288主页
       </el-menu-item>
 
-      <el-menu-item index="score">
+      <el-menu-item index="score" :class="{active: $route.name === '成绩查询'}">
         <i class="el-icon-s-unfold"></i>&#12288成绩查询
       </el-menu-item>
 
-      <el-menu-item index="point">
+      <el-menu-item index="point" :class="{active: $route.name === '绩点查询'}">
         <i class="el-icon-s-opportunity"></i>&#12288绩点查询
       </el-menu-item>
 
-      <el-menu-item index="course" v-if="level === 0">
+      <el-menu-item index="course" v-if="level === 0" :class="{active: $route.name === '课程录入'}">
         <i class="el-icon-s-opportunity"></i>&#12288课程录入
       </el-menu-item>
       <!--<el-submenu index="1">-->
@@ -36,10 +36,14 @@
           <span>&#12288账号管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="student">学生账号</el-menu-item>
+          <el-menu-item index="student" :class="{active: $route.name === '学生账号'}">
+            学生账号
+          </el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
-          <el-menu-item index="teacher">教师账号</el-menu-item>
+          <el-menu-item index="teacher" :class="{active: $route.name === '教师账号'}">
+            教师账号
+          </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
@@ -59,6 +63,7 @@
           isCollapse () {
             this.collapse = !this.collapse;
             this.$emit('collapse', this.collapse)
+            console.log(this.$route)
           }
         },
         mounted() {
@@ -82,15 +87,20 @@
     text-align: center;
     border-radius: 55px;
   }
-  /deep/ .el-menu-item.is-active {
-    background-color: #409EFF;
-    color: white;
-  }
+  /*/deep/ .el-menu-item.is-active {*/
+    /*background-color: #409EFF;*/
+    /*color: white;*/
+  /*}*/
   /deep/ .el-menu-item-group__title {
     padding: 0;
   }
   .el-menu {
     border: 0;
     /*background-image: linear-gradient(#4777e7, rgba(90,139,255,0.68));*/
+  }
+
+  .active {
+    background-color: #409EFF;
+    color: white;
   }
 </style>

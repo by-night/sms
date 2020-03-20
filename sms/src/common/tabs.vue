@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: white;">
-    <el-tag class="tag" :style="{width: tab.name==='主页'?'62px':''}" ref="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="tab.name !== '主页'">
+    <el-tag class="tag" :class="{tagClick: $route.name === tab.name}" :style="{width: tab.name==='主页'?'62px':''}" ref="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="tab.name !== '主页'">
       <span>{{tab.name}}</span>
     </el-tag>
   </div>
@@ -11,7 +11,7 @@
     name: "Tabs",
     data () {
       return {
-        tabsName: [{name: '主页', path: '/dashboard'}]
+        tabsName: [{name: '主页', path: '/dashboard'}],
       }
     },
     methods: {
@@ -28,28 +28,8 @@
       },
       // 点击标签头时
       tabClick (item) {
-        this.tabState(item);
-        this.$router.push(item.path)
+        this.$router.push(item.path);
       },
-      tabState (item) {
-        // 选中时颜色
-        // for (let i = 0; i < this.tabsName.length; i++) {
-        //   // 已点击的标签
-        //   let doc = document.getElementsByClassName('tag')[i];
-        //   // 已点击的标签关闭按钮
-        //   let tag = document.getElementsByClassName('el-tag__close')[i];
-        //   if (this.tabsName[i].name === item.name) {
-        //     doc.style.backgroundColor = '#409eff';
-        //     doc.style.opacity = '0.8';
-        //     doc.style.color = 'white';
-        //     tag.style.color = 'white'
-        //   } else {
-        //     doc.style.backgroundColor = 'white';
-        //     doc.style.color = '#409eff';
-        //     tag.style.color = '#409eff'
-        //   }
-        // }
-      }
     },
     computed: {
       routeName () {
@@ -62,7 +42,6 @@
           name: '',
           path: ''
         };
-        this.tabState(this.$route);
         let flag = this.tabsName.some(data => {
           return data.name === this.routeName
         });
@@ -82,36 +61,37 @@
 </script>
 
 <style scoped>
+  /* .tag 为默认样式  .tagClick 为点击后样式*/
  .tag {
    margin: 10px 0 1px 12px;
    border: #ebebeb 1px solid;
    text-align: center;
- }
- /*.tag span:after {*/
-   /*content: "123";*/
-   /*background-color: red;*/
-   /*width: 100%;*/
-   /*position: relative;*/
-   /*left: 50px;*/
-   /*top: 0;*/
-   /*overflow: hidden;*/
- /*}*/
- /*.tag:active {*/
-   /*padding-right: 200px;*/
- /*}*/
- .tag span {
+   border-radius: 7px 7px 0 0;
    cursor: pointer;
+   background-color: #FBFBFB !important;
+ }
+ .tag span {
    display: inline-block;
    position: relative;
    transition: 0.4s;
  }
-
  /deep/ .tag:hover {
-   cursor: pointer;
-   color: #409eff !important;
-   background-color: #ecf5ff !important;
+   background-color: white !important;
  }
  /deep/ .tag:active {
    transform: scale(0.95);
+ }
+
+  .tagClick {
+    background-color: #409eff !important;
+    color: white !important;
+  }
+ /deep/ .tagClick .el-tag__close {
+   color: white !important;
+ }
+ /*覆盖 .tag:hover 样式*/
+ /deep/ .tagClick:hover {
+   opacity: 0.8;
+   background-color: #409eff !important;
  }
 </style>

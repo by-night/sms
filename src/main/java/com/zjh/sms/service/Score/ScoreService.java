@@ -1,10 +1,12 @@
 package com.zjh.sms.service.Score;
 
 import com.zjh.sms.dto.Course;
+import com.zjh.sms.dto.Score;
 import com.zjh.sms.dto.User;
 import com.zjh.sms.utils.PagingResult;
 import org.apache.ibatis.session.RowBounds;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,4 +24,12 @@ public interface ScoreService {
    * @date 2020/3/4 23:05
    */
   PagingResult<Course> getCourseList(RowBounds rowBounds, Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/19 16:23
+  */
+  void addEntry(List<Score> list);
 }

@@ -1,47 +1,50 @@
 <template>
-  <div>
-    <el-card class="content">
+  <div style="padding: 20px;">
+    <el-card class="content" style="float: left;height: 300px">
       <div class="title">
           <i class="el-icon-user-solid"></i> 个人信息
           <div style="float: right">
             <el-link :underline="false" class="edit" @click="editInfo">修改资料</el-link>
           </div>
       </div>
-      <el-row style="color: #666666;padding: 20px">
-        <el-col :span="3" style="margin-left: 10px">
-          <div class="header">
-            <i class="el-icon-user-solid"></i>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <h2 class="distance">{{userInfo.realName}}</h2>
-          <div class="distance">
-            {{sexName + '&#12288' + '|' + '&#12288' + userInfo.school +  '&#12288' + ' | ' + '&#12288' +  userInfo.profession}}
-          </div>
-          <div class="distance">
-            {{userInfo.phone + '&#12288' + '|' + '&#12288' + userInfo.email}}
-          </div>
-        </el-col>
-      </el-row>
+        <el-row style="color: #666666;padding: 20px">
+          <el-col :span="6" style="margin-left: 10px">
+            <div class="header">
+              <i class="el-icon-user-solid"></i>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <h2 class="distance">{{userInfo.realName}}</h2>
+            <div class="distance">
+              {{sexName + '&#12288' + '|' + '&#12288' + userInfo.school +  '&#12288' + ' | ' + '&#12288' +  userInfo.profession}}
+            </div>
+            <div class="distance">
+              {{userInfo.phone + '&#12288' + '|' + '&#12288' + userInfo.email}}
+            </div>
+          </el-col>
+        </el-row>
     </el-card>
-    <el-row>
-      <el-col :span="6" class="divBlock block_a">
-        <p class="view-title">成绩查询</p>
-        <img class="view-icon" src="../../assets/project_icon_a.png" alt="">
-      </el-col>
-      <el-col :span="6" class="divBlock block_b">
-        <p class="view-title">绩点查询</p>
-        <img class="view-icon" src="../../assets/project_icon_b.png" alt="">
-      </el-col>
-      <el-col :span="6" class="divBlock block_c">
-        <p class="view-title">成绩查询</p>
-        <img class="view-icon" src="../../assets/project_icon_c.png" alt="">
-      </el-col>
-      <el-col :span="6" class="divBlock block_d">
-        <p class="view-title">成绩查询</p>
-        <img class="view-icon" src="../../assets/project_icon_d.png" alt="">
-      </el-col>
-    </el-row>
+
+    <!--<div style="float: right;margin: 20px 150px 0 0">-->
+      <!--<div style="background-color: #5f91ff;width: 300px;height: 150px">-->
+        <!--<p class="view-title">绩点查询</p>-->
+        <!--<img class="view-icon" src="../../assets/project_icon_b.png" alt="">-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<el-row>-->
+      <!--<el-col :span="6" class="divBlock block_b">-->
+        <!--<p class="view-title">绩点查询</p>-->
+        <!--<img class="view-icon" src="../../assets/project_icon_b.png" alt="">-->
+      <!--</el-col>-->
+      <!--<el-col :span="6" class="divBlock block_c">-->
+        <!--<p class="view-title">成绩查询</p>-->
+        <!--<img class="view-icon" src="../../assets/project_icon_c.png" alt="">-->
+      <!--</el-col>-->
+      <!--<el-col :span="6" class="divBlock block_d">-->
+        <!--<p class="view-title">成绩查询</p>-->
+        <!--<img class="view-icon" src="../../assets/project_icon_d.png" alt="">-->
+      <!--</el-col>-->
+    <!--</el-row>-->
   </div>
 </template>
 
@@ -114,6 +117,7 @@ export default {
   .content {
     margin: 10px;
     height: 230px;
+    width: 60%;
   }
   .content:hover {
     background-color: #FAFBFD;

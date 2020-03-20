@@ -1,3 +1,4 @@
+/*弹框样式修改  --start-- */
 .el-dialog__header {
   padding: 16px 20px 10px;
   background-color: #E8E8E8;
@@ -18,6 +19,23 @@
 .el-dialog__body{
   padding: 20px !important;
 }
+/* 弹框样式修改  --end-- */
+
+/* 按钮模拟点击效果  --start-- */
 .el-button:active {
   transform: scale(0.95);
 }
+/*按钮模拟点击效果  --end-- */
+
+/*内容不可选中，复制  --start-- */
+* {
+  /* Chrome all / Safari all /opera15+*/
+  -webkit-user-select: none;
+  /* Firefox all */
+  -moz-user-select: none;
+  /* IE 10+ */
+  -ms-user-select: none;
+  /* 通用 */
+  user-select: none;
+}
+/*内容不可选中，复制  --end-- */
