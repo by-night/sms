@@ -7,6 +7,7 @@ import axios from 'axios'
 import store from './vuex/store'
 import axiosHelper from '../src/axios/axiosHelper'
 import Util from './common/js/utils'
+import './router/route'
 import './common/css/common.css'
 import './common/js/drag'
 // 引入element-ui
@@ -21,10 +22,12 @@ Vue.use(VueCookies);
 Vue.prototype.axios = axios;
 Vue.prototype.axiosHelper = axiosHelper;
 /* eslint-disable no-new */
-new Vue({
+let vue = new Vue({
   el: '#app',
   router,
   store,
   components: {App},
   template: '<App/>'
-})
+});
+// 暴露出去，外部js文件需要this时，引用main.js即可使用
+export default vue

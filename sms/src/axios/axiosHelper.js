@@ -29,9 +29,9 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    if(response.data.errCode ==2){
+    if(response.data.errCode === 2){
       router.push({
-        path:"/login",
+        path:"/",
         querry:{redirect:router.currentRoute.fullPath}//从哪个页面跳转
       })
     }

@@ -115,5 +115,39 @@
             AND `name` = #{condition.CourseName}
         </where>
     </select>
+    <select id="getExportList" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+        a.*,
+        c.real_name,
+        c.id as no,
+        c.username as student_name,
+        d.point as pointByUser,
+        d.credits as creditsByUser,
+        d.score as scoreByUser
+        FROM course a
+        LEFT JOIN teacher_course AS b
+        ON a.name = b.name
+        LEFT JOIN student c
+        ON a.professional = c.profession
+        LEFT JOIN student_course d
+        ON c.username = d.username
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                b.profession LIKE CONCAT('%',#{condition.profession},'%')
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND b.grade LIKE CONCAT('%',#{condition.grade},'%')
+            </if>
+            <if test="condition.username != null and condition.username != ''">
+                AND b.username = #{condition.username}
+            </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+            </if>
+            <if test="condition.studentName != null and condition.studentName != ''">
+                AND d.username = #{condition.studentName}
+            </if>
+        </where>
+    </select>
 </mapper>
 

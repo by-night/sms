@@ -6,9 +6,10 @@ import score from '../components/score/score'
 import point from '../components/point/point'
 import course from '../components/course/course'
 import registered from '../components/registered/index'
-import dashboard from '../components/dashboard/dashboard'
-import student from '../components/setting/student'
-import teacher from '../components/setting/teacher'
+import dashboard from '../components/dashboard/student-dashboard'
+import account from '../components/account/account'
+import student from '../components/student/student'
+import teacher from '../components/teacher/teacher'
 
 // 导航栏点击点击多次报错警告处理
 const originalPush = Router.prototype.push;
@@ -34,27 +35,38 @@ export default new Router({
         {
           path: '/dashboard',
           name: '主页',
+          meta: { requireAuth: true },
           component: dashboard
         },
         {
           path: '/score',
           name: '成绩查询',
+          meta: { requireAuth: true },
           component: score,
         }, {
           path: '/point',
           name: '绩点查询',
+          meta: { requireAuth: true },
           component: point,
         }, {
-          path: '/student',
-          name: '学生账号',
-          component: student,
+          path: '/account',
+          name: '账号管理',
+          meta: { requireAuth: true },
+          component: account,
         }, {
           path: '/course',
           name: '课程录入',
+          meta: { requireAuth: true },
           component: course,
         }, {
+          path: '/student',
+          name: '学生用户',
+          meta: { requireAuth: true },
+          component: student,
+        }, {
           path: '/teacher',
-          name: '教师账号',
+          name: '教师用户',
+          meta: { requireAuth: true },
           component: teacher,
         }
       ]

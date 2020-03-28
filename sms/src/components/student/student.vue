@@ -3,7 +3,7 @@
     <el-row style="margin-bottom: 10px">
       <el-button type="primary" size="small" @click="addMethod">新增</el-button>
       <el-button type="danger" size="small" @click="deleteSelect">删除</el-button>
-      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入账号或姓名" clearable @keyup.enter.native="filterData">
+      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入学号或姓名" clearable @keyup.enter.native="filterData">
         <el-button slot="append" @click="filterData" type="primary">过滤</el-button>
       </el-input>
     </el-row>
@@ -15,7 +15,6 @@
       :columns="dataColumns"
       @page-change="pageChange"
       showCheck
-      showIndex
       :tableHigh="tableHigh"
     ></VmBaseTable>
     <VmStudent ref="student_model" @search="search"></VmStudent>
@@ -26,7 +25,7 @@
   import VmStudent from './model/student-model'
   import VmBaseTable from '../../base/base-table'
   export default {
-    name: "student",
+    name: "user",
     components: {
       VmBaseTable, VmStudent
     },
@@ -39,29 +38,60 @@
           $offset: 0,
           code: ''
         },
-        tableHigh: '65vh',
+        tableHigh: '66vh',
         selectValue: [],
         dataTable: [],
         dataColumns: [
           {
-            label: '账号',
-            prop: 'username',
+            label: '学号',
+            prop: 'id',
             style: 'center',
-            minWidth: '120'
-          }, {
-            label: '密码',
-            prop: 'password',
-            style: 'center',
-            minWidth: '120',
-          }, {
-            label: '真实姓名',
+            minWidth: '90',
+          } , {
+            label: '姓名',
             prop: 'realName',
             style: 'center',
-            minWidth: '100',
+            minWidth: '70',
+          } , {
+            label: '性别',
+            prop: 'sex',
+            style: 'center',
+            minWidth: '50',
+            render: (h, params) => {
+              if (params.row.sex === 0) {
+                return h('div', {}, '男')
+              } else if (params.row.sex === 1) {
+                return h('div', {}, '女')
+              }
+            }
           }, {
+            label: '学校',
+            prop: 'school',
+            style: 'center',
+            minWidth: '110',
+          } , {
+            label: '专业',
+            prop: 'profession',
+            style: 'center',
+            minWidth: '100',
+          } , {
+            label: '电子邮箱',
+            prop: 'email',
+            style: 'center',
+            minWidth: '130',
+          } , {
+            label: '手机',
+            prop: 'phone',
+            style: 'center',
+            minWidth: '90',
+          } , {
+            label: '入学时间',
+            prop: 'admissionTime',
+            style: 'center',
+            minWidth: '60',
+          } , {
             label: '操作',
             style: 'center',
-            prop: 'id',
             minWidth: '120',
             render: (h, params) => {
               let btns = [];
@@ -85,6 +115,7 @@
           '/api/mis/user/student/getStudentList',
           {params: that.searchValue}
         ).then(response => {
+          console.log(response)
           this.dataTable = response.data.items;
           this.table.total = response.data.totalCount
         }).catch(error => {

@@ -48,4 +48,9 @@ public class ScoreServiceImpl implements ScoreService {
         }
       }
   }
+
+  @Override
+  public List<Course> getExportList(Map<String, Object> condition) {
+    return scoreMapper.getExportList(condition);
+  }
 }

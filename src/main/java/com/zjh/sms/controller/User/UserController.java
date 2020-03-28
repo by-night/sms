@@ -1,11 +1,15 @@
 package com.zjh.sms.controller.User;
 
+import com.zjh.sms.dto.Tree;
 import com.zjh.sms.dto.User;
 import com.zjh.sms.service.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Result;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,4 +40,8 @@ public class UserController {
     return userService.update(map);
   }
 
+  @GetMapping("/getTree")
+  public List<Object> getTree () {
+    return userService.getTree();
+  }
 }

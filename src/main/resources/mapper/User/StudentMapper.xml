@@ -5,7 +5,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zjh.sms.dao.User.StudentMapper" >
     <resultMap id="BaseUserMap" type="com.zjh.sms.dto.User" >
-        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="id" property="id" jdbcType="VARCHAR" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="real_name" property="realName" jdbcType="VARCHAR" />
@@ -16,19 +16,37 @@
         <result column="profession" property="profession" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="grade" property="grade" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="addStudent" parameterType="com.zjh.sms.dto.User">
         INSERT INTO student
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
             <if test="username != null and username != ''">username,</if>
             <if test="password != null and password != ''">password,</if>
             <if test="realName != null and realName != ''">real_name,</if>
+            <if test="school != null and school != ''">school,</if>
+            <if test="admissionTime != null and admissionTime != ''">admission_time,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="profession != null and profession != ''">profession,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="sex != null and sex != ''">sex,</if>
+            <if test="grade != null and grade != ''">grade,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
             <if test="username != null and username != ''">#{username},</if>
             <if test="password != null and password != ''">#{password},</if>
             <if test="realName != null and realName != ''">#{realName},</if>
+            <if test="school != null and school != ''">#{school},</if>
+            <if test="admissionTime != null and admissionTime != ''">#{admissionTime},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="profession != null and profession != ''">#{profession},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="grade != null and grade != ''">#{grade},</if>
         </trim>
     </insert>
     <delete id="delete" parameterType="map">
@@ -53,6 +71,28 @@
             <if test="realName != null and realName != ''">
                 real_name = #{realName},
             </if>
+
+            <if test="school != null and school != ''">
+                school = #{school},
+            </if>
+            <if test="admissionTime != null and admissionTime != ''">
+                admission_time = #{admissionTime},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="profession != null and profession != ''">
+                profession = #{profession},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="grade != null and grade != ''">
+                grade = #{grade},
+            </if>
         </trim>
         <where>
             <if test="id != null and id != ''">
@@ -66,10 +106,45 @@
         FROM student
         <where>
             <if test="condition.code != null and condition.code != ''">
-                username LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%')
+                id LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%')
+            </if>
+            <if test="condition.profession != null and condition.profession != ''">
+                AND profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND grade = #{condition.grade}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    <select id="getStudentTree" resultType="com.zjh.sms.dto.User">
+        SELECT
+            profession
+        FROM student
+    </select>
+    <select id="getGradeByProfession" resultType="string" parameterType="string">
+        SELECT
+            grade
+        FROM student
+        <where>
+            <if test="code != null and code != ''">
+                AND profession = #{code}
             </if>
         </where>
     </select>
-
+    <select id="checkCodeCount" resultType="int">
+        select
+            count(0)
+        from
+            student
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                AND profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND grade = #{condition.grade}
+            </if>
+        </where>
+    </select>
 </mapper>
 

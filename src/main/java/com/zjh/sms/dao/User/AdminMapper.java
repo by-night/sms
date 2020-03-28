@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description 学生用户mapper层
+ * Description
  * Author: zjh
- * Date2020/3/7 15:11
+ * Date2020/3/28 11:08
  **/
 @Mapper
-public interface StudentMapper {
+public interface AdminMapper {
   /**
    * description: 新增学生账号信息
    * @param user
@@ -22,7 +22,7 @@ public interface StudentMapper {
    * @author zjh
    * @date 2020/3/4 23:05
    */
-  void addStudent(User user);
+  void add(User user);
 
   /**
    * description: 删除学生账号
@@ -32,7 +32,7 @@ public interface StudentMapper {
    * @author zjh
    * @date 2019/8/29 14:55
    */
-  void delete(@Param("ids") List<String> ids);
+  void delete(@Param("ids") List<Integer> ids);
 
   /**
    * description: 修改学生账号
@@ -51,28 +51,5 @@ public interface StudentMapper {
    * @return java.util.List<com.zjh.sms.dto.User>
    * @date 2020/3/4 23:05
    */
-  List<User> getStudentList(PageRowBounds rowBounds,  @Param("condition") Map<String, Object> condition);
-  /**
-  * description:
-  * @param:
-  * return:
-  * Author: zjh
-  * @Date: 2020/3/27 22:14
-  */
-  List<User> getStudentTree();
-  /**
-  * description:
-  * @param:
-  * return:
-  * Author: zjh
-  * @Date: 2020/3/28 11:46
-  */
-  List<String> getGradeByProfession(@Param("code") String code);
-  /**
-   * description: 查看人数
-   * return: Integer
-   * Author: zjh
-   * @Date: 2020/3/11 15:03
-   */
-  Integer checkCodeCount(@Param("condition") Map<String, Object> condition);
+  List<User> getAdminList(PageRowBounds rowBounds, @Param("condition") Map<String, Object> condition);
 }

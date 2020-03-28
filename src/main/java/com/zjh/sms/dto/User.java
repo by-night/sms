@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * Description 登陆信息
  * Author: zjh
@@ -16,7 +18,7 @@ public class User {
   /**
    * id
    */
-  private Integer id;
+  private String id;
   /**
    * 用户名
    */
@@ -61,4 +63,12 @@ public class User {
    *  性别
    */
   private Integer sex;
+  /**
+   * 班级
+   */
+  private String grade;
+  /**
+   * 创建时间
+   */
+  private Date createTime;
 }

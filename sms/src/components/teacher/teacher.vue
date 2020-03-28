@@ -1,9 +1,9 @@
 <template>
-  <el-card style="margin: 10px;padding: 10px">
+  <el-card style="margin: 10px;padding: 15px 10px 10px 10px">
     <el-row style="margin-bottom: 10px">
       <el-button type="primary" size="small" @click="addMethod">新增</el-button>
       <el-button type="danger" size="small" @click="deleteSelect">删除</el-button>
-      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入账号或姓名" clearable @keyup.enter.native="filterData">
+      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入编号或姓名" clearable @keyup.enter.native="filterData">
         <el-button slot="append" @click="filterData" type="primary">过滤</el-button>
       </el-input>
     </el-row>
@@ -15,7 +15,6 @@
       :columns="dataColumns"
       @page-change="pageChange"
       showCheck
-      showIndex
       :tableHigh="tableHigh"
     ></VmBaseTable>
     <VmTeacher ref="teacher_model" @search="search"></VmTeacher>
@@ -23,14 +22,14 @@
 </template>
 
 <script>
-  import VmBaseTable from '../../base/base-table'
   import VmTeacher from './model/teacher-model'
+  import VmBaseTable from '../../base/base-table'
   export default {
-    name: "teacher",
+    name: "user",
     components: {
       VmBaseTable, VmTeacher
     },
-    data() {
+    data () {
       return {
         right: true,
         table: null,
@@ -39,29 +38,55 @@
           $offset: 0,
           code: ''
         },
-        tableHigh: '65vh',
+        tableHigh: '66vh',
         selectValue: [],
         dataTable: [],
         dataColumns: [
           {
-            label: '账号',
-            prop: 'username',
+            label: '编号',
+            prop: 'id',
             style: 'center',
-            minWidth: '120'
-          }, {
-            label: '密码',
-            prop: 'password',
-            style: 'center',
-            minWidth: '120',
-          }, {
-            label: '真实姓名',
+            minWidth: '90',
+          } , {
+            label: '姓名',
             prop: 'realName',
             style: 'center',
-            minWidth: '100',
+            minWidth: '70',
+          } , {
+            label: '性别',
+            prop: 'sex',
+            style: 'center',
+            minWidth: '50',
+            render: (h, params) => {
+              if (params.row.sex === 0) {
+                return h('div', {}, '男')
+              } else if (params.row.sex === 1) {
+                return h('div', {}, '女')
+              }
+            }
           }, {
+            label: '学校',
+            prop: 'school',
+            style: 'center',
+            minWidth: '110',
+          } , {
+            label: '专业',
+            prop: 'profession',
+            style: 'center',
+            minWidth: '100',
+          } , {
+            label: '电子邮箱',
+            prop: 'email',
+            style: 'center',
+            minWidth: '130',
+          } , {
+            label: '手机',
+            prop: 'phone',
+            style: 'center',
+            minWidth: '90',
+          } , {
             label: '操作',
             style: 'center',
-            prop: 'id',
             minWidth: '120',
             render: (h, params) => {
               let btns = [];
@@ -93,6 +118,11 @@
           }, error)
         })
       },
+      pageChange(page) {
+        this.searchValue.$limit = page.limit;
+        this.searchValue.$offset = page.offset;
+        this.search();
+      },
       filterData() {
         this.searchValue.$offset = 0;
         // 跳转到第一页
@@ -100,11 +130,6 @@
           this.$refs['teacher_table'].currentPageToOne();
         }
         this.search()
-      },
-      pageChange(page) {
-        this.searchValue.$limit = page.limit;
-        this.searchValue.$offset = page.offset;
-        this.search();
       },
       addMethod() {
         this.search();
@@ -125,13 +150,15 @@
       select(selection) {
         this.delBtn = selection.length <= 0;
       },
-      deleteSelect() {
-        let ids = this.table.getIds();
-        this.deleteTable(ids);
-      },
-      deleteSingle(obj) {
+      deleteSingle (obj) {
         let ids = [obj.id];
         this.deleteTable(ids);
+      },
+      deleteSelect () {
+        let ids = this.table.getIds();
+        if (ids.length > 0) {
+          this.deleteTable(ids);
+        }
       },
       deleteTable(ids) {
         let _this = this;
@@ -167,9 +194,9 @@
             message: '删除失败'
           }, error)
         })
-      },
+      }
     },
-    mounted() {
+    mounted () {
       this.table = this.$refs['teacher_table'];
       this.search();
     }

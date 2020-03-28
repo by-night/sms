@@ -30,22 +30,29 @@
         <!--</el-menu-item-group>-->
       <!--</el-submenu>-->
 
-      <el-submenu index="setting" v-if="level === 0">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>&#12288账号管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="student" :class="{active: $route.name === '学生账号'}">
-            学生账号
-          </el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group>
-          <el-menu-item index="teacher" :class="{active: $route.name === '教师账号'}">
-            教师账号
-          </el-menu-item>
-        </el-menu-item-group>
+      <!--<el-menu-item index="user" v-if="level === 0" :class="{active: $route.name === '用户管理'}">-->
+        <!--<i class="el-icon-s-opportunity"></i>&#12288用户管理-->
+      <!--</el-menu-item>-->
+        <el-submenu index="setting" v-if="level === 0">
+          <template slot="title">
+          <i class="el-icon-user-solid"></i>
+          <span>&#12288用户管理</span>
+          </template>
+            <el-menu-item-group>
+              <el-menu-item index="student" :class="{active: $route.name === '学生用户'}">
+                学生用户
+              </el-menu-item>
+            </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="teacher" :class="{active: $route.name === '教师用户'}">
+              教师用户
+            </el-menu-item>
+          </el-menu-item-group>
       </el-submenu>
+
+      <el-menu-item index="account" v-if="level === 0" :class="{active: $route.name === '账号管理'}">
+        <i class="el-icon-s-tools"></i>&#12288账号管理
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -62,8 +69,7 @@
         methods: {
           isCollapse () {
             this.collapse = !this.collapse;
-            this.$emit('collapse', this.collapse)
-            console.log(this.$route)
+            this.$emit('collapse', this.collapse);
           }
         },
         mounted() {

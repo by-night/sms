@@ -25,6 +25,7 @@
       return {
         formLabelWidth: '100px',
         dialog: false,
+        identity: '',
         type: '',
         title: '',
         form: {
@@ -50,6 +51,7 @@
     methods: {
       init (obj) {
         this.clearForm();
+        this.identity = obj.identity;
         this.type = obj.type;
         if (obj.type === 'add') {
           this.title = '新增';
@@ -60,7 +62,6 @@
         this.dialog = true;
       },
       clearForm () {
-        this.title = '';
         this.type = '';
         this.form = {
           username: '',
@@ -71,19 +72,31 @@
       click (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (this.type === 'add') {
-              this.addMethod();
-            } else if (this.type === 'edit') {
-              this.editMethod();
+            if (this.identity === '学生') {
+              let src = '/api/mis/student/student';
+              this.clickMethod(src);
+            } else if (this.identity === '教师') {
+              let src = '/api/mis/student/teacher';
+              this.clickMethod(src);
+            } else if (this.identity === '管理员') {
+              let src = '/api/mis/student/admin';
+              this.clickMethod(src);
             }
           } else {
             return false;
           }
         })
       },
-      addMethod () {
+      clickMethod (src) {
+        if (this.type === 'add') {
+          this.addMethod(src);
+        } else if (this.type === 'edit') {
+          this.editMethod(src);
+        }
+      },
+      addMethod (src) {
         this.axiosHelper.post(
-          '/api/mis/user/teacher', this.form).then(() => {
+          src, this.form).then(() => {
           this.$message.success({
             message: '新增成功'
           });
@@ -96,9 +109,9 @@
           this.dialog = false;
         });
       },
-      editMethod () {
+      editMethod (src) {
         this.axiosHelper.put(
-          '/api/mis/user/teacher', this.form).then(() => {
+          src, this.form).then(() => {
           this.$message.success({
             message: '修改成功'
           });

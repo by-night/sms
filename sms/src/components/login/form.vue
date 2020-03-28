@@ -50,6 +50,18 @@
           </el-col>
         </el-row>
       </el-form-item>
+      <!--&lt;!&ndash;验证码&ndash;&gt;-->
+      <!--<el-form-item>-->
+        <!--<el-row>-->
+          <!--<el-col :span="14">-->
+            <!--<el-input type="password" @keyup.enter.native="loginDone('form')" v-model="form.password" maxlength="30"-->
+                      <!--clearable placeholder="请输入密码" show-password></el-input>-->
+          <!--</el-col>-->
+          <!--<el-col :span="8">-->
+            <!--<verify></verify>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
+      <!--</el-form-item>-->
 
       <el-form-item>
         <div style="float: right;margin-top: -20px">
@@ -75,8 +87,12 @@
 </template>
 
 <script>
+  import verify from '../../common/verify'
     export default {
         name: "Form",
+        components: {
+          verify
+        },
         data() {
             return {
                 // 按钮内容
@@ -144,7 +160,6 @@
                   this.$nextTick(() => {
                     _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
                       response => {
-                        this.loadingBtn = '登陆成功';
                         this.loginBtn = false;
                         this.loginState = 0;
                         let data = response.data;
@@ -163,6 +178,7 @@
             },
             click (_this, data) {
               if(Object.keys(data).length > 0) {
+                this.loadingBtn = '登陆成功';
                 this.$message.success({
                   message: '登录成功'
                 });
@@ -174,19 +190,17 @@
                   password: data.password,
                   level: data.level
                 };
-                if (this.isKeep) {
-                  // 设置cookies
-                  this.$cookies.set(`sms_${data.username}`, obj)
-                } else {
-                  // 删除cookies
-                  this.$cookies.remove(`sms_${data.username}`)
-                }
+                obj.password = this.isKeep ? obj.password : '';
+                // 设置cookies
+                this.$cookies.set(`sms_${data.username}`, obj, 60*60*24*3);
+                localStorage.setItem('cookiesName', `sms_${data.username}`);
                 // 跳转到主页
                 _this.$router.push('/dashboard');
               } else {
                 this.$message.error({
                   message: '登录失败，请检查用户名或密码'
                 });
+                this.loadingBtn = '';
                 this.errNum++;
                 this.errDone();
               }

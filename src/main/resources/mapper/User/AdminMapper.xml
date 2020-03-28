@@ -3,7 +3,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zjh.sms.dao.User.TeacherMapper" >
+<mapper namespace="com.zjh.sms.dao.User.AdminMapper" >
     <resultMap id="BaseUserMap" type="com.zjh.sms.dto.User" >
         <result column="id" property="id" jdbcType="VARCHAR" />
         <result column="username" property="username" jdbcType="VARCHAR" />
@@ -16,37 +16,26 @@
         <result column="profession" property="profession" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="grade" property="grade" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
-    <insert id="addTeacher" parameterType="com.zjh.sms.dto.User">
-        INSERT INTO teacher
+    <insert id="add" parameterType="com.zjh.sms.dto.User">
+        INSERT INTO admin
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null and id != ''">id,</if>
             <if test="username != null and username != ''">username,</if>
             <if test="password != null and password != ''">password,</if>
             <if test="realName != null and realName != ''">real_name,</if>
-            <if test="school != null and school != ''">school,</if>
-            <if test="email != null and email != ''">email,</if>
-            <if test="profession != null and profession != ''">profession,</if>
-            <if test="phone != null and phone != ''">phone,</if>
-            <if test="sex != null and sex != ''">sex,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null and id != ''">#{id},</if>
             <if test="username != null and username != ''">#{username},</if>
             <if test="password != null and password != ''">#{password},</if>
             <if test="realName != null and realName != ''">#{realName},</if>
-            <if test="school != null and school != ''">#{school},</if>
-            <if test="email != null and email != ''">#{email},</if>
-            <if test="profession != null and profession != ''">#{profession},</if>
-            <if test="phone != null and phone != ''">#{phone},</if>
-            <if test="sex != null and sex != ''">#{sex},</if>
         </trim>
     </insert>
     <delete id="delete" parameterType="map">
         DELETE FROM
-        teacher
+        admin
         <where>
             id IN
             <foreach collection="ids" item="id" open="(" separator="," close=")">
@@ -55,7 +44,7 @@
         </where>
     </delete>
     <update id="update" parameterType="com.zjh.sms.dto.User">
-        UPDATE teacher
+        UPDATE admin
         <trim prefix="set" suffixOverrides=",">
             <if test="username != null and username != ''">
                 username = #{username},
@@ -66,22 +55,6 @@
             <if test="realName != null and realName != ''">
                 real_name = #{realName},
             </if>
-
-            <if test="school != null and school != ''">
-                school = #{school},
-            </if>
-            <if test="email != null and email != ''">
-                email = #{email},
-            </if>
-            <if test="profession != null and profession != ''">
-                profession = #{profession},
-            </if>
-            <if test="phone != null and phone != ''">
-                phone = #{phone},
-            </if>
-            <if test="sex != null and sex != ''">
-                sex = #{sex},
-            </if>
         </trim>
         <where>
             <if test="id != null and id != ''">
@@ -89,27 +62,17 @@
             </if>
         </where>
     </update>
-    <select id="getTeacherList" resultMap="BaseUserMap" parameterType="int">
+    <select id="getAdminList" resultMap="BaseUserMap" parameterType="map">
         SELECT
-        a.*
-        FROM
-        teacher a
-        LEFT JOIN
-        teacher_course b
-        ON a.username = b.username
+        *
+        FROM admin
         <where>
             <if test="condition.code != null and condition.code != ''">
-                a.username LIKE CONCAT('%',#{condition.code},'%') OR a.real_name LIKE CONCAT('%',#{condition.code},'%')
-            </if>
-            <if test="condition.profession != null and condition.profession != ''">
-                AND b.profession = #{condition.profession}
-            </if>
-            <if test="condition.grade != null and condition.grade != ''">
-                AND b.grade = #{condition.grade}
+                id LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%')
             </if>
         </where>
-            GROUP BY a.username
-            ORDER BY a.create_time DESC
+        ORDER BY create_time DESC
     </select>
 
 </mapper>
+

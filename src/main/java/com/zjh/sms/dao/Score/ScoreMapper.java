@@ -48,4 +48,12 @@ public interface ScoreMapper {
    * @Date: 2020/3/11 15:03
    */
   Integer checkCount(@Param("condition") Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/21 16:27
+  */
+  List<Course> getExportList(@Param("condition") Map<String, Object> condition);
 }

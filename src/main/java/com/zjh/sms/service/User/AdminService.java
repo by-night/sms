@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description 学生账号接口
+ * Description
  * Author: zjh
- * Date2020/3/7 15:04
+ * Date2020/3/28 11:05
  **/
-public interface StudentService {
+public interface AdminService {
   /**
-  * description: 新增学生账号
-  * @param user
-  * @return void
-  * @author zjh
-  * @date 2020/3/4 23:05
-  */
-  void addStudent(User user);
+   * description: 新增学生账号
+   * @param user
+   * @return void
+   * @author zjh
+   * @date 2020/3/4 23:05
+   */
+  void add(User user);
 
   /**
    * description: 删除学生账号
@@ -30,7 +30,7 @@ public interface StudentService {
    * @author zjh
    * @date 2019/8/29 14:55
    */
-  void delete(List<String> ids);
+  void delete(List<Integer> ids);
 
   /**
    * description: 修改学生账号
@@ -50,6 +50,5 @@ public interface StudentService {
    * @return com.jw.zjh.sms.utils.PagingResult
    * @date 2020/3/4 23:05
    */
-  PagingResult<User> getStudentList(RowBounds rowBounds, Map<String, Object> condition);
-
+  PagingResult<User> getAdminList(RowBounds rowBounds, Map<String, Object> condition);
 }

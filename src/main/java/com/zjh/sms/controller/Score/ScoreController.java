@@ -40,4 +40,8 @@ public class ScoreController {
     List<Score> list = JSONObject.parseArray(UserScore.toJSONString(), Score.class);
     scoreService.addEntry(list);
   }
+  @GetMapping("/export")
+  public List<Course> getExportList (@RequestParam Map<String, Object> condition) {
+    return scoreService.getExportList(condition);
+  }
 }

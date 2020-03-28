@@ -32,4 +32,12 @@ public interface ScoreService {
   * @Date: 2020/3/19 16:23
   */
   void addEntry(List<Score> list);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/21 16:26
+  */
+  List<Course> getExportList(Map<String, Object> condition);
 }

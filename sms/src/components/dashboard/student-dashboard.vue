@@ -45,11 +45,12 @@
         <!--<img class="view-icon" src="../../assets/project_icon_d.png" alt="">-->
       <!--</el-col>-->
     <!--</el-row>-->
+    <editInfo ref="editInfo_model"></editInfo>
   </div>
 </template>
 
 <script>
-import registered from '../registered/registered'
+import editInfo from './model/student-edit-model'
 export default {
     name: "dashboard",
     data () {
@@ -76,15 +77,15 @@ export default {
         // this.myselfInfo = userInfo.phone + ' | ' + userInfo.email
       },
       editInfo () {
-
-      }
+        this.$refs.editInfo_model.init(this.userInfo);
+      },
     },
     mounted() {
       this.userInfo = JSON.parse(localStorage.userinfo);
-      this.getSchoolInfo()
+      this.getSchoolInfo();
     },
     components: {
-      registered
+      editInfo
     }
 }
 </script>

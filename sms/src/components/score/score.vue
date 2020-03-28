@@ -1,11 +1,10 @@
 <template>
   <div>
     <el-card class="cardStyle">
-      <div v-if="userInfo.level !== 2">
-        <el-button @click="change" size="small" style="margin-bottom: 15px">筛选</el-button>
-        <el-button @click="batchMethod" type="info" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px">批量编辑</el-button>
-        <el-button @click="addEntry" type="primary" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px">成绩录入</el-button>
-      </div>
+      <el-button @click="change" size="small" style="margin-bottom: 15px" v-if="userInfo.level !== 2">筛选</el-button>
+      <el-button @click="batchMethod" type="info" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">批量编辑</el-button>
+      <el-button @click="addEntry" type="primary" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">成绩录入</el-button>
+      <el-button @click="exportMethod" type="success" :disabled="dataTable.length <= 0" size="small" style="margin-bottom: 15px">导出</el-button>
       <transition>
         <div v-if="show" style="background-color: white;height: 90px;;box-sizing: border-box">
           <el-form ref="form" :model="form" label-width="80px">
@@ -73,7 +72,6 @@
         searchValue: {
           $limit: 10,
           $offset: 0,
-          code: ''
         },
         selectValue: [],
         selection: [],
@@ -99,7 +97,7 @@
                 return h('el-input', {
                   props: {
                     value: params.row.scoreByUser,
-                    size: 'small'
+                    size: 'small',
                   },
                   on: {
                     input(value) {
@@ -114,7 +112,8 @@
                   }
                 })
               } else {
-                return h('div', {}, params.row.scoreByUser)
+                let colorValue = params.row.scoreByUser>59?'':'red';
+                return h('div', {style: {color: colorValue}}, params.row.scoreByUser)
               }
             }
           }, {
@@ -123,7 +122,8 @@
             style: 'center',
             minWidth: '60',
             render (h, params) {
-              return h('div', {}, params.row.creditsByUser)
+              let colorValue = params.row.creditsByUser==='0.00'?'red':'';
+              return h('div', {style: {color: colorValue}}, params.row.creditsByUser)
             }
           }, {
             label: '绩点',
@@ -131,7 +131,8 @@
             style: 'center',
             minWidth: '60',
             render (h, params) {
-              return h('div', {}, params.row.pointByUser)
+              let colorValue = params.row.pointByUser==='0.00'?'red':'';
+              return h('div', {style: {color: colorValue}}, params.row.pointByUser)
             }
           }, {
             label: '类型',
@@ -191,48 +192,38 @@
         this.show = !this.show
       },
       clickAndClose () {
-        this.click();
+        this.click(this.searchValue);
         this.change();
       },
       clickMethod (obj) {
-
         this.axiosHelper.get(
           '/api/sms/score/getCourseList',
           {params: obj}).then(response => {
-          // let obj1 = {
-          //   scoreByUser: '',
-          //   creditsByUser: 0,
-          //   pointByUser: 0
-          // };
           this.dataTable = response.data.items;
-          // this.dataTable = data.map(item => {
-          //   return {...item, ...obj1}
-          // });
           this.table.total = response.data.totalCount;
-          console.log(this.dataTable)
         }).catch(error => {
           this.$message.error({
             message: '失败'
           }, error)
         })
       },
-      click () {
+      click (page) {
         let userInfo = JSON.parse(localStorage.userinfo);
         let obj = {
-          $limit: 10,
-          $offset: 0,
+          $limit: page.limit,
+          $offset: page.offset,
           profession: this.form.profession,
           grade: this.form.grade,
-          username: userInfo.username,
+          username: userInfo.level === 1 ? userInfo.username : '',
           courseName: this.form.courseName,
+          studentName: userInfo.level === 2 ? userInfo.username : '',
         };
-        console.log(obj)
         this.clickMethod(obj);
       },
       pageChange(page) {
         this.searchValue.$limit = page.limit;
         this.searchValue.$offset = page.offset;
-        this.search();
+        this.click(page)
       },
       editMethod(data) {
         this.showInput = this.showInput === data.no ? '' : data.no ;
@@ -246,8 +237,8 @@
       },
       addEntry () {
         if (this.selection.length > 0) {
-          this.axiosHelper.post('/api/sms/score', this.selection).then(response => {
-            this.click();
+          this.axiosHelper.post('/api/sms/score', this.selection).then(() => {
+            this.click(this.searchValue);
             this.batch = false;
             this.showInput = false;
           })
@@ -257,23 +248,58 @@
           })
         }
       },
-      getStudentCourseInfo () {
+      exportMethod () {
+        let userInfo = JSON.parse(localStorage.userinfo);
         let obj = {
-          $limit: 10,
-          $offset: 0,
-          studentName: this.userInfo.username,
+          profession: this.form.profession,
+          grade: this.form.grade,
+          username: userInfo.level !== 2 ? userInfo.username : '',
+          courseName: this.form.courseName,
+          studentName: userInfo.level === 2 ? userInfo.username : '',
         };
-        this.clickMethod(obj)
+        this.axiosHelper.get('/api/sms/score/export', {params: obj}).then(response => {
+          const list = response.data;  //把data里的tableData存到list
+          list.map(data => {
+            if (data.type === 1) {
+              data.type = '必修'
+            } else if (data.type === 2) {
+              data.type = '选修'
+            }
+            return data
+          });
+          this.exportExcel(list, userInfo);
+        });
+      },
+      //导出的方法
+      exportExcel(list, userInfo) {
+        require.ensure([], () => {
+          const { export_json_to_excel } = require('../../vendor/Export2Excel');
+          const tHeader = [];
+          const filterVal = [];
+          for(let data of this.dataColumns) {
+            if (data.label === "操作") {
+              continue;
+            }
+            tHeader.push(data.label);
+            filterVal.push(data.prop);
+          }
+          const data = this.formatJson(filterVal, list);
+          const title = userInfo.level === 2 ? `${userInfo.realName}成绩列表` : '学生成绩列表';
+          export_json_to_excel(tHeader, data, title);
+        })
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
       }
     },
     mounted () {
       this.table = this.$refs['score_table'];
       if (this.userInfo.level === 2) {
-        this.getStudentCourseInfo();
         this.dataColumns = this.dataColumns.filter(data => {
           return data.label !== '操作'
         })
       }
+      this.click(this.searchValue);
     },
     created () {
       this.userInfo = JSON.parse(localStorage.userinfo);

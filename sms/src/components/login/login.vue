@@ -11,7 +11,7 @@
     <div class="star orange"></div>
     <div class="title">
       <h2>
-        <i class="el-icon-eleme"></i>学生成绩管理系统
+        <i class="el-icon-eleme"></i> 学生成绩管理系统
       </h2>
     </div>
     <div class="loginForm">

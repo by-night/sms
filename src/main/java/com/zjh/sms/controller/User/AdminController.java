@@ -1,6 +1,7 @@
 package com.zjh.sms.controller.User;
 
 import com.zjh.sms.dto.User;
+import com.zjh.sms.service.User.AdminService;
 import com.zjh.sms.service.User.StudentService;
 import com.zjh.sms.utils.PagingResult;
 import org.apache.ibatis.session.RowBounds;
@@ -12,36 +13,35 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description 学生账号控制层
+ * Description
  * Author: zjh
- * Date2020/3/7 11:50
+ * Date2020/3/28 11:05
  **/
 @RestController
-@RequestMapping("/api/mis/user/student")
-public class StudentController {
-  @Autowired
-  private StudentService studentService;
+@RequestMapping("/api/mis/user/admin")
+public class AdminController {@Autowired
+private AdminService adminService;
 
   @PostMapping
   public void addStudent(@RequestBody User user) {
-    studentService.addStudent(user);
+    adminService.add(user);
   }
 
   @DeleteMapping("/{ids}")
-  public void delete(@PathVariable("ids") String[] ids) {
-    List<String> idsList = Arrays.asList(ids);
-    studentService.delete(idsList);
+  public void delete(@PathVariable("ids") Integer[] ids) {
+    List<Integer> idsList = Arrays.asList(ids);
+    adminService.delete(idsList);
   }
 
   @PutMapping
   public void update(@RequestBody User user) {
-    studentService.update(user);
+    adminService.update(user);
   }
-  @GetMapping("/getStudentList")
-  public PagingResult<User> getStudentList (@RequestParam Map<String, Object> condition,
+  @GetMapping("/getAdminList")
+  public PagingResult<User> getAdminList (@RequestParam Map<String, Object> condition,
                                             @RequestParam(required = false, name = "$limit", defaultValue = "10") Integer limit,
                                             @RequestParam(required = false, name = "$offset", defaultValue = "0") Integer offset) {
     RowBounds rowBounds = new RowBounds(offset, limit);
-    return studentService.getStudentList(rowBounds, condition);
+    return adminService.getAdminList(rowBounds, condition);
   }
 }

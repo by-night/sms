@@ -6,10 +6,10 @@
           <el-table
             ref = "refTable"
             :data="data"
-            border
             :header-cell-style="{background:'#EDF1F4'}"
             :cell-style="{fontSize:'14px'}"
             :highlight-current-row="rowLight"
+            stripe
             @sort-change = "sortChange"
             @selection-change="selectChange"
             @row-click="rowClick"
@@ -47,8 +47,8 @@
           <el-table
             ref = "refTable"
             :data="data"
-            border
             row-key="id"
+            stripe
             default-expand-all
             :tree-props="{children: 'children'}"
             @sort-change = "sortChange"

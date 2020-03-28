@@ -198,7 +198,7 @@
       registered (rulesForm) {
         this.$refs[rulesForm].validate((valid) => {
           if (valid) {
-            this.axiosHelper.post('/api/user/mis', this.form).then(
+            this.axiosHelper.post('/api/student/mis', this.form).then(
               response => {
                 if(response.status === 200) {
                   this.$message.success({
