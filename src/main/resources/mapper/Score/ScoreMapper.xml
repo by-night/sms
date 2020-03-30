@@ -14,7 +14,7 @@
         <result column="year" property="year" jdbcType="INTEGER" />
         <result column="term" property="term" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
-        <result column="professional" property="professional" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
         <result column="real_name" property="realName" jdbcType="VARCHAR" />
         <result column="no" property="no" jdbcType="VARCHAR" />
         <result column="student_name" property="studentName" jdbcType="VARCHAR" />
@@ -35,7 +35,7 @@
         LEFT JOIN teacher_course AS b
         ON a.name = b.name
         LEFT JOIN student c
-        ON a.professional = c.profession
+        ON a.profession = c.profession
         LEFT JOIN student_course d
         ON c.username = d.username
         <where>
@@ -128,7 +128,7 @@
         LEFT JOIN teacher_course AS b
         ON a.name = b.name
         LEFT JOIN student c
-        ON a.professional = c.profession
+        ON a.profession = c.profession
         LEFT JOIN student_course d
         ON c.username = d.username
         <where>

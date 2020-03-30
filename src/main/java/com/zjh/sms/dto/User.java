@@ -71,4 +71,12 @@ public class User {
    * 创建时间
    */
   private Date createTime;
+  /**
+   * token
+   */
+  private String token;
+  /**
+   * token 时间
+   */
+  private Integer time;
 }

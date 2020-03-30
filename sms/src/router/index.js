@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import login from '../components/login/login'
 import home from '../components/home'
 import score from '../components/score/score'
-import point from '../components/point/point'
 import course from '../components/course/course'
 import registered from '../components/registered/index'
 import dashboard from '../components/dashboard/student-dashboard'
@@ -44,11 +43,11 @@ export default new Router({
           meta: { requireAuth: true },
           component: score,
         }, {
-          path: '/point',
-          name: '绩点查询',
-          meta: { requireAuth: true },
-          component: point,
-        }, {
+        //   path: '/point',
+        //   name: '绩点查询',
+        //   meta: { requireAuth: true },
+        //   component: point,
+        // }, {
           path: '/account',
           name: '账号管理',
           meta: { requireAuth: true },

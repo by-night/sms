@@ -20,7 +20,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="课程名：" prop="professional">
+                <el-form-item label="课程名：" prop="profession">
                   <el-input v-model="form.courseName" maxlength="15" clearable style="width: 90%"></el-input>
                 </el-form-item>
               </el-col>
@@ -105,8 +105,8 @@
                       params.row.scoreByUser = value>params.row.score?params.row.score:value;
                     },
                     blur() {
-                      params.row.creditsByUser = params.row.scoreByUser>=params.row.score*0.6?params.row.credits:0;
-                      params.row.pointByUser = params.row.scoreByUser>59?(params.row.scoreByUser/10-5).toFixed(1):0;
+                      params.row.creditsByUser = params.row.scoreByUser>=params.row.score*0.6?params.row.credits.toFixed(2):0.00;
+                      params.row.pointByUser = params.row.scoreByUser>59?(params.row.scoreByUser/10-5).toFixed(2):0;
                       that.showInput = '';
                     }
                   }
@@ -148,7 +148,7 @@
             }
           }, {
             label: '专业',
-            prop: 'professional',
+            prop: 'profession',
             style: 'center',
             minWidth: '120',
           }, {

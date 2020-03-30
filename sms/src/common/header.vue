@@ -17,8 +17,8 @@
             {{userInfo.realName}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting" @click.native="editPassword">修改密码</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-switch-button" @click.native="exit">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" @click.native="editPassword"> 修改密码</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-switch-button" @click.native="exit"> 退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

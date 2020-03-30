@@ -151,12 +151,13 @@ export default {
       this.dialog = false;
     },
     editMethod () {
-      console.log(this.form)
       this.axiosHelper.put(
         '/api/mis/user/student', this.form).then(() => {
         this.$message.success({
           message: '修改成功'
         });
+        this.$store.commit('SAVE_USERINFO', this.form);
+        this.$emit('refresh')
         this.dialog = false;
       }).catch(() => {
         this.$message.error({

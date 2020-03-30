@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.transform.Result;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description 登陆用户控制层
@@ -44,4 +41,5 @@ public class UserController {
   public List<Object> getTree () {
     return userService.getTree();
   }
+
 }

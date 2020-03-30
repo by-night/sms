@@ -45,14 +45,15 @@
         <!--<img class="view-icon" src="../../assets/project_icon_d.png" alt="">-->
       <!--</el-col>-->
     <!--</el-row>-->
-    <editInfo ref="editInfo_model"></editInfo>
+    <editInfo ref="editInfo_model" @refresh="refresh"></editInfo>
   </div>
 </template>
 
 <script>
 import editInfo from './model/student-edit-model'
 export default {
-    name: "dashboard",
+  inject:['reload'],
+  name: "dashboard",
     data () {
         return {
           userInfo: {},
@@ -79,6 +80,10 @@ export default {
       editInfo () {
         this.$refs.editInfo_model.init(this.userInfo);
       },
+      refresh () {
+        // 刷新页面
+        this.reload();
+      }
     },
     mounted() {
       this.userInfo = JSON.parse(localStorage.userinfo);

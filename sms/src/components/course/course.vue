@@ -62,18 +62,6 @@
               }
             }
           }, {
-            label: '绩点',
-            prop: 'point',
-            style: 'center',
-            minWidth: '60',
-            render (h, params) {
-              if (params.row.point % 1 === 0) {
-                return h('div', {}, `${params.row.point}.0`)
-              } else {
-                return h('div', {}, params.row.point)
-              }
-            }
-          }, {
             label: '课时',
             prop: 'number',
             style: 'center',
@@ -97,7 +85,7 @@
             }
           }, {
             label: '专业',
-            prop: 'professional',
+            prop: 'profession',
             style: 'center',
             minWidth: '120',
           }, {

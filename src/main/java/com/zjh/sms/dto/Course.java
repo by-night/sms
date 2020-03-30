@@ -52,7 +52,7 @@ public class Course {
   /**
    * 专业
    */
-  private String professional;
+  private String profession;
   /**
    * 姓名
    */

@@ -80,7 +80,7 @@
           click () {
             this.$refs['form'].validate((valid) => {
               if (valid) {
-                this.axiosHelper.get('/api/mis/student/edit/password', {params: this.form}).then(
+                this.axiosHelper.get('/api/mis/user/edit/password', {params: this.form}).then(
                   response => {
                     if (response.data) {
                       this.$message.success({

@@ -201,7 +201,7 @@
           type,
           identity: this.lastNode
         };
-        this.$refs['account_table'].init(params);
+        this.$refs['account_model'].init(params);
       },
       editMethod(row) {
         let type = 'edit';
@@ -210,7 +210,7 @@
           row,
           identity: this.lastNode
         };
-        this.$refs['account_table'].init(params);
+        this.$refs['account_model'].init(params);
       },
       select(selection) {
         this.delBtn = selection.length <= 0;

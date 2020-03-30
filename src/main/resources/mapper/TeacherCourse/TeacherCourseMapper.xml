@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.TeacherCourse.TeacherCourseMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.domain.TeacherCourse" >
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
+        <result column="grade" property="grade" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="add" parameterType="com.zjh.sms.domain.TeacherCourse">
+        INSERT INTO teacher_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null and teacherId != ''">teacher_id,</if>
+            <if test="username != null and username != ''">username,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="profession != null and profession != ''">profession,</if>
+            <if test="grade != null and grade != ''">grade,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null and teacherId != ''">#{teacherId},</if>
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="profession != null and profession != ''">#{profession},</if>
+            <if test="grade != null and grade != ''">#{grade},</if>
+        </trim>
+    </insert>
+    <delete id="delete" parameterType="map">
+        DELETE FROM
+        teacher_course
+        <where>
+            id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+    <update id="update" parameterType="com.zjh.sms.domain.TeacherCourse">
+        UPDATE teacher_course
+        <trim prefix="set" suffixOverrides=",">
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="teacherId != null and teacherId != ''">
+                teacher_id = #{teacherId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="profession != null and profession != ''">
+                profession = #{profession},
+            </if>
+            <if test="grade != null and grade != ''">
+                grade = #{grade},
+            </if>
+        </trim>
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <select id="getCourseListById" parameterType="string" resultMap="BaseUserMap">
+        SELECT
+            *
+        FROM teacher_course
+        <where>
+            teacher_id  = #{id}
+        </where>
+    </select>
+</mapper>
+

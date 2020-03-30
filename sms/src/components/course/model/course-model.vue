@@ -47,8 +47,8 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="专业:" prop="professional">
-            <el-input v-model="form.professional" maxlength="30" clearable></el-input>
+          <el-form-item label="专业:" prop="profession">
+            <el-input v-model="form.profession" maxlength="30" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -99,7 +99,7 @@
           year: '',
           type: 1,
           term: 1,
-          professional: ''
+          profession: ''
         },
         rules: {
           name: [
@@ -117,7 +117,7 @@
           number: [
             { required: true, message: '课时不能为空', trigger: 'blur' },
           ],
-          professional: [
+          profession: [
             { required: true, message: '专业名不能为空', trigger: 'blur' },
           ],
         }
@@ -146,7 +146,7 @@
           year: year,
           type: 1,
           term: 1,
-          professional: ''
+          profession: ''
         }
       },
       click (formName) {

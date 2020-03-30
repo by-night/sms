@@ -55,4 +55,5 @@ public class CourseServiceImpl implements CourseService {
     List<Course> CourseList = courseMapper.getCourseList(pageRowBounds, condition);
     return new PagingResult<>(CourseList, pageRowBounds.getTotal());
   }
+
 }

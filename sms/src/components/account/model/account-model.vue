@@ -73,13 +73,13 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (this.identity === '学生') {
-              let src = '/api/mis/student/student';
+              let src = '/api/mis/user/student';
               this.clickMethod(src);
             } else if (this.identity === '教师') {
-              let src = '/api/mis/student/teacher';
+              let src = '/api/mis/user/teacher';
               this.clickMethod(src);
             } else if (this.identity === '管理员') {
-              let src = '/api/mis/student/admin';
+              let src = '/api/mis/user/admin';
               this.clickMethod(src);
             }
           } else {

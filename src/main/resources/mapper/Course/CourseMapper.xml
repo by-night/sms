@@ -14,7 +14,7 @@
         <result column="year" property="year" jdbcType="INTEGER" />
         <result column="term" property="term" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
-        <result column="professional" property="professional" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
     </resultMap>
     <insert id="addCourse" parameterType="com.zjh.sms.dto.Course">
         INSERT INTO course
@@ -28,7 +28,7 @@
             <if test="year != null and year != ''">`year`,</if>
             <if test="type != null and type != ''">`type`,</if>
             <if test="term != null and term != ''">term,</if>
-            <if test="professional != null and professional != ''">professional,</if>
+            <if test="profession != null and profession != ''">profession,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null and id != ''">#{id},</if>
@@ -40,7 +40,7 @@
             <if test="year != null and year != ''">#{year},</if>
             <if test="type != null and type != ''">#{type},</if>
             <if test="term != null and term != ''">#{term},</if>
-            <if test="professional != null and professional != ''">#{professional},</if>
+            <if test="profession != null and profession != ''">#{profession},</if>
         </trim>
     </insert>
     <delete id="delete" parameterType="map">
@@ -80,8 +80,8 @@
             <if test="term != null and term != ''">
                 term = #{term},
             </if>
-            <if test="professional != null and professional != ''">
-                professional = #{professional},
+            <if test="profession != null and profession != ''">
+                profession = #{profession},
             </if>
         </trim>
         <where>
@@ -96,7 +96,7 @@
         FROM course
         <where>
             <if test="condition.code != null and condition.code != ''">
-                name LIKE CONCAT('%',#{condition.code},'%') OR professional LIKE CONCAT('%',#{condition.code},'%')
+                name LIKE CONCAT('%',#{condition.code},'%') OR profession LIKE CONCAT('%',#{condition.code},'%')
             </if>
         </where>
         ORDER BY id desc
@@ -104,6 +104,5 @@
     <select id="checkCodeCount" resultType="int">
         select count(0) from course
     </select>
-
 </mapper>
 

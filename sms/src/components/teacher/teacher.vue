@@ -18,16 +18,18 @@
       :tableHigh="tableHigh"
     ></VmBaseTable>
     <VmTeacher ref="teacher_model" @search="search"></VmTeacher>
+    <VmCourseInfo ref="courseInfo_model"></VmCourseInfo>
   </el-card>
 </template>
 
 <script>
+  import VmCourseInfo from './model/courseInfo-model'
   import VmTeacher from './model/teacher-model'
   import VmBaseTable from '../../base/base-table'
   export default {
     name: "user",
     components: {
-      VmBaseTable, VmTeacher
+      VmBaseTable, VmTeacher, VmCourseInfo
     },
     data () {
       return {
@@ -70,11 +72,6 @@
             style: 'center',
             minWidth: '110',
           } , {
-            label: '专业',
-            prop: 'profession',
-            style: 'center',
-            minWidth: '100',
-          } , {
             label: '电子邮箱',
             prop: 'email',
             style: 'center',
@@ -87,9 +84,12 @@
           } , {
             label: '操作',
             style: 'center',
-            minWidth: '120',
+            minWidth: '150',
             render: (h, params) => {
               let btns = [];
+              btns.push(this.getOpBtn(h, '任课信息', 'success', () => {
+                this.courseInfo(params.row)
+              }));
               btns.push(this.getOpBtn(h, '编辑', 'primary', () => {
                 this.editMethod(params.row)
               }));
@@ -104,6 +104,9 @@
       }
     },
     methods: {
+      courseInfo (data) {
+        this.$refs.courseInfo_model.init(data);
+      },
       search() {
         let that = this;
         this.axiosHelper.get(

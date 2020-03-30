@@ -193,6 +193,7 @@
                 obj.password = this.isKeep ? obj.password : '';
                 // 设置cookies
                 this.$cookies.set(`sms_${data.username}`, obj, 60*60*24*3);
+                // this.$cookies.set('userToken', data.token, data.time);
                 localStorage.setItem('cookiesName', `sms_${data.username}`);
                 // 跳转到主页
                 _this.$router.push('/dashboard');
