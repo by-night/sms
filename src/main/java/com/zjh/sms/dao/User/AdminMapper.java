@@ -52,4 +52,12 @@ public interface AdminMapper {
    * @date 2020/3/4 23:05
    */
   List<User> getAdminList(PageRowBounds rowBounds, @Param("condition") Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/30 23:43
+  */
+  User getUserById(@Param("id") String id);
 }

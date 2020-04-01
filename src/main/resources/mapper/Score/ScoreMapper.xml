@@ -13,11 +13,13 @@
         <result column="score" property="score" jdbcType="INTEGER" />
         <result column="year" property="year" jdbcType="INTEGER" />
         <result column="term" property="term" jdbcType="INTEGER" />
+        <result column="grade" property="grade" jdbcType="VARCHAR" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
         <result column="type" property="type" jdbcType="INTEGER" />
         <result column="profession" property="profession" jdbcType="VARCHAR" />
         <result column="real_name" property="realName" jdbcType="VARCHAR" />
         <result column="no" property="no" jdbcType="VARCHAR" />
-        <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+        <result column="student_id" property="studentId" jdbcType="VARCHAR" />
         <result column="pointByUser" property="pointByUser" jdbcType="VARCHAR" />
         <result column="creditsByUser" property="creditsByUser" jdbcType="VARCHAR" />
         <result column="scoreByUser" property="scoreByUser" jdbcType="VARCHAR" />
@@ -27,6 +29,7 @@
         a.*,
         c.real_name,
         c.id as no,
+        c.grade,
         c.username as student_name,
         d.point as pointByUser,
         d.credits as creditsByUser,
@@ -37,7 +40,7 @@
         LEFT JOIN student c
         ON a.profession = c.profession
         LEFT JOIN student_course d
-        ON c.username = d.username
+        ON c.id = d.student_id
         <where>
             <if test="condition.profession != null and condition.profession != ''">
                  b.profession LIKE CONCAT('%',#{condition.profession},'%')
@@ -52,14 +55,145 @@
                 AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
             </if>
             <if test="condition.studentName != null and condition.studentName != ''">
-                AND d.username = #{condition.studentName}
+                AND d.student_id = #{condition.studentName}
+            </if>
+        </where>
+        order by c.id
+    </select>
+    <select id="getExportListByAdmin" resultMap="BaseUserMap" parameterType="map">
+        select
+        a.id as no,
+        a.real_name,
+        a.admission_time as year,
+        a.grade,
+        a.profession,
+        b.name,
+        b.credits,
+        b.score,
+        b.number,
+        b.term,
+        b.type
+        FROM
+        student a
+        Left join course b
+        on a.profession = b.profession
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                a.profession LIKE CONCAT('%',#{condition.profession},'%')
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND a.grade LIKE CONCAT('%',#{condition.grade},'%')
+            </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+            </if>
+        </where>
+        order by a.id
+    </select>
+    <select id="getCourseByAdmin" resultMap="BaseUserMap" parameterType="map">
+        select
+            a.id as no,
+            a.real_name,
+            a.admission_time as year,
+            a.grade,
+            a.profession,
+            b.name,
+            b.credits,
+            b.score,
+            b.number,
+            b.term,
+            b.type
+        FROM
+            student a
+        Left join course b
+        on a.profession = b.profession
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                a.profession LIKE CONCAT('%',#{condition.profession},'%')
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND a.grade LIKE CONCAT('%',#{condition.grade},'%')
+            </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+            </if>
+        </where>
+        order by a.id
+    </select>
+    <select id="getExportListByStudent" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+            a.student_id AS NO,
+            a.point as pointByUser,
+            a.credits as creditsByUser,
+            a.score as scoreByUser,
+            b.real_name,
+            b.admission_time as year,
+            b.grade,
+            b.profession,
+            c.name,
+            c.credits,
+            c.score,
+            c.number,
+            c.term,
+            c.type
+        FROM
+            student_course a
+        LEFT JOIN student b ON a.student_id = b.id
+        LEFT JOIN course c on a.name = c.name
+        <where>
+            <if test="condition.studentName != null and condition.studentName != ''">
+                AND a.student_id = #{condition.studentName}
+            </if>
+        </where>
+        order by a.id
+    </select>
+    <select id="getCourseByStudent" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+        a.student_id AS NO,
+        a.point as pointByUser,
+        a.credits as creditsByUser,
+        a.score as scoreByUser,
+        b.real_name,
+        b.admission_time as year,
+        b.grade,
+        b.profession,
+        c.name,
+        c.credits,
+        c.score,
+        c.number,
+        c.term,
+        c.type
+        FROM
+        student_course a
+        LEFT JOIN student b ON a.student_id = b.id
+        LEFT JOIN course c on a.name = c.name
+        <where>
+            <if test="condition.studentName != null and condition.studentName != ''">
+                AND a.student_id = #{condition.studentName}
+            </if>
+        </where>
+        order by a.id
+    </select>
+    <select id="getScoreById" resultMap="BaseUserMap" parameterType="map">
+        select
+            point as pointByUser,
+            credits as creditsByUser,
+            score as scoreByUser
+        FROM
+            student_course
+        <where>
+            <if test="condition.id != null and condition.id != ''">
+                student_id = #{condition.id}
+            </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND name = #{condition.courseName}
             </if>
         </where>
     </select>
     <insert id="addEntry" parameterType="com.zjh.sms.dto.Score">
         INSERT INTO student_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="studentName != null and studentName != ''">username,</if>
+            <if test="no != null and no != ''">student_id,</if>
             <if test="name != null and name != ''">`name`,</if>
             <if test="creditsByUser != null and creditsByUser != ''">`credits`,</if>
             <if test="pointByUser != null and pointByUser != ''">`point`,</if>
@@ -68,7 +202,7 @@
             <if test="term != null and term != ''">term,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="studentName != null and studentName != ''">#{studentName},</if>
+            <if test="no != null and no != ''">#{no},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="creditsByUser != null and creditsByUser != ''">#{creditsByUser},</if>
             <if test="pointByUser != null and pointByUser != ''">#{pointByUser},</if>
@@ -100,8 +234,8 @@
             </if>
         </trim>
         <where>
-            <if test="studentName != null and studentName != ''">
-                username = #{studentName}
+            <if test="studentId != null and studentId != ''">
+                student_id = #{studentId}
             </if>
             <if test="name != null and name != ''">
                 AND `name` = #{name}
@@ -111,7 +245,7 @@
     <select id="checkCount" resultType="int" parameterType="map">
         select count(0) from student_course
         <where>
-            username = #{condition.StudentName}
+            student_id = #{condition.StudentId}
             AND `name` = #{condition.CourseName}
         </where>
     </select>

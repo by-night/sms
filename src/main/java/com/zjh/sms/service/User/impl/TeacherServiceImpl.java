@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,19 @@ public class TeacherServiceImpl implements TeacherService {
 
   @Override
   public void addTeacher(User user) {
+    int num = teacherMapper.checkCodeCount();
+    String str = "";
+    if (num < 10) {
+      str = "00" + Integer.toString(num);
+    } else if (num < 100) {
+      str = "0" + Integer.toString(num);
+    } else {
+      str = Integer.toString(num);
+    }
+    String no = "389"+str+user.getSex().toString();
+    user.setUsername(no);
+    user.setId(no);
+    user.setPassword("159357");
     teacherMapper.addTeacher(user);
   }
 

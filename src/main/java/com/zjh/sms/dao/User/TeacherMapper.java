@@ -53,4 +53,19 @@ public interface TeacherMapper {
    * @date 2020/3/4 23:05
    */
   List<User> getTeacherList(PageRowBounds rowBounds, @Param("condition") Map<String, Object> condition);
+  /**
+   * description:
+   * @param:
+   * return:
+   * Author: zjh
+   * @Date: 2020/3/30 23:43
+   */
+  User getUserById(@Param("id") String id);
+  /**
+   * description: 查看人数
+   * return: Integer
+   * Author: zjh
+   * @Date: 2020/3/11 15:03
+   */
+  Integer checkCodeCount();
 }

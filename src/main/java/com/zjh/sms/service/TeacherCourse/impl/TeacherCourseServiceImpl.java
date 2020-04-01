@@ -30,8 +30,9 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
         ids.add(teacherCourse.getId());
       }
     }
-    teacherCourseMapper.delete(ids);
-
+    if (ids.size() > 0) {
+      teacherCourseMapper.delete(ids);
+    }
     for (TeacherCourse teacherCourse : list) {
       teacherCourseMapper.add(teacherCourse);
     }
@@ -48,7 +49,7 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
   }
 
   @Override
-  public List<Course> getCourseListById(String id) {
+  public List<TeacherCourse> getCourseListById(String id) {
     return teacherCourseMapper.getCourseListById(id);
   }
 }

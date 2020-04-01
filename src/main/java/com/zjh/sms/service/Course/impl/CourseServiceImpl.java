@@ -56,4 +56,9 @@ public class CourseServiceImpl implements CourseService {
     return new PagingResult<>(CourseList, pageRowBounds.getTotal());
   }
 
+  @Override
+  public List<Course> getCourseByMap(Map<String, Object> condition) {
+    return courseMapper.getCourseByMap(condition);
+  }
+
 }

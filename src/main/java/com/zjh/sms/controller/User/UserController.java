@@ -3,6 +3,7 @@ package com.zjh.sms.controller.User;
 import com.zjh.sms.dto.Tree;
 import com.zjh.sms.dto.User;
 import com.zjh.sms.service.User.UserService;
+import com.zjh.sms.utils.UserLoginToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,19 @@ public class UserController {
     map.put("username", condition.get("username").toString());
     map.put("password", condition.get("password").toString());
     map.put("level", condition.get("level"));
-    return userService.getStudentInfo(map);
+    User user = userService.getStudentInfo(map);
+    user.setToken(userService.getToken(user));
+    user.setTime(60*30);
+    return user;
   }
+
+  /*测试token  不登录没有token*/
+  @UserLoginToken
+  @GetMapping("/getMessage")
+  public String getMessage(){
+    return "你已通过验证";
+  }
+
   @GetMapping("/edit/password")
   public boolean update (@RequestParam Map<String, Object> condition) {
     Map<String, Object> map = new HashMap<>();

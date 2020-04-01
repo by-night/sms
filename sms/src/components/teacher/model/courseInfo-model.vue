@@ -26,6 +26,17 @@ export default {
   },
     data () {
       return {
+        courseArr: [],
+        classArr: [],
+        gradeArr: [],
+        termArr: [{
+          label: '上',
+          value: 1
+        },{
+          label: '下',
+          value: 2
+        }],
+        professionArr: [],
         teacherInfo: {},
         showInput: '',
         tableHigh: '40vh',
@@ -36,18 +47,24 @@ export default {
             label: '专业',
             prop: 'profession',
             style: 'center',
-            minWidth: '80',
+            minWidth: '100',
             render: (h, params) => {
               if (this.showInput === params.row.id) {
-                return h('el-input', {
-                  props: {
-                    value: params.row.profession,
-                    size: 'small',
-                  },
-                  on: {
-                    input(value) {
-                      params.row.profession = value;
-                    },
+                return this.getSelect(h, params.row.profession, (value) => {
+                  this.$set(params.row, 'profession', value);
+                }, this.professionArr, false, (value) => {
+                  params.row.grade = '';
+                  params.row.name = '';
+                  this.getCourse(value, params.row.term);
+
+                  // 直接接口返回对应的数据会好一点
+                  for(let arr of this.classArr) {
+                    if (arr.label === value) {
+                      this.gradeArr = arr.children.map(item => {
+                        return {label: item.label, value: item.label}
+                      });
+                      break;
+                    }
                   }
                 })
               } else {
@@ -58,42 +75,52 @@ export default {
             label: '班级',
             prop: 'grade',
             style: 'center',
-            minWidth: '70',
+            minWidth: '60',
             render: (h, params) => {
               if (this.showInput === params.row.id) {
-                return h('el-input', {
-                  props: {
-                    value: params.row.grade,
-                    size: 'small',
-                  },
-                  on: {
-                    input(value) {
-                      params.row.grade = value;
-                    },
+                return this.getSelect(h, params.row.grade, (value) => {
+                  this.$set(params.row, 'grade', value);
+                }, this.gradeArr)
+              } else {
+                return h('div', {}, params.row.grade)
+              }
+            }
+          } , {
+            label: '学期',
+            prop: 'term',
+            style: 'center',
+            minWidth: '50',
+            render: (h, params) => {
+              if (this.showInput === params.row.id) {
+                return this.getSelect(h, params.row.term, (value) => {
+                  this.$set(params.row, 'term', value);
+                }, this.termArr, false, (value) => {
+                  params.row.name = '';
+                  let profession = params.row.profession;
+                  if (profession !== '') {
+                    this.getCourse(params.row.profession, value);
                   }
                 })
               } else {
-                return h('div', {}, params.row.grade)
+                let label = '';
+                for (let i = 0; i < this.termArr.length; i++) {
+                  if (params.row.term.toString() === this.termArr[i].value.toString()) {
+                    label = this.termArr[i].label
+                  }
+                }
+                return h('div', {}, label)
               }
             }
           } , {
             label: '课程',
             prop: 'name',
             style: 'center',
-            minWidth: '80',
+            minWidth: '100',
             render: (h, params) => {
               if (this.showInput === params.row.id) {
-                return h('el-input', {
-                  props: {
-                    value: params.row.name,
-                    size: 'small',
-                  },
-                  on: {
-                    input(value) {
-                      params.row.name = value;
-                    },
-                  }
-                })
+                return this.getSelect(h, params.row.name, (value) => {
+                  this.$set(params.row, 'name', value);
+                }, this.courseArr)
               } else {
                 return h('div', {}, params.row.name)
               }
@@ -101,7 +128,7 @@ export default {
           }, {
             label: '操作',
             style: 'center',
-            minWidth: '150',
+            minWidth: '100',
             render: (h, params) => {
               let btns = [];
               if (this.showInput === params.row.id) {
@@ -127,9 +154,38 @@ export default {
     },
     methods: {
       init (data) {
+        this.courseArr = [];
+        this.classArr = [];
+        this.gradeArr = [];
+        this.getClass();
+        this.getProfession();
         this.teacherInfo = data;
         this.dialog = true;
         this.getInfo(data.id);
+      },
+      getClass () {
+        this.axiosHelper.get(
+          '/api/mis/user/getTree'
+        ).then(response => {
+          this.classArr = response.data[0].children;
+        }).catch(error => {
+          this.$message.error({
+            message: '失败'
+          }, error)
+        })
+      },
+      getCourse (profession, term) {
+        let obj = {
+          profession,
+          term
+        };
+        this.axiosHelper.get('/api/sms/course/getCourseByMap',  {params: obj}).then(
+          response => {
+            let course = response.data;
+            this.courseArr = course.map(data => {
+              return {label: data.name, value: data.name}
+            });
+          });
       },
       getInfo (id) {
         this.axiosHelper.get('/api/sms/teacher/course/getCourseListById/' + id).then(
@@ -160,10 +216,14 @@ export default {
       },
       editMethod (data) {
         this.showInput = this.showInput ? '' : data.id;
+        let flag = data.profession !== '';
+        // 点击编辑时，请求课程数据
+        if (this.showInput !== '' && flag) {
+          this.getCourse(data.profession, data.term)
+        }
       },
       deleteSingle (data) {
         if (data.id === -1) {
-          console.log(12)
           this.dataTable = this.dataTable.filter(item => {
             return item.index !== data.index
           })
@@ -178,8 +238,10 @@ export default {
         }
       },
       add () {
+        this.courseArr = [];
+        this.gradeArr = [];
         const flag = this.dataTable.every(data => {
-          return data.name !== '' && data.profession !== '' && data.grade !== ''
+          return data.name !== '' && data.profession !== '' && data.grade !== '' && data.term !== ''
         });
         if (flag) {
           this.showInput = -1;
@@ -190,7 +252,8 @@ export default {
             name: '',
             profession: '',
             grade: '',
-            index: ''
+            index: '',
+            term: 1
           };
           this.dataTable.push(obj);
           for (let i = 0; i < this.dataTable.length; i++) {
@@ -201,8 +264,16 @@ export default {
             message: '存在未填项'
           });
         }
+      },
+      getProfession () {
+        this.axiosHelper.get('/api/sms/profession/getProfessionList').then(response => {
+          let data = response.data;
+          this.professionArr = data.map(item => {
+            return {label: item.name,value: item.name}
+          });
+        })
       }
-    }
+    },
   }
 </script>
 

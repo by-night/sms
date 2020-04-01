@@ -26,6 +26,30 @@ public interface ScoreMapper {
    */
   List<Course> getCourseByMap(PageRowBounds rowBounds, @Param("condition") Map<String, Object> condition);
   /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/1 11:27
+  */
+  List<Course> getCourseByAdmin(PageRowBounds rowBounds, @Param("condition") Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/1 17:37
+  */
+  List<Course> getCourseByStudent(PageRowBounds rowBounds, @Param("condition") Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/1 11:36
+  */
+  Course getScoreById(@Param("condition") Map<String, Object> condition);
+  /**
    * description:
    * @param:
    * return:
@@ -56,4 +80,20 @@ public interface ScoreMapper {
   * @Date: 2020/3/21 16:27
   */
   List<Course> getExportList(@Param("condition") Map<String, Object> condition);
+  /**
+   * description:
+   * @param:
+   * return:
+   * Author: zjh
+   * @Date: 2020/3/21 16:27
+   */
+  List<Course> getExportListByAdmin(@Param("condition") Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/1 17:38
+  */
+  List<Course> getExportListByStudent(@Param("condition") Map<String, Object> condition);
 }

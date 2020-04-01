@@ -75,6 +75,11 @@
             style: 'center',
             minWidth: '100',
           } , {
+            label: '班级',
+            prop: 'grade',
+            style: 'center',
+            minWidth: '60',
+          } , {
             label: '电子邮箱',
             prop: 'email',
             style: 'center',
@@ -84,11 +89,6 @@
             prop: 'phone',
             style: 'center',
             minWidth: '90',
-          } , {
-            label: '入学时间',
-            prop: 'admissionTime',
-            style: 'center',
-            minWidth: '60',
           } , {
             label: '操作',
             style: 'center',
@@ -115,7 +115,6 @@
           '/api/mis/user/student/getStudentList',
           {params: that.searchValue}
         ).then(response => {
-          console.log(response)
           this.dataTable = response.data.items;
           this.table.total = response.data.totalCount
         }).catch(error => {

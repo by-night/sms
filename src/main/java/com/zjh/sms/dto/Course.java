@@ -54,6 +54,10 @@ public class Course {
    */
   private String profession;
   /**
+   * 班级
+   */
+  private String grade;
+  /**
    * 姓名
    */
   private String realName;
@@ -64,7 +68,7 @@ public class Course {
   /**
    * 学生账号
    */
-  private String studentName;
+  private String studentId;
   /**
    * 查询的学生绩点
    */

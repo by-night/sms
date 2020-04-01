@@ -22,6 +22,14 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
+    // 有权限才可访问
+    if (to.meta.level !== undefined) {
+      if (to.meta.level === $cookies.get(routeName).level) {
+        next()
+      } else {
+        next({path: '/dashboard'});
+      }
+    }
     // 不需要路由守卫时
   } else {
     if (to.query && to.query.redirect) {

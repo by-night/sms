@@ -62,6 +62,9 @@
     <update id="update" parameterType="com.zjh.sms.dto.User">
         UPDATE student
         <trim prefix="set" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id = #{id},
+            </if>
             <if test="username != null and username != ''">
                 username = #{username},
             </if>
@@ -95,8 +98,8 @@
             </if>
         </trim>
         <where>
-            <if test="id != null and id != ''">
-                id = #{id}
+            <if test="username != null and username != ''">
+                username = #{username}
             </if>
         </where>
     </update>
@@ -115,7 +118,7 @@
                 AND grade = #{condition.grade}
             </if>
         </where>
-        ORDER BY create_time DESC
+        ORDER BY id DESC
     </select>
     <select id="getStudentTree" resultType="com.zjh.sms.dto.User">
         SELECT
@@ -144,6 +147,14 @@
             <if test="condition.grade != null and condition.grade != ''">
                 AND grade = #{condition.grade}
             </if>
+        </where>
+    </select>
+    <select id="getUserById" resultMap="BaseUserMap" parameterType="string">
+        SELECT
+        *
+        FROM admin
+        <where>
+            id = #{id}
         </where>
     </select>
 </mapper>

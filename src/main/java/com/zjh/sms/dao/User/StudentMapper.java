@@ -75,4 +75,12 @@ public interface StudentMapper {
    * @Date: 2020/3/11 15:03
    */
   Integer checkCodeCount(@Param("condition") Map<String, Object> condition);
+  /**
+   * description:
+   * @param:
+   * return:
+   * Author: zjh
+   * @Date: 2020/3/30 23:43
+   */
+  User getUserById(@Param("id") String id);
 }

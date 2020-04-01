@@ -49,9 +49,9 @@ public class Score {
   /**
    * 学号
    */
-  private Integer no;
+  private String no;
   /**
-   * 学生账号
+   * 学生账号id
    */
-  private String studentName;
+  private String studentId;
 }

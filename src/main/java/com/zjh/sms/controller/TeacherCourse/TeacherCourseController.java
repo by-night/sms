@@ -45,7 +45,7 @@ public class TeacherCourseController {
   }
 
   @GetMapping("/getCourseListById/{id}")
-  public List<Course> getCourseListById(@PathVariable("id") String id) {
+  public List<TeacherCourse> getCourseListById(@PathVariable("id") String id) {
     return teacherCourseService.getCourseListById(id);
   }
 }

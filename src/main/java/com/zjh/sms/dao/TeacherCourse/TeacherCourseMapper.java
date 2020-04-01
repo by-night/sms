@@ -50,5 +50,5 @@ public interface TeacherCourseMapper {
    * Author: zjh
    * @Date: 2020/3/29 14:33
    */
-  List<Course> getCourseListById(@Param("id") String id);
+  List<TeacherCourse> getCourseListById(@Param("id") String id);
 }

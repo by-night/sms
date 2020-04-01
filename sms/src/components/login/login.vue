@@ -39,7 +39,7 @@
             return {
                 starClass: 'star',
                 starArr: '',
-                keyValue: 2,
+                keyLabel: '学生',
                 tabName: 'student',
                 loading: false,
                 note: {
@@ -52,6 +52,11 @@
         },
         methods: {
             tabClick(data) {
+                // 点击当前tab时不翻转
+                if (data.label !== this.keyLabel) {
+                  this.flip();
+                  this.keyLabel = data.label;
+                }
                 let keyValue = 2;
                 if(data.label === '学生') {
                   keyValue = 2;
@@ -66,15 +71,17 @@
                   this.$refs.admin_tab.clearForm(keyValue);
                   this.$refs.admin_tab.getCookies();
                 }
-                let flip = document.querySelector('.el-tabs');
-                flip.style.transition = '0.3s';
-                // 翻转90度
-                flip.style.transform = 'rotateY(90deg)';
-                setTimeout(() => {
-                    flip.style.transition = '0.2s';
-                    flip.style.transform = 'rotateY(0)'
-                }, 240)
             },
+            flip () {
+              let flip = document.querySelector('.el-tabs');
+              flip.style.transition = '0.3s';
+              // 翻转90度
+              flip.style.transform = 'rotateY(90deg)';
+              setTimeout(() => {
+                flip.style.transition = '0.2s';
+                flip.style.transform = 'rotateY(0)'
+              }, 240)
+            }
         },
         components: {
             Form

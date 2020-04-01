@@ -51,5 +51,5 @@ public interface TeacherCourseService {
    * Author: zjh
    * @Date: 2020/3/29 14:31
    */
-  List<Course> getCourseListById(String id);
+  List<TeacherCourse> getCourseListById(String id);
 }

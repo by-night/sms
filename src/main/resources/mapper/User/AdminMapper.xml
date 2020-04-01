@@ -73,6 +73,13 @@
         </where>
         ORDER BY create_time DESC
     </select>
-
+    <select id="getUserById" resultMap="BaseUserMap" parameterType="string">
+        SELECT
+        *
+        FROM admin
+        <where>
+            id = #{id}
+        </where>
+    </select>
 </mapper>
 

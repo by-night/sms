@@ -109,7 +109,21 @@
             </if>
         </where>
             GROUP BY a.username
-            ORDER BY a.create_time DESC
+            ORDER BY a.id DESC
+    </select>
+    <select id="getUserById" resultMap="BaseUserMap" parameterType="string">
+        SELECT
+        *
+        FROM admin
+        <where>
+            id = #{id}
+        </where>
     </select>
 
+    <select id="checkCodeCount" resultType="int">
+        select
+            count(0)
+        from
+            teacher
+    </select>
 </mapper>

@@ -37,4 +37,20 @@ public interface UserService {
   * @Date: 2020/3/27 22:13
   */
   List<Object> getTree();
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/30 23:21
+  */
+  String getToken(User user);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/30 23:42
+  */
+  User findUser(Map<String, Object> condition);
 }

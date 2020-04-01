@@ -160,11 +160,13 @@
                   this.$nextTick(() => {
                     _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
                       response => {
+                        console.log(response)
                         this.loginBtn = false;
                         this.loginState = 0;
                         let data = response.data;
                         this.click(_this, data);
                       }).catch(() => {
+                      console.log(123)
                       this.loadingBtn = '';
                       this.loginBtn = false;
                       this.loginState = 0;
@@ -190,10 +192,11 @@
                   password: data.password,
                   level: data.level
                 };
+                console.log(data);
                 obj.password = this.isKeep ? obj.password : '';
                 // 设置cookies
                 this.$cookies.set(`sms_${data.username}`, obj, 60*60*24*3);
-                // this.$cookies.set('userToken', data.token, data.time);
+                this.$cookies.set('userToken', data.token, data.time);
                 localStorage.setItem('cookiesName', `sms_${data.username}`);
                 // 跳转到主页
                 _this.$router.push('/dashboard');
@@ -250,6 +253,8 @@
       },
       created () {
           this.loadingBtn = '';
+          // 登录界面时，清除身份信息
+          localStorage.removeItem('cookiesName');
       }
     }
 </script>

@@ -50,5 +50,13 @@ public interface CourseService {
   * @Date: 2020/3/11 14:49
   */
   PagingResult<Course> getCourseList(RowBounds rowBounds, Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/31 22:28
+  */
+  List<Course> getCourseByMap(Map<String, Object> condition);
 }
 

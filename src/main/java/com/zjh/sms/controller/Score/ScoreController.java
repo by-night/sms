@@ -44,4 +44,5 @@ public class ScoreController {
   public List<Course> getExportList (@RequestParam Map<String, Object> condition) {
     return scoreService.getExportList(condition);
   }
+
 }

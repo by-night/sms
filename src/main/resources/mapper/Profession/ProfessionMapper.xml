@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.Profession.ProfessionMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.domain.Profession" >
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+    </resultMap>
+     <insert id="addProfession" parameterType="com.zjh.sms.domain.Profession">
+         <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+             select LAST_INSERT_ID() as id
+         </selectKey>
+        INSERT INTO profession
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">`name`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+        </trim>
+    </insert>
+    <delete id="deleteProfession" parameterType="int">
+        DELETE FROM
+        profession
+        <where>
+            id = #{id}
+        </where>
+    </delete>
+    <select id="checkProfessionCount" resultType="int" parameterType="string">
+        select count(0) from profession
+        <where>
+            name = #{name}
+        </where>
+    </select>
+    <select id="getProfessionList" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+            *
+        from profession
+    </select>
+
+    <select id="getProfessionIdByName" resultMap="BaseUserMap" parameterType="string">
+        SELECT
+            id
+        from profession
+        where name = #{name}
+    </select>
+</mapper>
+

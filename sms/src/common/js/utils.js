@@ -24,7 +24,37 @@ let util = function (Vue) {
         }
       }, text)
     };
+    Vue.prototype.getSelect = (h, value, input, arr, multiple, change, attrs, disabled) => {
+      return h('el-select', {
+        props: {
+          value: value,
+          multiple: multiple,
+          disabled: disabled
+        },
+        on: {
+          input: (value) => {
+            input(value);
+          },
+          change: (value) => {
+            if (change) {
+              change(value);
+            }
 
+          }
+        },
+        attrs: attrs
+      }, [
+        arr.map(item => {
+          return h("el-option", {
+            props: {
+              value: item.value,
+              label: item.label,
+              disabled: item.disabled === undefined ? false : item.disabled
+            }
+          });
+        })
+      ])
+    };
     // 为了实现Class的私有属性
     const showMessage = Symbol('showMessage')
     /**

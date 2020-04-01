@@ -5,7 +5,7 @@ import home from '../components/home'
 import score from '../components/score/score'
 import course from '../components/course/course'
 import registered from '../components/registered/index'
-import dashboard from '../components/dashboard/student-dashboard'
+import dashboard from '../components/dashboard/index'
 import account from '../components/account/account'
 import student from '../components/student/student'
 import teacher from '../components/teacher/teacher'
@@ -15,7 +15,6 @@ const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 };
-
 
 Vue.use(Router);
 export default new Router({
@@ -50,22 +49,22 @@ export default new Router({
         // }, {
           path: '/account',
           name: '账号管理',
-          meta: { requireAuth: true },
+          meta: { requireAuth: true, level: 0},
           component: account,
         }, {
           path: '/course',
           name: '课程录入',
-          meta: { requireAuth: true },
+          meta: { requireAuth: true, level: 0},
           component: course,
         }, {
           path: '/student',
           name: '学生用户',
-          meta: { requireAuth: true },
+          meta: { requireAuth: true, level: 0},
           component: student,
         }, {
           path: '/teacher',
           name: '教师用户',
-          meta: { requireAuth: true },
+          meta: { requireAuth: true, level: 0},
           component: teacher,
         }
       ]

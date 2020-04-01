@@ -162,6 +162,9 @@
           profession: '',
           phone: '',
         };
+        if(this.$refs['form'] !== undefined) {
+          this.$refs['form'].clearValidate();
+        }
       },
       click (formName) {
         this.$refs[formName].validate((valid) => {

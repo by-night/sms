@@ -2,7 +2,11 @@
     <el-row>
       <el-col :span="5">
         <el-card style="margin: 10px 0 10px 10px;padding: 15px 10px 10px 10px;height: 78vh">
-          <el-tree :data="treeData" :props="defaultProps" @node-click="nodeClick"></el-tree>
+          <div style="height: 78vh">
+            <el-scrollbar style="height:100%;" wrapStyle="overflow-x:hidden;" viewStyle="">
+              <el-tree :data="treeData" :props="defaultProps" @node-click="nodeClick"></el-tree>
+            </el-scrollbar>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="19">
@@ -125,12 +129,12 @@
       nodeClick (data, node) {
         if (data.children === undefined) {
           this.searchValue.code = '';
-          this.searchValue.grade = data.label;
           this.searchValue.profession = node.parent.data.label || '';
           // 获取最后一个节点
-          this.lastNode = data.label === '管理员' ? data.label: node.parent.parent.data.label;
+          this.lastNode = data.label !== '学生' ? data.label: node.parent.parent.data.label;
           switch (this.lastNode) {
             case "学生":
+              this.searchValue.grade = data.label;
               this.getStudentList(this.searchValue);
               break;
             case "教师":
@@ -194,15 +198,15 @@
         }
         this.search()
       },
-      addMethod() {
-        this.search();
-        let type = 'add';
-        let params = {
-          type,
-          identity: this.lastNode
-        };
-        this.$refs['account_model'].init(params);
-      },
+      // addMethod() {
+      //   this.search();
+      //   let type = 'add';
+      //   let params = {
+      //     type,
+      //     identity: this.lastNode
+      //   };
+      //   this.$refs['account_model'].init(params);
+      // },
       editMethod(row) {
         let type = 'edit';
         let params = {
@@ -219,12 +223,12 @@
         let ids = [obj.id];
         this.deleteTable(ids);
       },
-      deleteSelect () {
-        let ids = this.table.getIds();
-        if (ids.length > 0) {
-          this.deleteTable(ids);
-        }
-      },
+      // deleteSelect () {
+      //   let ids = this.table.getIds();
+      //   if (ids.length > 0) {
+      //     this.deleteTable(ids);
+      //   }
+      // },
       deleteTable(ids) {
         let _this = this;
         this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {

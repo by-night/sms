@@ -60,4 +60,12 @@ public interface CourseMapper {
    * @Date: 2020/3/11 15:03
    */
   Integer checkCodeCount();
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/3/31 22:29
+  */
+  List<Course> getCourseByMap(@Param("condition") Map<String, Object> condition);
 }

@@ -37,4 +37,8 @@ public class TeacherCourse {
    * 班级
    */
   private String grade;
+  /**
+   * 学期
+   */
+  private Integer term;
 }

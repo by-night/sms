@@ -1,18 +1,15 @@
 <template>
   <el-dialog v-dialogDrag :title="title" :visible.sync="dialog" :close-on-click-modal=false append-to-body width="800px">
     <el-form ref="form" :rules="rules" :model="form" label-width="90px">
-      <el-form-item label="课程名:" prop="name">
-        <el-input v-model="form.name" clearable maxlength="30"></el-input>
-      </el-form-item>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="学分:" prop="credits">
-            <el-input v-model.number="form.credits" maxlength="15" clearable oninput="value=value.replace(/[^\d.]/g,'')"></el-input>
+          <el-form-item label="课程名:" prop="name">
+            <el-input v-model="form.name" clearable maxlength="30"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="绩点:" prop="point">
-            <el-input v-model="form.point" maxlength="15" clearable oninput="value=value.replace(/[^\d.]/g,'')"></el-input>
+          <el-form-item label="学分:" prop="credits">
+            <el-input v-model.number="form.credits" maxlength="15" clearable oninput="value=value.replace(/[^\d.]/g,'')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -147,6 +144,9 @@
           type: 1,
           term: 1,
           profession: ''
+        };
+        if(this.$refs['form'] !== undefined) {
+          this.$refs['form'].clearValidate();
         }
       },
       click (formName) {
