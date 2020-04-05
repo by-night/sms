@@ -80,5 +80,19 @@
             teacher_id  = #{id}
         </where>
     </select>
+    <select id="getGradeInfoByMap" parameterType="string" resultMap="BaseUserMap">
+        SELECT
+            name,
+            grade
+        FROM teacher_course
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                AND profession = #{condition.profession}
+            </if>
+            <if test="condition.teacherId != null and condition.teacherId != ''">
+                AND teacher_id = #{condition.teacherId}
+            </if>
+        </where>
+    </select>
 </mapper>
 

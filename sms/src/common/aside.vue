@@ -65,7 +65,7 @@
           }
         },
         mounted() {
-          this.userInfo = JSON.parse(localStorage.userinfo);
+          this.userInfo = JSON.parse(localStorage.userInfo);
           this.level = this.userInfo.level;
         }
     }

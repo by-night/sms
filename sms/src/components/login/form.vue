@@ -10,7 +10,7 @@
           <el-col :span="22">
             <el-dropdown trigger="click" v-if="dealCookie.length > 0">
               <el-input v-model="form.username" maxlength="15" @keyup.enter.native="loginDone('form')"
-                      style="width: 300px" clearable autofocus placeholder="请输入账号"></el-input>
+                style="width: 300px" clearable autofocus placeholder="请输入账号"></el-input>
 
                <el-dropdown-menu :style="{width: '300px', marginLeft: '50px', height: dealCookie.length < 3 ? `${dealCookie.length*50}px`:'100px'}" slot="dropdown">
                 <el-scrollbar style="height:100%;" wrapStyle="overflow-x:hidden;padding-right:12px;" viewStyle="">
@@ -70,12 +70,12 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button v-if="loadingBtn === ''" @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">
+        <el-button v-if="loadingBtn === ''" type="primary" @click="login('form')" class="loginMain" :disabled="loginBtn">
           <span>
             登&#12288陆
           </span>
         </el-button>
-        <el-button v-else @click="login('form')" type="primary" class="loginMain" :disabled="loginBtn">
+        <el-button v-else @click="login('form')" type="primary"  class="loginMain" :disabled="loginBtn">
           {{loadingBtn}}
         </el-button>
       </el-form-item>
@@ -88,9 +88,11 @@
 
 <script>
   import verify from '../../common/verify'
+  import ElSelectDropdown from "element-ui/packages/select/src/select-dropdown";
     export default {
         name: "Form",
         components: {
+          ElSelectDropdown,
           verify
         },
         data() {
@@ -160,13 +162,11 @@
                   this.$nextTick(() => {
                     _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
                       response => {
-                        console.log(response)
                         this.loginBtn = false;
                         this.loginState = 0;
                         let data = response.data;
                         this.click(_this, data);
                       }).catch(() => {
-                      console.log(123)
                       this.loadingBtn = '';
                       this.loginBtn = false;
                       this.loginState = 0;
@@ -192,7 +192,6 @@
                   password: data.password,
                   level: data.level
                 };
-                console.log(data);
                 obj.password = this.isKeep ? obj.password : '';
                 // 设置cookies
                 this.$cookies.set(`sms_${data.username}`, obj, 60*60*24*3);
@@ -255,6 +254,7 @@
           this.loadingBtn = '';
           // 登录界面时，清除身份信息
           localStorage.removeItem('cookiesName');
+          localStorage.removeItem('userInfo');
       }
     }
 </script>
@@ -279,6 +279,7 @@
     margin-right: 20px;
   }
   /deep/ .loginMain {
+    color: white;
     font-size: 18px;
     width: 200px;
     border-radius: 100px;

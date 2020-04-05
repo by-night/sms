@@ -1,6 +1,14 @@
 <template>
   <div style="background-color: white;">
-    <el-tag class="tag" :class="{tagClick: $route.name === tab.name}" :style="{width: tab.name==='主页'?'62px':''}" ref="tag" color="white" @click="tabClick(tab)" @close="tabRemove(tab)" v-for="(tab,index) in tabsName" :key="index" :closable="tab.name !== '主页'">
+    <el-tag
+      class="tag"
+      :class="{tagClick: $route.name === tab.name}"
+      :style="{width: tab.name==='主页'?'62px':''}"
+      ref="tag"
+      color="white"
+      @click="tabClick(tab)"
+      @close="tabRemove(tab)"
+      v-for="(tab,index) in tabsName" :key="index" :closable="tab.name !== '主页'">
       <span>{{tab.name}}</span>
     </el-tag>
   </div>
@@ -52,8 +60,6 @@
             path: this.$route.path
           };
           this.tabsName.push(routeInfo)
-        } else {
-          return true
         }
       },
     }

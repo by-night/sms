@@ -21,7 +21,7 @@ export default {
     }
   },
   created () {
-    this.userInfo = JSON.parse(localStorage.userinfo);
+    this.userInfo = JSON.parse(localStorage.userInfo);
   }
 }
 </script>

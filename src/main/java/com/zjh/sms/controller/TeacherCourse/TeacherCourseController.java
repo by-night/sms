@@ -48,4 +48,14 @@ public class TeacherCourseController {
   public List<TeacherCourse> getCourseListById(@PathVariable("id") String id) {
     return teacherCourseService.getCourseListById(id);
   }
+
+  @GetMapping("/getProfessionInfoByTeacher/{teacherId}")
+  public List<Map<String, Object>> getProfessionInfo(@PathVariable("teacherId") String teacherId) {
+    return teacherCourseService.getProfessionInfo(teacherId);
+  }
+
+  @GetMapping("/getProfessionInfoByAdmin")
+  public List<Map<String, Object>> getProfessionInfoByAdmin() {
+    return teacherCourseService.getProfessionInfoByAdmin();
+  }
 }

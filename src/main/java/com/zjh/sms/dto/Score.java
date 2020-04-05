@@ -29,7 +29,7 @@ public class Score {
   /**
    * 分数
    */
-  private Integer scoreByUser;
+  private String scoreByUser;
   /**
    * 绩点
    */
@@ -38,6 +38,10 @@ public class Score {
    * 学分
    */
   private String creditsByUser;
+  /**
+   * 总分
+   */
+  private Integer score;
   /**
    * 学期
    */

@@ -52,4 +52,20 @@ public interface TeacherCourseService {
    * @Date: 2020/3/29 14:31
    */
   List<TeacherCourse> getCourseListById(String id);
+  /**
+  * description: 获取教师用户所管理的专业、班级、课程名等信息
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/4 20:54
+  */
+  List<Map<String, Object>> getProfessionInfo(String teacherId);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/5 0:16
+  */
+  List<Map<String, Object>> getProfessionInfoByAdmin();
 }

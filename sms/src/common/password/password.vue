@@ -66,7 +66,7 @@
           init () {
             this.dialog = true;
             this.clearForm();
-            let userInfo = JSON.parse(localStorage.userinfo);
+            let userInfo = JSON.parse(localStorage.userInfo);
             this.form.username = userInfo.username;
           },
           clearForm () {

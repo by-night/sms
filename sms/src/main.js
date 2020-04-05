@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import store from './vuex/store'
+import VCharts from 'v-charts'
 import axiosHelper from '../src/axios/axiosHelper'
 import Util from './common/js/utils'
 import './router/route'
@@ -16,6 +17,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import VueCookies from 'vue-cookies'
 import 'jquery'
 Vue.config.productionTip = false;
+Vue.use(VCharts)
 Vue.use(ElementUI);
 Vue.use(Util);
 Vue.use(VueCookies);

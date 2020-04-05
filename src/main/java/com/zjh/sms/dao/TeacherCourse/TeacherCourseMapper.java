@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description
@@ -51,4 +52,12 @@ public interface TeacherCourseMapper {
    * @Date: 2020/3/29 14:33
    */
   List<TeacherCourse> getCourseListById(@Param("id") String id);
+  /**
+   * description: 获取教师id和专业获取班级、课程名
+   * @param:
+   * return:
+   * Author: zjh
+   * @Date: 2020/4/4 20:54
+   */
+  List<TeacherCourse> getGradeInfoByMap(@Param("condition") Map<String, Object> condition);
 }

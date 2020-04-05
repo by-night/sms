@@ -40,4 +40,12 @@ public interface ScoreService {
   * @Date: 2020/3/21 16:26
   */
   List<Course> getExportList(Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/3 22:53
+  */
+  List<Map<String, Object>> getUserNum(Map<String, Object> condition);
 }

@@ -27,10 +27,6 @@ public class Course {
    */
   private Double credits;
   /**
-   * 绩点
-   */
-  private Double point;
-  /**
    * 满分   */
   private Integer score;
   /**

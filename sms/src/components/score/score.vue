@@ -11,8 +11,8 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="专业：" prop="profession">
-                  <el-select v-model="form.profession" style="width: 90%" @change="professionChange">
-                    <el-option v-for="item in professionArr" :key="item" :label="item" :value="item"></el-option>
+                  <el-select v-model="form.professionObj" style="width: 90%" @change="professionChange" value-key="profession">
+                    <el-option v-for="item in classArr" :key="item.profession" :label="item.profession" :value="item"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -67,6 +67,7 @@
         classArr: [],
         professionArr: [],
         gradeArr: [],
+        professionObj: {},
         batch: false,
         showInput: '',
         userInfo: '',
@@ -118,11 +119,11 @@
                       value = value.replace(/[^\d]/g, '') && value.slice(0, 5);
                       params.row.scoreByUser = value>params.row.score?params.row.score:value;
                     },
-                    blur() {
-                      params.row.creditsByUser = params.row.scoreByUser>=params.row.score*0.6?params.row.credits.toFixed(2):0.00;
-                      params.row.pointByUser = params.row.scoreByUser>59?(params.row.scoreByUser/10-5).toFixed(2):0;
-                      that.showInput = '';
-                    }
+                    // blur() {
+                    //   params.row.creditsByUser = params.row.scoreByUser>=params.row.score*0.6?params.row.credits.toFixed(2):0.00;
+                    //   params.row.pointByUser = params.row.scoreByUser>59?(params.row.scoreByUser/10-5).toFixed(2):0;
+                    //   that.showInput = '';
+                    // }
                   }
                 })
               } else {
@@ -203,7 +204,7 @@
           term: '',
           courseName: ''
         };
-        this.show = !this.show
+        this.show = !this.show;
       },
       change () {
         this.show = !this.show
@@ -220,32 +221,12 @@
         this.clickSure(this.searchValue);
         this.show = !this.show
       },
-      professionChange (value) {
+      professionChange (data) {
         this.form.grade = '';
         this.form.courseName = '';
-        // 获取班级
-        for(let arr of this.classArr) {
-          if (arr.label === value) {
-            this.gradeArr = arr.children.map(item => {
-              return item.label;
-            });
-            break;
-          }
-        }
-        // 获取课程
-        this.getCourse(value);
-      },
-      getCourse (profession) {
-        let obj = {
-          profession
-        };
-        this.axiosHelper.get('/api/sms/course/getCourseByMap',  {params: obj}).then(
-          response => {
-            let course = response.data;
-            this.courseArr = course.map(data => {
-              return data.name;
-            });
-          });
+        this.form.profession = data.profession;
+        this.gradeArr = data.grade;
+        this.courseArr = data.course;
       },
       clickMethod (obj) {
         this.axiosHelper.get(
@@ -260,10 +241,10 @@
         })
       },
       click (page) {
-        let userInfo = JSON.parse(localStorage.userinfo);
+        let userInfo = JSON.parse(localStorage.userInfo);
         let obj = {
-          $limit: page.limit,
-          $offset: page.offset,
+          $limit: page.$limit,
+          $offset: page.$offset,
           profession: this.form.profession,
           grade: this.form.grade,
           username: userInfo.level === 1 ? userInfo.username : '',
@@ -276,7 +257,7 @@
       pageChange(page) {
         this.searchValue.$limit = page.limit;
         this.searchValue.$offset = page.offset;
-        this.click(page)
+        this.click(this.searchValue)
       },
       editMethod(data) {
         this.showInput = this.showInput === data.no ? '' : data.no ;
@@ -318,7 +299,7 @@
         }
       },
       exportMethod () {
-        let userInfo = JSON.parse(localStorage.userinfo);
+        let userInfo = JSON.parse(localStorage.userInfo);
         let obj = {
           profession: this.form.profession,
           grade: this.form.grade,
@@ -361,24 +342,10 @@
       formatJson(filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
       },
-      getClass () {
-        this.axiosHelper.get(
-          '/api/mis/user/getTree'
-        ).then(response => {
-          this.classArr = response.data[0].children;
-        }).catch(error => {
-          this.$message.error({
-            message: '失败'
-          }, error)
-        })
-      },
       getProfessionByAdmin () {
         this.axiosHelper.get(
-          '/api/sms/profession/getProfessionList').then(response => {
-          let data = response.data;
-          this.professionArr = data.map (item => {
-            return item.name;
-          });
+          '/api/sms/teacher/course/getProfessionInfoByAdmin').then(response => {
+          this.classArr = response.data;
         }).catch(error => {
           this.$message.error({
             message: '失败'
@@ -387,12 +354,9 @@
       },
       getProfessionByTeacher () {
         this.axiosHelper.get(
-          '/api/sms/teacher/course/getCourseListById/' + this.userInfo.id
+          '/api/sms/teacher/course/getProfessionInfoByTeacher/' + this.userInfo.id
         ).then(response => {
-          response.data.forEach(data => {
-            this.professionArr.push(data.profession)
-          });
-          console.log(this.professionArr)
+          this.classArr = response.data;
         }).catch(error => {
           this.$message.error({
             message: '失败'
@@ -412,13 +376,12 @@
       }
     },
     created () {
-      this.userInfo = JSON.parse(localStorage.userinfo);
+      this.userInfo = JSON.parse(localStorage.userInfo);
       if (this.userInfo.level === 0) {
         this.getProfessionByAdmin();
       } else {
         this.getProfessionByTeacher();
       }
-      this.getClass();
     },
     computed: {
       tableHigh () {

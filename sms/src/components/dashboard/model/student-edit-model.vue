@@ -157,7 +157,7 @@ export default {
           message: '修改成功'
         });
         this.$store.commit('SAVE_USERINFO', this.form);
-        this.$emit('refresh')
+        this.$emit('refresh');
         this.dialog = false;
       }).catch(() => {
         this.$message.error({

@@ -44,5 +44,8 @@ public class ScoreController {
   public List<Course> getExportList (@RequestParam Map<String, Object> condition) {
     return scoreService.getExportList(condition);
   }
-
+  @GetMapping("/getUserNum")
+  public List<Map<String, Object>> getUserNum (@RequestParam Map<String, Object> condition) {
+    return scoreService.getUserNum(condition);
+  }
 }

@@ -126,24 +126,30 @@
           }
         }
       },
+      // 当不满足条件时，不断获取上一级node值
+      getParentNode (node, current) {
+        let data = node.data.label;
+        switch (data) {
+          case "学生":
+            this.searchValue.grade = current;
+            this.getStudentList(this.searchValue);
+            break;
+          case "教师":
+            this.getTeacherList(this.searchValue);
+            break;
+          case "管理员":
+            this.getAdminList(this.searchValue);
+            break;
+          default:
+            this.getParentNode(node.parent, current)
+        }
+      },
       nodeClick (data, node) {
+        // 当前为最后一级时
         if (data.children === undefined) {
           this.searchValue.code = '';
           this.searchValue.profession = node.parent.data.label || '';
-          // 获取最后一个节点
-          this.lastNode = data.label !== '学生' ? data.label: node.parent.parent.data.label;
-          switch (this.lastNode) {
-            case "学生":
-              this.searchValue.grade = data.label;
-              this.getStudentList(this.searchValue);
-              break;
-            case "教师":
-              this.getTeacherList(this.searchValue);
-              break;
-            case "管理员":
-              this.getAdminList(this.searchValue);
-              break;
-          }
+          this.getParentNode(node, data.label);
         }
       },
       getStudentList (obj) {

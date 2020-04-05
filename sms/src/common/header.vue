@@ -49,6 +49,8 @@
                 type: 'warning'
               }).then(() => {
                 this.$router.push("/");
+                // 退出登录时，清除身份信息
+                localStorage.clear();
               })
             },
             editPassword () {
@@ -63,7 +65,7 @@
             this.day = date + "&#x3000;" + week;
         },
         mounted() {
-          this.userInfo = JSON.parse(localStorage.userinfo);
+          this.userInfo = JSON.parse(localStorage.userInfo);
           this.firstStr = this.userInfo.realName.substr(0, 1);
         },
         components: {

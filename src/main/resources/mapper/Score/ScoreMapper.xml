@@ -26,39 +26,39 @@
     </resultMap>
     <select id="getCourseByMap" resultMap="BaseUserMap" parameterType="map">
         SELECT
-        a.*,
-        c.real_name,
-        c.id as no,
-        c.grade,
-        c.username as student_name,
-        d.point as pointByUser,
-        d.credits as creditsByUser,
-        d.score as scoreByUser
-        FROM course a
-        LEFT JOIN teacher_course AS b
+            b.*,
+            c.real_name,
+            c.id as no,
+            c.grade,
+            c.username as student_name,
+            d.point as pointByUser,
+            d.credits as creditsByUser,
+            d.score as scoreByUser
+        FROM teacher_course a
+        LEFT JOIN course b
         ON a.name = b.name
         LEFT JOIN student c
-        ON a.profession = c.profession
+        ON a.profession = c.profession and a.grade = c.grade
         LEFT JOIN student_course d
         ON c.id = d.student_id
         <where>
             <if test="condition.profession != null and condition.profession != ''">
-                 b.profession LIKE CONCAT('%',#{condition.profession},'%')
+                a.profession = #{condition.profession}
             </if>
             <if test="condition.grade != null and condition.grade != ''">
-                AND b.grade LIKE CONCAT('%',#{condition.grade},'%')
+                AND a.grade = #{condition.grade}
             </if>
             <if test="condition.username != null and condition.username != ''">
-                AND b.username = #{condition.username}
+                AND a.teacher_id = #{condition.username}
             </if>
             <if test="condition.courseName != null and condition.courseName != ''">
-                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+                AND a.name = #{condition.courseName}
             </if>
             <if test="condition.studentName != null and condition.studentName != ''">
                 AND d.student_id = #{condition.studentName}
             </if>
         </where>
-        order by c.id
+        ORDER BY c.id
     </select>
     <select id="getExportListByAdmin" resultMap="BaseUserMap" parameterType="map">
         select
@@ -79,13 +79,13 @@
         on a.profession = b.profession
         <where>
             <if test="condition.profession != null and condition.profession != ''">
-                a.profession LIKE CONCAT('%',#{condition.profession},'%')
+                a.profession = #{condition.profession}
             </if>
             <if test="condition.grade != null and condition.grade != ''">
-                AND a.grade LIKE CONCAT('%',#{condition.grade},'%')
+                AND a.grade = #{condition.grade}
             </if>
             <if test="condition.courseName != null and condition.courseName != ''">
-                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+                AND b.name = #{condition.courseName}
             </if>
         </where>
         order by a.id
@@ -109,13 +109,13 @@
         on a.profession = b.profession
         <where>
             <if test="condition.profession != null and condition.profession != ''">
-                a.profession LIKE CONCAT('%',#{condition.profession},'%')
+                a.profession = #{condition.profession}
             </if>
             <if test="condition.grade != null and condition.grade != ''">
-                AND a.grade LIKE CONCAT('%',#{condition.grade},'%')
+                AND a.grade = #{condition.grade}
             </if>
             <if test="condition.courseName != null and condition.courseName != ''">
-                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+                AND b.name = #{condition.courseName}
             </if>
         </where>
         order by a.id
@@ -234,8 +234,8 @@
             </if>
         </trim>
         <where>
-            <if test="studentId != null and studentId != ''">
-                student_id = #{studentId}
+            <if test="no != null and no != ''">
+                student_id = #{no}
             </if>
             <if test="name != null and name != ''">
                 AND `name` = #{name}
@@ -251,37 +251,39 @@
     </select>
     <select id="getExportList" resultMap="BaseUserMap" parameterType="map">
         SELECT
-        a.*,
+        b.*,
         c.real_name,
         c.id as no,
+        c.grade,
         c.username as student_name,
         d.point as pointByUser,
         d.credits as creditsByUser,
         d.score as scoreByUser
-        FROM course a
-        LEFT JOIN teacher_course AS b
+        FROM teacher_course a
+        LEFT JOIN course b
         ON a.name = b.name
         LEFT JOIN student c
-        ON a.profession = c.profession
+        ON a.profession = c.profession and a.grade = c.grade
         LEFT JOIN student_course d
-        ON c.username = d.username
+        ON c.id = d.student_id
         <where>
             <if test="condition.profession != null and condition.profession != ''">
-                b.profession LIKE CONCAT('%',#{condition.profession},'%')
+                a.profession = #{condition.profession}
             </if>
             <if test="condition.grade != null and condition.grade != ''">
-                AND b.grade LIKE CONCAT('%',#{condition.grade},'%')
+                AND a.grade = #{condition.grade}
             </if>
             <if test="condition.username != null and condition.username != ''">
-                AND b.username = #{condition.username}
+                AND a.teacher_id = #{condition.username}
             </if>
             <if test="condition.courseName != null and condition.courseName != ''">
-                AND b.name LIKE CONCAT('%',#{condition.courseName},'%')
+                AND a.name = #{condition.courseName}
             </if>
             <if test="condition.studentName != null and condition.studentName != ''">
-                AND d.username = #{condition.studentName}
+                AND d.student_id = #{condition.studentName}
             </if>
         </where>
+        ORDER BY c.id
     </select>
 </mapper>
 
