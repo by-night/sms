@@ -12,8 +12,6 @@
       <el-col :span="19">
         <el-card style="margin: 10px;padding: 15px 10px 10px 10px">
           <el-row style="margin-bottom: 10px">
-            <!--<el-button type="primary" size="small" @click="addMethod">新增</el-button>-->
-            <!--<el-button type="danger" size="small" @click="deleteSelect">删除</el-button>-->
             <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入账号或姓名" clearable @keyup.enter.native="filterData" maxlength="15">
               <el-button slot="append" @click="filterData" type="primary">过滤</el-button>
             </el-input>
@@ -131,13 +129,16 @@
         let data = node.data.label;
         switch (data) {
           case "学生":
+            this.lastNode = data;
             this.searchValue.grade = current;
             this.getStudentList(this.searchValue);
             break;
           case "教师":
+            this.lastNode = data;
             this.getTeacherList(this.searchValue);
             break;
           case "管理员":
+            this.lastNode = data;
             this.getAdminList(this.searchValue);
             break;
           default:
@@ -204,15 +205,6 @@
         }
         this.search()
       },
-      // addMethod() {
-      //   this.search();
-      //   let type = 'add';
-      //   let params = {
-      //     type,
-      //     identity: this.lastNode
-      //   };
-      //   this.$refs['account_model'].init(params);
-      // },
       editMethod(row) {
         let type = 'edit';
         let params = {
@@ -229,12 +221,6 @@
         let ids = [obj.id];
         this.deleteTable(ids);
       },
-      // deleteSelect () {
-      //   let ids = this.table.getIds();
-      //   if (ids.length > 0) {
-      //     this.deleteTable(ids);
-      //   }
-      // },
       deleteTable(ids) {
         let _this = this;
         this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
@@ -248,7 +234,10 @@
           } else if (this.lastNode === '教师') {
             let src = '/api/mis/user/teacher/';
             this.deleteMethod(src, ids, _this);
-          }
+          } else if (this.lastNode === '管理员') {
+          let src = '/api/mis/user/admin/';
+          this.deleteMethod(src, ids, _this);
+        }
         }).catch(() => {
           this.$message.info({
             message: '已取消删除'

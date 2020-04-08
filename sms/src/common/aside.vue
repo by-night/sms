@@ -10,17 +10,17 @@
         <span slot="title">&#12288主页</span>
       </el-menu-item>
 
+      <el-menu-item index="timetable" :class="{active: $route.name === '课程表'}">
+        <i class="el-icon-s-grid"></i> &#12288课程表
+      </el-menu-item>
+
       <el-menu-item index="score" :class="{active: $route.name === '成绩查询'}">
         <i class="el-icon-s-unfold"></i>
         <span slot="title">&#12288成绩查询</span>
       </el-menu-item>
 
-      <!--<el-menu-item index="point" :class="{active: $route.name === '绩点查询'}">-->
-        <!--<i class="el-icon-s-opportunity"></i>&#12288绩点查询-->
-      <!--</el-menu-item>-->
-
       <el-menu-item index="course" v-if="level === 0" :class="{active: $route.name === '课程录入'}">
-        <i class="el-icon-s-opportunity"></i>
+        <i class="el-icon-s-promotion"></i>
         <span slot="title">&#12288课程录入</span>
       </el-menu-item>
 
@@ -37,6 +37,11 @@
         <el-menu-item-group>
           <el-menu-item index="teacher" :class="{active: $route.name === '教师用户'}">
             <span slot="title">教师用户</span>
+          </el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>
+          <el-menu-item index="admin" :class="{active: $route.name === '管理员用户'}">
+            <span slot="title">管理员用户</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>

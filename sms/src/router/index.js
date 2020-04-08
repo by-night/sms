@@ -9,6 +9,8 @@ import dashboard from '../components/dashboard/index'
 import account from '../components/account/account'
 import student from '../components/student/student'
 import teacher from '../components/teacher/teacher'
+import admin from '../components/admin/admin'
+import timetable from '../components/timetable/timetable'
 
 // 导航栏点击点击多次报错警告处理
 const originalPush = Router.prototype.push;
@@ -66,6 +68,16 @@ export default new Router({
           name: '教师用户',
           meta: { requireAuth: true, level: 0},
           component: teacher,
+        }, {
+          path: '/admin',
+          name: '管理员用户',
+          meta: { requireAuth: true, level: 0},
+          component: admin,
+        }, {
+          path: '/timetable',
+          name: '课程表',
+          meta: { requireAuth: true},
+          component: timetable,
         }
       ]
     }, {

@@ -154,6 +154,7 @@ export default {
     },
     methods: {
       init (data) {
+        this.showInput = '';
         this.courseArr = [];
         this.classArr = [];
         this.gradeArr = [];
@@ -219,7 +220,15 @@ export default {
         let flag = data.profession !== '';
         // 点击编辑时，请求课程数据
         if (this.showInput !== '' && flag) {
-          this.getCourse(data.profession, data.term)
+          this.getCourse(data.profession, data.term);
+          for(let arr of this.classArr) {
+            if (arr.label === data.profession) {
+              this.gradeArr = arr.children.map(item => {
+                return {label: item.label, value: item.label}
+              });
+              break;
+            }
+          }
         }
       },
       deleteSingle (data) {

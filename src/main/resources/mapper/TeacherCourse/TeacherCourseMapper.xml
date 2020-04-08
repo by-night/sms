@@ -94,5 +94,22 @@
             </if>
         </where>
     </select>
+
+    <select id="getTeacherId" parameterType="map" resultType="string">
+        SELECT
+            teacher_id
+        FROM teacher_course
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                AND profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND grade = #{condition.grade}
+            </if>
+            <if test="condition.course != null and condition.course != ''">
+                AND name = #{condition.course}
+            </if>
+        </where>
+    </select>
 </mapper>
 

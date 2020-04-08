@@ -26,11 +26,21 @@
             <if test="username != null and username != ''">username,</if>
             <if test="password != null and password != ''">password,</if>
             <if test="realName != null and realName != ''">real_name,</if>
+            <if test="school != null and school != ''">school,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="profession != null and profession != ''">profession,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="sex != null and sex != ''">sex,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="username != null and username != ''">#{username},</if>
             <if test="password != null and password != ''">#{password},</if>
             <if test="realName != null and realName != ''">#{realName},</if>
+            <if test="school != null and school != ''">#{school},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="profession != null and profession != ''">#{profession},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
         </trim>
     </insert>
     <delete id="delete" parameterType="map">
@@ -54,6 +64,27 @@
             </if>
             <if test="realName != null and realName != ''">
                 real_name = #{realName},
+            </if>
+            <if test="school != null and school != ''">
+                school = #{school},
+            </if>
+            <if test="admissionTime != null and admissionTime != ''">
+                admission_time = #{admissionTime},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="profession != null and profession != ''">
+                profession = #{profession},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="grade != null and grade != ''">
+                grade = #{grade},
             </if>
         </trim>
         <where>
@@ -80,6 +111,12 @@
         <where>
             id = #{id}
         </where>
+    </select>
+    <select id="checkCodeCount" resultType="int">
+        select
+            count(0)
+        from
+            admin
     </select>
 </mapper>
 

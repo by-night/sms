@@ -60,4 +60,11 @@ public interface AdminMapper {
   * @Date: 2020/3/30 23:43
   */
   User getUserById(@Param("id") String id);
+  /**
+   * description: 查看人数
+   * return: Integer
+   * Author: zjh
+   * @Date: 2020/3/11 15:03
+   */
+  Integer checkCodeCount();
 }

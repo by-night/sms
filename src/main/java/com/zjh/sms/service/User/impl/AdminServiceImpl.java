@@ -10,6 +10,9 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,10 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   public void add(User user) {
+    int num = adminMapper.checkCodeCount();
+    String username = "980502" + Integer.toString(num);
+    user.setUsername(username);
+    user.setPassword("980502");
     adminMapper.add(user);
   }
 

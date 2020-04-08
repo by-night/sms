@@ -3,31 +3,31 @@
     <el-row style="margin-bottom: 10px">
       <el-button type="primary" size="small" @click="addMethod">新增</el-button>
       <el-button type="danger" size="small" @click="deleteSelect">删除</el-button>
-      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入学号或姓名" clearable @keyup.enter.native="filterData">
+      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入编号或姓名" clearable @keyup.enter.native="filterData">
         <el-button slot="append" @click="filterData" type="primary">过滤</el-button>
       </el-input>
     </el-row>
     <VmBaseTable
       :setTableHigh="true"
       @on-select-change="select"
-      ref="student_table"
+      ref="admin_table"
       :data="dataTable"
       :columns="dataColumns"
       @page-change="pageChange"
       showCheck
       :tableHigh="tableHigh"
     ></VmBaseTable>
-    <VmStudent ref="student_model" @search="search"></VmStudent>
+    <VmAdmin ref="admin_model" @search="search"></VmAdmin>
   </el-card>
 </template>
 
 <script>
-  import VmStudent from './model/student-model'
+  import VmAdmin from './model/admin-model'
   import VmBaseTable from '../../base/base-table'
   export default {
     name: "user",
     components: {
-      VmBaseTable, VmStudent
+      VmBaseTable, VmAdmin
     },
     data () {
       return {
@@ -43,7 +43,7 @@
         dataTable: [],
         dataColumns: [
           {
-            label: '学号',
+            label: '编号',
             prop: 'id',
             style: 'center',
             minWidth: '90',
@@ -51,12 +51,12 @@
             label: '姓名',
             prop: 'realName',
             style: 'center',
-            minWidth: '70',
+            minWidth: '80',
           } , {
             label: '性别',
             prop: 'sex',
             style: 'center',
-            minWidth: '50',
+            minWidth: '70',
             render: (h, params) => {
               if (params.row.sex === 0) {
                 return h('div', {}, '男')
@@ -68,31 +68,21 @@
             label: '学校',
             prop: 'school',
             style: 'center',
-            minWidth: '110',
-          } , {
-            label: '专业',
-            prop: 'profession',
-            style: 'center',
-            minWidth: '100',
-          } , {
-            label: '班级',
-            prop: 'grade',
-            style: 'center',
-            minWidth: '60',
+            minWidth: '120',
           } , {
             label: '电子邮箱',
             prop: 'email',
             style: 'center',
-            minWidth: '130',
+            minWidth: '140',
           } , {
             label: '手机',
             prop: 'phone',
             style: 'center',
-            minWidth: '90',
+            minWidth: '100',
           } , {
             label: '操作',
             style: 'center',
-            minWidth: '120',
+            minWidth: '150',
             render: (h, params) => {
               let btns = [];
               btns.push(this.getOpBtn(h, '编辑', 'primary', () => {
@@ -112,14 +102,14 @@
       search() {
         let that = this;
         this.axiosHelper.get(
-          '/api/mis/user/student/getStudentList',
+          '/api/mis/user/admin/getAdminList',
           {params: that.searchValue}
         ).then(response => {
           this.dataTable = response.data.items;
           this.table.total = response.data.totalCount
         }).catch(error => {
           this.$message.error({
-            message: '失败'
+            message: '获取管理员信息失败'
           }, error)
         })
       },
@@ -131,8 +121,8 @@
       filterData() {
         this.searchValue.$offset = 0;
         // 跳转到第一页
-        if (this.$refs['student_table'] !== undefined) {
-          this.$refs['student_table'].currentPageToOne();
+        if (this.$refs['admin_table'] !== undefined) {
+          this.$refs['admin_table'].currentPageToOne();
         }
         this.search()
       },
@@ -142,7 +132,7 @@
         let params = {
           type
         };
-        this.$refs['student_model'].init(params);
+        this.$refs['admin_model'].init(params);
       },
       editMethod(row) {
         let data = Object.assign({}, row);
@@ -151,7 +141,7 @@
           type,
           row: data
         };
-        this.$refs['student_model'].init(params);
+        this.$refs['admin_model'].init(params);
       },
       select(selection) {
         this.delBtn = selection.length <= 0;
@@ -182,7 +172,7 @@
       },
       deleteMethod(params, _this) {
         _this.axiosHelper.delete(
-          '/api/mis/user/student/' + params
+          '/api/mis/user/admin/' + params
         ).then(response => {
           let status = response.status;
           if (status === 200) {
@@ -203,7 +193,7 @@
       }
     },
     mounted () {
-      this.table = this.$refs['student_table'];
+      this.table = this.$refs['admin_table'];
       this.search();
     }
   }

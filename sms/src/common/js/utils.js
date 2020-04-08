@@ -24,12 +24,13 @@ let util = function (Vue) {
         }
       }, text)
     };
-    Vue.prototype.getSelect = (h, value, input, arr, multiple, change, attrs, disabled) => {
+    Vue.prototype.getSelect = (h, value, input, arr, size, multiple, change, attrs, disabled) => {
       return h('el-select', {
         props: {
           value: value,
           multiple: multiple,
-          disabled: disabled
+          disabled: disabled,
+          size: size || ''
         },
         on: {
           input: (value) => {

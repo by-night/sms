@@ -98,8 +98,8 @@
             </if>
         </trim>
         <where>
-            <if test="username != null and username != ''">
-                username = #{username}
+            <if test="id != null and id != ''">
+                id = #{id}
             </if>
         </where>
     </update>
@@ -153,6 +153,14 @@
         SELECT
         *
         FROM admin
+        <where>
+            id = #{id}
+        </where>
+    </select>
+    <select id="getStudentById" resultMap="BaseUserMap" parameterType="string">
+        SELECT
+        *
+        FROM student
         <where>
             id = #{id}
         </where>

@@ -19,11 +19,12 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/api/mis/user/admin")
-public class AdminController {@Autowired
-private AdminService adminService;
+public class AdminController {
+  @Autowired
+  private AdminService adminService;
 
   @PostMapping
-  public void addStudent(@RequestBody User user) {
+  public void addAdmin(@RequestBody User user) {
     adminService.add(user);
   }
 
@@ -37,6 +38,7 @@ private AdminService adminService;
   public void update(@RequestBody User user) {
     adminService.update(user);
   }
+
   @GetMapping("/getAdminList")
   public PagingResult<User> getAdminList (@RequestParam Map<String, Object> condition,
                                             @RequestParam(required = false, name = "$limit", defaultValue = "10") Integer limit,

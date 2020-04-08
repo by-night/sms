@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.WeekCourse.WeekCourseMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.domain.WeekCourse" >
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="monday" property="monday" jdbcType="VARCHAR" />
+        <result column="tuesday" property="tuesday" jdbcType="VARCHAR" />
+        <result column="wednesday" property="wednesday" jdbcType="VARCHAR" />
+        <result column="thursday" property="thursday" jdbcType="VARCHAR" />
+        <result column="friday" property="friday" jdbcType="VARCHAR" />
+        <result column="saturday" property="saturday" jdbcType="VARCHAR" />
+        <result column="sunday" property="sunday" jdbcType="VARCHAR" />
+    </resultMap>
+    <insert id="add" parameterType="com.zjh.sms.dto.Timetable">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+            select LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO week
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="monday != null and monday != ''">monday,</if>
+            <if test="tuesday != null and tuesday != ''">tuesday,</if>
+            <if test="wednesday != null and wednesday != ''">wednesday,</if>
+            <if test="thursday != null and thursday != ''">thursday,</if>
+            <if test="friday != null and friday != ''">friday,</if>
+            <if test="saturday != null and saturday != ''">saturday,</if>
+            <if test="sunday != null and sunday != ''">sunday,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="monday != null and monday != ''">#{monday},</if>
+            <if test="tuesday != null and tuesday != ''">#{tuesday},</if>
+            <if test="wednesday != null and wednesday != ''">#{wednesday},</if>
+            <if test="thursday != null and thursday != ''">#{thursday},</if>
+            <if test="friday != null and friday != ''">#{friday},</if>
+            <if test="saturday != null and saturday != ''">#{saturday},</if>
+            <if test="sunday != null and sunday != ''">#{sunday},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.zjh.sms.domain.WeekCourse">
+        UPDATE week
+        <trim prefix="set" suffixOverrides=",">
+            <if test="monday != null and monday != ''">
+                monday = #{monday},
+            </if>
+            <if test="tuesday != null and tuesday != ''">
+                tuesday = #{tuesday},
+            </if>
+            <if test="wednesday != null and wednesday != ''">
+                wednesday = #{wednesday},
+            </if>
+            <if test="thursday != null and thursday != ''">
+                thursday = #{thursday},
+            </if>
+            <if test="friday != null and friday != ''">
+                friday = #{friday},
+            </if>
+            <if test="saturday != null and saturday != ''">
+                saturday = #{saturday},
+            </if>
+            <if test="sunday != null and sunday != ''">
+                sunday = #{sunday},
+            </if>
+        </trim>
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <select id="getWeekCourse" parameterType="map" resultMap="BaseUserMap">
+        select
+            a.*
+        from
+            week a
+        left join timetable b
+        on a.id = b.week_id
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                AND b.profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND b.grade = #{condition.grade}
+            </if>
+        </where>
+    </select>
+</mapper>
+

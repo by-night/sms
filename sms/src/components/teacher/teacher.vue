@@ -143,10 +143,11 @@
         this.$refs['teacher_model'].init(params);
       },
       editMethod(row) {
+        let data = Object.assign({}, row);
         let type = 'edit';
         let params = {
           type,
-          row
+          row: data
         };
         this.$refs['teacher_model'].init(params);
       },

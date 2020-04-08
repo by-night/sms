@@ -76,11 +76,19 @@ public interface StudentMapper {
    */
   Integer checkCodeCount(@Param("condition") Map<String, Object> condition);
   /**
-   * description:
+   * description: 根据id获取管理员信息
    * @param:
    * return:
    * Author: zjh
    * @Date: 2020/3/30 23:43
    */
   User getUserById(@Param("id") String id);
+  /**
+  * description: 根据id获取学生信息
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/7 21:13
+  */
+  User getStudentById(@Param("id") String id);
 }

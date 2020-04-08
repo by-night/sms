@@ -48,6 +48,11 @@ export default {
       // 初始化导航栏宽度
       let collapseWidth = document.getElementsByClassName("asideWidth")[0];
       collapseWidth.style.width = '240px';
+      let collapseInfo = {
+        state: this.collapse,
+        width: collapseWidth.style.width
+      };
+      this.$store.commit('SAVE_COLLAPSE', collapseInfo)
     },
     components: {
         Aside, Header, Tabs

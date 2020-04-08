@@ -5,8 +5,8 @@
       <el-button @click="batchMethod" type="info" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">批量编辑</el-button>
       <el-button @click="addEntry" type="primary" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">成绩录入</el-button>
       <el-button @click="exportMethod" type="success" :disabled="dataTable.length <= 0" size="small" style="margin-bottom: 15px">导出</el-button>
-      <transition>
-        <div v-if="show" style="background-color: white;height: 90px;;box-sizing: border-box">
+      <el-collapse-transition>
+        <div v-if="show" style="background-color: white;height: 100px;;box-sizing: border-box">
           <el-form ref="form" :model="form" label-width="80px">
             <el-row>
               <el-col :span="8">
@@ -32,13 +32,13 @@
               </el-col>
             </el-row>
           </el-form>
-          <div style="float: right;margin: -5px 40px 10px 0">
+          <div style="margin: -5px 0px 10px 77%">
             <el-button type="primary" @click="clickAndClose" size="small" style="margin-right: 10px">确定并关闭</el-button>
             <el-button type="primary" @click="clickSure" size="small" style="margin-right: 10px">确定</el-button>
             <el-button size="small" @click="cancel">取消</el-button>
           </div>
         </div>
-      </transition>
+      </el-collapse-transition>
       <VmBaseTable
         :setTableHigh="true"
         ref="score_table"
@@ -388,7 +388,7 @@
         if (this.userInfo.level === 2) {
           return '72vh'
         } else {
-          return this.show ? '53vh' : '66vh'
+          return this.show ? '52vh' : '66vh'
         }
       }
     }

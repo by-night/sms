@@ -6,10 +6,11 @@
           <el-table
             ref = "refTable"
             :data="data"
-            :header-cell-style="{background:'#EDF1F4'}"
+            :header-cell-style="headerStyle"
+            :row-style="rowStyle"
             :cell-style="{fontSize:'14px'}"
             :highlight-current-row="rowLight"
-            stripe
+            :stripe="!stripe"
             @sort-change = "sortChange"
             @selection-change="selectChange"
             @row-click="rowClick"
@@ -48,7 +49,7 @@
             ref = "refTable"
             :data="data"
             row-key="id"
-            stripe
+            :stripe="!stripe"
             default-expand-all
             :tree-props="{children: 'children'}"
             @sort-change = "sortChange"
@@ -56,7 +57,8 @@
             :highlight-current-row="rowLight"
             @row-click="rowClick"
             style="width:100%;"
-            :header-cell-style="{background:'#EDF1F4'}"
+            :header-cell-style="headerStyle"
+            :row-style="rowStyle"
             class="table-base-table">
             <el-table-column v-if="showCheck===true" type="selection" style="width: 50px;" align="center" :selectable="selectable">
             </el-table-column>
@@ -136,6 +138,20 @@
       'ex-slot': exSlot
     },
     props: {
+      // 表头样式
+      headerStyle: {
+        type: Object,
+        default: {background:'#EDF1F4'}
+      },
+      // 表格行的样式
+      rowStyle: {
+        type: Object,
+        default: {}
+      },
+      stripe: {
+        type: Boolean,
+        default: false
+      },
       // 表格选中框是否可勾选
       selectable: {
         type: Function,
@@ -306,6 +322,12 @@
           this.$refs['refTable'].doLayout();
         })
       })
+    },
+    watch: {
+      data () {
+        // 解决表格错位问题
+        this.$refs.refTable.$el.style.width = '99.99%'
+      }
     }
   }
 </script>

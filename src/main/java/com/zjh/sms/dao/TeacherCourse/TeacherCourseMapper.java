@@ -60,4 +60,12 @@ public interface TeacherCourseMapper {
    * @Date: 2020/4/4 20:54
    */
   List<TeacherCourse> getGradeInfoByMap(@Param("condition") Map<String, Object> condition);
+  /**
+  * description:
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/7 16:17
+  */
+  String getTeacherId(@Param("condition") Map<String, Object> condition);
 }

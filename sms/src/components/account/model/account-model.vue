@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag :title="title" :visible.sync="dialog" :close-on-click-modal=false append-to-body width="500px">
+  <el-dialog v-dialogDrag title="修改" :visible.sync="dialog" :close-on-click-modal=false append-to-body width="500px">
     <el-form ref="form" :model="form" :rules="rules">
       <el-form-item label="用户名：" prop="username" :label-width="formLabelWidth">
         <el-input v-model="form.username" maxlength="15" clearable></el-input>
@@ -12,8 +12,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer">
-      <el-button type="primary" @click="click('form')">确定</el-button>
-      <el-button @click="cancel">取消</el-button>
+      <el-button type="primary" @click="click('form')" size="small">确定</el-button>
+      <el-button @click="cancel" size="small">取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -27,7 +27,6 @@
         dialog: false,
         identity: '',
         type: '',
-        title: '',
         form: {
           username: '',
           password: '',
@@ -53,12 +52,7 @@
         this.clearForm();
         this.identity = obj.identity;
         this.type = obj.type;
-        if (obj.type === 'add') {
-          this.title = '新增';
-        } else if (obj.type === 'edit') {
-          this.title = '修改';
-          this.form = obj.row
-        }
+        this.form = obj.row;
         this.dialog = true;
       },
       clearForm () {
@@ -88,26 +82,7 @@
         })
       },
       clickMethod (src) {
-        if (this.type === 'add') {
-          this.addMethod(src);
-        } else if (this.type === 'edit') {
-          this.editMethod(src);
-        }
-      },
-      addMethod (src) {
-        this.axiosHelper.post(
-          src, this.form).then(() => {
-          this.$message.success({
-            message: '新增成功'
-          });
-          this.dialog = false;
-          this.$emit('search')
-        }).catch(() => {
-          this.$message.error({
-            message: '新增失败'
-          });
-          this.dialog = false;
-        });
+        this.editMethod(src);
       },
       editMethod (src) {
         this.axiosHelper.put(

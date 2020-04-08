@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.Timetable.TimetableMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.dto.Timetable" >
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="week_id" property="weekId" jdbcType="INTEGER" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
+        <result column="grade" property="grade" jdbcType="VARCHAR" />
+    </resultMap>
+    <insert id="add" parameterType="com.zjh.sms.dto.Timetable">
+        INSERT INTO timetable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="weekId != null and weekId != ''">week_id,</if>
+            <if test="profession != null and profession != ''">profession,</if>
+            <if test="grade != null and grade != ''">grade,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="weekId != null and weekId != ''">#{weekId},</if>
+            <if test="profession != null and profession != ''">#{profession},</if>
+            <if test="grade != null and grade != ''">#{grade},</if>
+        </trim>
+    </insert>
+
+    <select id="getTimetable" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+            *
+        FROM timetable
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND grade = #{condition.grade}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteTimeTable" parameterType="map">
+        DELETE FROM
+            timetable
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND grade = #{condition.grade}
+            </if>
+        </where>
+    </delete>
+    <select id="checkCount" resultType="int" parameterType="map">
+        select count(0) from timetable
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND grade = #{condition.grade}
+            </if>
+        </where>
+    </select>
+</mapper>
+

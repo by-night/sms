@@ -11,7 +11,7 @@
             <el-dropdown trigger="click" v-if="dealCookie.length > 0">
               <el-input v-model="form.username" maxlength="15" @keyup.enter.native="loginDone('form')"
                 style="width: 300px" clearable autofocus placeholder="请输入账号"></el-input>
-
+              <!--用户登录过的账号-->
                <el-dropdown-menu :style="{width: '300px', marginLeft: '50px', height: dealCookie.length < 3 ? `${dealCookie.length*50}px`:'100px'}" slot="dropdown">
                 <el-scrollbar style="height:100%;" wrapStyle="overflow-x:hidden;padding-right:12px;" viewStyle="">
                   <el-dropdown-item v-for="cookies in dealCookie" :key="cookies.username" @click.native="clickCookies(cookies)" style="height: 50px">
