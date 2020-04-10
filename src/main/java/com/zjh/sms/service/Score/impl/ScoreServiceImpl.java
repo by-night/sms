@@ -68,7 +68,7 @@ public class ScoreServiceImpl implements ScoreService {
       // 取两位有效数字
       double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
       String point = scoreByUser > 59 ? String.valueOf(f1):"0";
-      String credits = scoreByUser >= score.getScore()*0.6 ? score.getCreditsByUser() : "0.00";
+      String credits = scoreByUser >= score.getScore()*0.6 ? score.getCredits() : "0.00";
       score.setPointByUser(point);
       score.setCreditsByUser(credits);
 
@@ -127,41 +127,45 @@ public class ScoreServiceImpl implements ScoreService {
   }
 
   private List<Map<String, Object>> dealScore(List<Course> courseList) {
-    Map<String, Object> failCondition = new HashMap<>();
-    Map<String, Object> passCondition = new HashMap<>();
-    Map<String, Object> goodCondition = new HashMap<>();
-    int fail = 0;
-    int pass = 0;
-    int good = 0;
-    for (Course course : courseList) {
-      if (course.getScoreByUser() != null) {
-        double scoreFull = course.getScore()/100;
-        double score = Double.parseDouble(course.getScoreByUser())*scoreFull;
-        if (score < 60) {
-          fail++;
-        } else if (score < 85) {
-          pass++;
-        } else {
-          good++;
+    if (courseList.size() > 0) {
+      Map<String, Object> failCondition = new HashMap<>();
+      Map<String, Object> passCondition = new HashMap<>();
+      Map<String, Object> goodCondition = new HashMap<>();
+      int fail = 0;
+      int pass = 0;
+      int good = 0;
+      for (Course course : courseList) {
+        if (course.getScoreByUser() != null) {
+          double scoreFull = course.getScore() / 100;
+          double score = Double.parseDouble(course.getScoreByUser()) * scoreFull;
+          if (score < 60) {
+            fail++;
+          } else if (score < 85) {
+            pass++;
+          } else {
+            good++;
+          }
         }
       }
+      int passLine = (int) (courseList.get(0).getScore() * 0.6);
+      int goodLine = (int) (courseList.get(0).getScore() * 0.85);
+      int FullLine = courseList.get(0).getScore();
+      String failLabel = "不及格(" + "0-" + (passLine - 1) + ")";
+      String passLabel = "及格(" + passLine + "-" + (goodLine - 1) + ")";
+      String goodLabel = "优秀(" + goodLine + "-" + FullLine + ")";
+      failCondition.put("label", failLabel);
+      failCondition.put("value", fail);
+      passCondition.put("label", passLabel);
+      passCondition.put("value", pass);
+      goodCondition.put("label", goodLabel);
+      goodCondition.put("value", good);
+      List<Map<String, Object>> list = new ArrayList<>();
+      list.add(goodCondition);
+      list.add(passCondition);
+      list.add(failCondition);
+      return list;
+    } else {
+      return new ArrayList<>();
     }
-    int passLine = (int) (courseList.get(0).getScore()*0.6);
-    int goodLine = (int) (courseList.get(0).getScore()*0.85);
-    int FullLine = courseList.get(0).getScore();
-    String failLabel = "不及格(" + "0-" + (passLine-1) + ")";
-    String passLabel = "及格(" + passLine + "-" + (goodLine-1) + ")";
-    String goodLabel = "优秀(" + goodLine + "-" + FullLine + ")";
-    failCondition.put("label", failLabel);
-    failCondition.put("value", fail);
-    passCondition.put("label", passLabel);
-    passCondition.put("value", pass);
-    goodCondition.put("label", goodLabel);
-    goodCondition.put("value", good);
-    List<Map<String, Object>> list = new ArrayList<>();
-    list.add(goodCondition);
-    list.add(passCondition);
-    list.add(failCondition);
-    return list;
   }
 }

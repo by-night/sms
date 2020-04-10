@@ -31,4 +31,12 @@ public class Timetable {
    * 班级
    */
   private String grade;
+  /**
+   * 学年
+   */
+  private Integer year;
+  /**
+   * 学期
+   */
+  private Integer term;
 }

@@ -43,6 +43,10 @@ public class Score {
    */
   private Integer score;
   /**
+   * 学分
+   */
+  private String credits;
+  /**
    * 学期
    */
   private Integer term;

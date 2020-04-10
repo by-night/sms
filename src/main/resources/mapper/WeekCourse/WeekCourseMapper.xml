@@ -85,6 +85,12 @@
             <if test="condition.grade != null and condition.grade != ''">
                 AND b.grade = #{condition.grade}
             </if>
+            <if test="condition.year != null and condition.year != ''">
+                AND year = #{condition.year}
+            </if>
+            <if test="condition.term != null and condition.term != ''">
+                AND term = #{condition.term}
+            </if>
         </where>
     </select>
 </mapper>

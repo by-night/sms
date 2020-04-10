@@ -7,11 +7,16 @@
     <resultMap id="BaseUserMap" type="com.zjh.sms.domain.TeacherCourse" >
         <result column="id" property="id" jdbcType="INTEGER" />
         <result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
+        <result column="course_id" property="courseId" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="profession" property="profession" jdbcType="VARCHAR" />
         <result column="grade" property="grade" jdbcType="VARCHAR" />
         <result column="term" property="term" jdbcType="INTEGER" />
+        <result column="number" property="number" jdbcType="INTEGER" />
+        <result column="real_name" property="realName" jdbcType="INTEGER" />
+        <result column="credits" property="credits" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
     </resultMap>
 
     <insert id="add" parameterType="com.zjh.sms.domain.TeacherCourse">
@@ -23,6 +28,7 @@
             <if test="profession != null and profession != ''">profession,</if>
             <if test="grade != null and grade != ''">grade,</if>
             <if test="term != null and term != ''">term,</if>
+            <if test="courseId != null and courseId != ''">course_id,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="teacherId != null and teacherId != ''">#{teacherId},</if>
@@ -31,6 +37,7 @@
             <if test="profession != null and profession != ''">#{profession},</if>
             <if test="grade != null and grade != ''">#{grade},</if>
             <if test="term != null and term != ''">#{term},</if>
+            <if test="courseId != null and courseId != ''">#{courseId},</if>
         </trim>
     </insert>
     <delete id="delete" parameterType="map">
@@ -111,5 +118,33 @@
             </if>
         </where>
     </select>
+    <select id="getCourseInfo" parameterType="map" resultMap="BaseUserMap">
+        SELECT
+            a.*,
+            b.number,
+            b.credits,
+            b.type,
+            c.real_name
+        FROM teacher_course a
+        left join course b
+        on a.course_id = b.id
+        left join teacher c
+        on a.teacher_id = c.id
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                AND a.profession = #{condition.profession}
+            </if>
+            <if test="condition.grade != null and condition.grade != ''">
+                AND a.grade = #{condition.grade}
+            </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND a.name = #{condition.courseName}
+            </if>
+            <if test="condition.teacherId != null and condition.teacherId != ''">
+                AND a.teacher_id = #{condition.teacherId}
+            </if>
+        </where>
+    </select>
+
 </mapper>
 

@@ -232,6 +232,7 @@
         this.axiosHelper.get(
           '/api/sms/score/getCourseList',
           {params: obj}).then(response => {
+            console.log(response)
           this.dataTable = response.data.items;
           this.table.total = response.data.totalCount;
         }).catch(error => {

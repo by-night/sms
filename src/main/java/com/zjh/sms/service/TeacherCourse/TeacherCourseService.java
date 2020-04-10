@@ -68,4 +68,12 @@ public interface TeacherCourseService {
   * @Date: 2020/4/5 0:16
   */
   List<Map<String, Object>> getProfessionInfoByAdmin();
+  /**
+  * description: 课程表中获取课程详细信息
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/9 17:29
+  */
+  TeacherCourse getCourseInfo(Map<String, Object> condition);
 }

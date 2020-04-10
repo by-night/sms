@@ -41,4 +41,24 @@ public class TeacherCourse {
    * 学期
    */
   private Integer term;
+  /**
+   * 节数
+   */
+  private Integer number;
+  /**
+   * 教师姓名
+   */
+  private String realName;
+  /**
+   * 课程id
+   */
+  private String courseId;
+  /**
+   * 学分
+   */
+  private String credits;
+  /**
+   * 类型
+   */
+  private Integer type;
 }

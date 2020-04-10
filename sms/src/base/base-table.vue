@@ -141,12 +141,16 @@
       // 表头样式
       headerStyle: {
         type: Object,
-        default: {background:'#EDF1F4'}
+        default:  () => {
+          return {background:'#EDF1F4'};
+        }
       },
       // 表格行的样式
       rowStyle: {
         type: Object,
-        default: {}
+        default: () => {
+          return {};
+        }
       },
       stripe: {
         type: Boolean,

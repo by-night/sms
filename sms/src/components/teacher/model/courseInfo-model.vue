@@ -52,7 +52,7 @@ export default {
               if (this.showInput === params.row.id) {
                 return this.getSelect(h, params.row.profession, (value) => {
                   this.$set(params.row, 'profession', value);
-                }, this.professionArr, false, (value) => {
+                }, this.professionArr, '', false, (value) => {
                   params.row.grade = '';
                   params.row.name = '';
                   this.getCourse(value, params.row.term);
@@ -94,7 +94,7 @@ export default {
               if (this.showInput === params.row.id) {
                 return this.getSelect(h, params.row.term, (value) => {
                   this.$set(params.row, 'term', value);
-                }, this.termArr, false, (value) => {
+                }, this.termArr, '', false, (value) => {
                   params.row.name = '';
                   let profession = params.row.profession;
                   if (profession !== '') {
@@ -113,13 +113,13 @@ export default {
             }
           } , {
             label: '课程',
-            prop: 'name',
+            prop: 'courseId',
             style: 'center',
             minWidth: '100',
             render: (h, params) => {
               if (this.showInput === params.row.id) {
-                return this.getSelect(h, params.row.name, (value) => {
-                  this.$set(params.row, 'name', value);
+                return this.getSelect(h, params.row.courseId, (value) => {
+                  this.$set(params.row, 'courseId', value);
                 }, this.courseArr)
               } else {
                 return h('div', {}, params.row.name)
@@ -184,7 +184,7 @@ export default {
           response => {
             let course = response.data;
             this.courseArr = course.map(data => {
-              return {label: data.name, value: data.name}
+              return {label: data.name, value: data.id}
             });
           });
       },
@@ -196,7 +196,7 @@ export default {
       },
       click () {
         const flag = this.dataTable.every(data => {
-          return data.name !== '' && data.profession !== '' && data.grade !== ''
+          return data.courseId !== '' && data.profession !== '' && data.grade !== ''
         });
         if (flag) {
           this.axiosHelper.post('/api/sms/teacher/course', this.dataTable).then(
@@ -205,7 +205,12 @@ export default {
                 message: '任课信息录入成功'
               });
               this.dialog = false;
+            }).catch(() => {
+            this.$message.error({
+              message: '任课信息录入失败'
             });
+            this.dialog = false;
+          });
         } else {
           this.$message.warning({
             message: '存在未填项'

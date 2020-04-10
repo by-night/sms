@@ -43,6 +43,8 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
       teacherCourseMapper.delete(ids);
     }
     for (TeacherCourse teacherCourse : list) {
+      Course course = courseMapper.getCourseById(teacherCourse.getCourseId());
+      teacherCourse.setName(course.getName());
       teacherCourseMapper.add(teacherCourse);
     }
   }
@@ -115,5 +117,10 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
       arr.add(condition);
     }
     return arr;
+  }
+
+  @Override
+  public TeacherCourse getCourseInfo(Map<String, Object> condition) {
+    return teacherCourseMapper.getCourseInfo(condition);
   }
 }

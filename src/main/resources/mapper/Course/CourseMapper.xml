@@ -114,6 +114,17 @@
             <if test="condition.term != null and condition.term != ''">
                 AND term  = #{condition.term}
             </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND name  = #{condition.courseName}
+            </if>
+        </where>
+    </select>
+    <select id="getCourseById" resultMap="BaseUserMap" parameterType="string">
+        SELECT
+        *
+        FROM course
+        <where>
+            id = #{courseId}
         </where>
     </select>
 </mapper>

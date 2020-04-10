@@ -68,4 +68,12 @@ public interface TeacherCourseMapper {
   * @Date: 2020/4/7 16:17
   */
   String getTeacherId(@Param("condition") Map<String, Object> condition);
+  /**
+  * description: 课程表中获取课程详细信息
+  * @param:
+  * return:
+  * Author: zjh
+  * @Date: 2020/4/9 17:31
+  */
+  TeacherCourse getCourseInfo(@Param("condition") Map<String, Object> condition);
 }

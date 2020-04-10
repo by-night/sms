@@ -1,29 +1,62 @@
 <template>
   <el-card style="margin: 10px;padding: 15px 10px 10px 10px;height: 78vh">
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-row v-if="userInfo.level === 0">
-        <el-col :span="8">
-          <el-form-item label="专业：" prop="profession">
-            <el-select v-model="form.professionObj" style="width: 100%" @change="professionChange" value-key="profession">
-              <el-option v-for="item in classArr" :key="item.profession" :label="item.profession" :value="item"></el-option>
+    <el-button @click="change" size="small" style="margin-bottom: 15px" v-if="this.userInfo.level === 0">筛选</el-button>
+    <el-button type="success" size="small" @click="click" v-if="this.userInfo.level === 0"
+                 :disabled="form.grade === '' || form.year === '' || form.term === ''">录入</el-button>
+    <el-button type="danger" size="small" @click="empty" v-if="this.userInfo.level === 0">清空</el-button>
+    <el-collapse-transition>
+      <el-form ref="form" :model="form" label-width="80px" v-if="show">
+        <el-row>
+          <el-col :span="6" v-if="userInfo.level === 0">
+            <el-form-item label="专业：" prop="profession">
+              <el-select v-model="form.professionObj" style="width: 90%" @change="professionChange" value-key="profession">
+                <el-option v-for="item in classArr" :key="item.profession" :label="item.profession" :value="item"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" v-if="userInfo.level === 0">
+            <el-form-item label="班级：" prop="grade">
+              <el-select v-model="form.grade" @change="gradeChange" style="width: 90%">
+                <el-option v-for="item in gradeArr" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="学年：">
+              <el-select v-model="form.year" style="width: 90%" @change="gradeChange">
+                <el-option v-for="item in yearArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="学期：">
+              <el-select v-model="form.term" style="width: 90%" @change="termChange">
+                <el-option v-for="item in termArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-collapse-transition>
+    <el-form ref="form" :model="form" label-width="80px" v-if="userInfo.level === 2">
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="学年：">
+            <el-select v-model="form.year" style="width: 90%" @change="getTimetableByStudent">
+              <el-option v-for="item in yearArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
-          <el-form-item label="班级：" prop="grade">
-            <el-select v-model="form.grade" @change="gradeChange" style="width: 100%">
-              <el-option v-for="item in gradeArr" :key="item" :label="item" :value="item"></el-option>
+        <el-col :span="6">
+          <el-form-item label="学期：">
+            <el-select v-model="form.term" style="width: 90%" @change="getTimetableByStudent">
+              <el-option v-for="item in termArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-form-item>
-            <el-button type="success" size="small" @click="click" :disabled="this.form.grade === ''">&#12288录入&#12288</el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <div :style="userInfo.level === 0 ? {} : {marginTop: '50px'}">
+    <div :style="userInfo.level === 1 ? {marginTop: '30px'} : {}">
       <VmBaseTable
         :setTableHigh="true"
         ref="time_table"
@@ -37,27 +70,38 @@
         rowLight
       ></VmBaseTable>
     </div>
+    <VmTimetable ref="timetable_model"></VmTimetable>
   </el-card>
 </template>
 
 <script>
+  import VmTimetable from './model/timetable-model'
   import VmBaseTable from '../../base/base-table'
   export default {
     name: "timetable",
     components: {
-      VmBaseTable
+      VmBaseTable, VmTimetable
     },
     data () {
       return {
+        show: false,
         courseArr: [],
         gradeArr: [],
         classArr: [],
+        termArr: [{
+          label: '上',
+          value: 1
+        },{
+          label: '下',
+          value: 2
+        }],
         professionArr: [],
         form: {
           profession: '',
           grade: '',
-          term: '',
-          courseName: ''
+          courseName: '',
+          year: '',
+          term: ''
         },
         table: null,
         searchValue: {
@@ -69,6 +113,7 @@
         rowStyle: {backgroundColor: '#eaf2ff'},
         userInfo: {},
         dataTable: [],
+        yearArr: [],
         dataColumns: [
           {
             label: '时间',
@@ -88,10 +133,16 @@
               if (this.userInfo.level === 0) {
                 return this.getSelect(h, params.row.monday, (value) => {
                   this.$set(params.row, 'monday', value);
-                }, this.courseArr, 'small')
+                }, this.courseArr, 'small', '', '', '', true)
               } else {
                 let monday = params.row.monday || '一';
-                return h('div', {}, monday)
+                if (monday === '一') {
+                  return h('div', {}, monday)
+                } else {
+                  return this.getLink(h, monday, () => {
+                    this.clickCourse(monday);
+                  })
+                }
               }
             }
           } , {
@@ -103,10 +154,16 @@
               if (this.userInfo.level === 0) {
                 return this.getSelect(h, params.row.tuesday, (value) => {
                   this.$set(params.row, 'tuesday', value);
-                }, this.courseArr, 'small')
+                }, this.courseArr, 'small', '', '', '', true)
               } else {
                 let tuesday = params.row.tuesday || '一';
-                return h('div', {}, tuesday)
+                if (tuesday === '一') {
+                  return h('div', {}, tuesday)
+                } else {
+                  return this.getLink(h, tuesday, () => {
+                    this.clickCourse(tuesday);
+                  })
+                }
               }
             }
           } , {
@@ -118,10 +175,16 @@
               if (this.userInfo.level === 0) {
                 return this.getSelect(h, params.row.wednesday, (value) => {
                   this.$set(params.row, 'wednesday', value);
-                }, this.courseArr, 'small')
+                }, this.courseArr, 'small', '', '', '', true)
               } else {
                 let wednesday = params.row.wednesday || '一';
-                return h('div', {}, wednesday)
+                if (wednesday === '一') {
+                  return h('div', {}, wednesday)
+                } else {
+                  return this.getLink(h, wednesday, () => {
+                    this.clickCourse(wednesday);
+                  })
+                }
               }
             }
           }, {
@@ -133,10 +196,16 @@
               if (this.userInfo.level === 0) {
                 return this.getSelect(h, params.row.thursday, (value) => {
                   this.$set(params.row, 'thursday', value);
-                }, this.courseArr, 'small')
+                }, this.courseArr, 'small', '', '', '', true)
               } else {
                 let thursday = params.row.thursday || '一';
-                return h('div', {}, thursday)
+                if (thursday === '一') {
+                  return h('div', {}, thursday)
+                } else {
+                  return this.getLink(h, thursday, () => {
+                    this.clickCourse(thursday);
+                  })
+                }
               }
             }
           } , {
@@ -148,10 +217,16 @@
               if (this.userInfo.level === 0) {
                 return this.getSelect(h, params.row.friday, (value) => {
                   this.$set(params.row, 'friday', value);
-                }, this.courseArr, 'small')
+                }, this.courseArr, 'small', '', '', '', true)
               } else {
                 let friday = params.row.friday || '一';
-                return h('div', {}, friday)
+                if (friday === '一') {
+                  return h('div', {}, friday)
+                } else {
+                  return this.getLink(h, friday, () => {
+                    this.clickCourse(friday);
+                  })
+                }
               }
             }
           } , {
@@ -163,10 +238,16 @@
               if (this.userInfo.level === 0) {
                 return this.getSelect(h, params.row.saturday, (value) => {
                   this.$set(params.row, 'saturday', value);
-                }, this.courseArr, 'small')
+                }, this.courseArr, 'small', '', '', '', true)
               } else {
                 let saturday = params.row.saturday || '一';
-                return h('div', {}, saturday)
+                if (saturday === '一') {
+                  return h('div', {}, saturday)
+                } else {
+                  return this.getLink(h, saturday, () => {
+                    this.clickCourse(saturday);
+                  })
+                }
               }
             }
           } , {
@@ -178,10 +259,16 @@
               if (this.userInfo.level === 0) {
                 return this.getSelect(h, params.row.sunday, (value) => {
                   this.$set(params.row, 'sunday', value);
-                }, this.courseArr, 'small')
+                }, this.courseArr, 'small', '', '', '', true)
               } else {
                 let sunday = params.row.sunday || '一';
-                return h('div', {}, sunday)
+                if (sunday === '一') {
+                  return h('div', {}, sunday)
+                } else {
+                  return this.getLink(h, sunday, () => {
+                    this.clickCourse(sunday);
+                  })
+                }
               }
             }
           }
@@ -218,33 +305,49 @@
           return {label: item, value: item}
         });
       },
-      // 选择班级之后
       gradeChange () {
-        let obj = {
-          profession: this.form.profession,
-          grade: this.form.grade
-        };
-        this.axiosHelper.get(
-          '/api/sms/timetable/getTimetable', {params: obj}
+        if (this.form.grade !== '') {
+          let obj = {
+            profession: this.form.profession,
+            grade: this.form.grade,
+            year: this.form.year,
+            term: this.form.term
+          };
+          this.axiosHelper.get(
+            '/api/sms/timetable/getTimetable', {params: obj}
           ).then(response => {
-          let data = response.data;
-          for (let i = 0; i < this.section.length; i++) {
-            data[i].time = i;
-          }
-          this.dataTable = data;
-        }).catch(error => {
-          this.$message.error({
-            message: '获取课程表失败'
-          }, error)
-        });
+            let data = response.data;
+            for (let i = 0; i < this.section.length; i++) {
+              data[i].time = i;
+            }
+            this.dataTable = data;
+          }).catch(error => {
+            this.$message.error({
+              message: '获取课程表失败'
+            }, error)
+          });
+        }
+      },
+      termChange () {
       },
       click () {
         this.addTimetable();
+      },
+      change () {
+        this.show = !this.show;
+      },
+      empty () {
+        this.search();
+      },
+      clickCourse (data) {
+        this.$refs.timetable_model.init(data);
       },
       addTimetable () {
         this.dataTable = this.dataTable.map(data => {
           data.profession = this.form.profession;
           data.grade = this.form.grade;
+          data.year = this.form.year;
+          data.term = this.form.term;
           return data;
         });
         this.axiosHelper.post(
@@ -262,7 +365,9 @@
       },
       getTimetableByStudent () {
         let obj = {
-          studentName: this.userInfo.id
+          studentName: this.userInfo.id,
+          year: this.form.year,
+          term: this.form.term
         };
         this.axiosHelper.get(
           '/api/sms/timetable/getTimetableByStudent', {params: obj}
@@ -273,6 +378,8 @@
               data[i].time = i;
             }
             this.dataTable = data;
+          } else {
+            this.search();
           }
         }).catch(error => {
           this.$message.error({
@@ -299,14 +406,60 @@
             message: '获取课程表失败'
           }, error)
         });
+      },
+      getYearArrByAdmin () {
+        let now = new Date().getFullYear();
+        let old = 2016;
+        for (let i = old; i < now + 1; i++) {
+          this.yearArr.push({label: i, value: i});
+        }
+        this.getDefault();
+      },
+      getYearArr () {
+        let now = new Date().getFullYear();
+        let old = parseInt(this.userInfo.admissionTime);
+        for (let i = old; i < now; i++) {
+          if (this.yearArr.length < 4) {
+            let num = i - old;
+            let obj = {};
+            switch (num) {
+              case 0:
+                obj = {label: '大一', value: i};
+                break;
+              case 1:
+                obj = {label: '大二', value: i};
+                break;
+              case 2:
+                obj = {label: '大三', value: i};
+                break;
+              case 3:
+                obj = {label: '大四', value: i};
+                break;
+            }
+            this.yearArr.push(obj);
+          }
+        }
+        this.getDefault();
+      },
+      getDefault () {
+        // 获取学年和学期的初始值
+        this.form.year = this.yearArr[this.yearArr.length-1].value;
+        let month = new Date().getMonth()+1;
+        if (month > 2 && month < 6) {
+          // 上学期
+          this.form.term = this.termArr[0].value;
+        } else {
+          // 下学期
+          this.form.term = this.termArr[1].value;
+        }
       }
     },
     computed: {
       tableHigh () {
         if (this.userInfo.level === 0) {
-          return '70vh';
+          return this.show ? '62vh' : '70vh';
         } else {
-          return '61vh'
+          return '70vh'
         }
       }
     },
@@ -314,9 +467,12 @@
       this.userInfo = JSON.parse(localStorage.userInfo);
       if (this.userInfo.level === 0) {
         this.getProfessionByAdmin();
+        this.getYearArrByAdmin();
       } else if (this.userInfo.level === 1) {
         this.getTimetableByTeacher();
+        this.getYearArrByAdmin();
       } else {
+        this.getYearArr();
         this.getTimetableByStudent();
       }
     },

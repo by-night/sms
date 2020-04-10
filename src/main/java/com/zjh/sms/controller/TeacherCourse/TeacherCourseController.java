@@ -58,4 +58,9 @@ public class TeacherCourseController {
   public List<Map<String, Object>> getProfessionInfoByAdmin() {
     return teacherCourseService.getProfessionInfoByAdmin();
   }
+
+  @GetMapping("/getCourseInfo")
+  public TeacherCourse getCourseInfo(@RequestParam Map<String, Object> condition) {
+    return teacherCourseService.getCourseInfo(condition);
+  }
 }

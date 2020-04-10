@@ -41,6 +41,8 @@ public class TimetableServiceImpl implements TimetableService {
     Map<String, Object> condition = new HashMap<>();
     condition.put("profession", list.get(0).getProfession());
     condition.put("grade", list.get(0).getGrade());
+    condition.put("year", list.get(0).getYear());
+    condition.put("term", list.get(0).getTerm());
     // 获取原本课程表信息
     List<Timetable> timeTableList = timetableMapper.getTimetable(condition);
     Set<Integer> ids = new HashSet<>();
@@ -64,15 +66,15 @@ public class TimetableServiceImpl implements TimetableService {
       // 删除旧课程表
       timetableMapper.deleteTimeTable(condition);
       // 新增
-      for (int i = 0; i < list.size(); i++) {
-        WeekCourse weekCourse = list.get(i);
+      for (WeekCourse weekCourse : list) {
         dealWeek(weekCourse);
-//        weekCourse.setIndex(i+1);
         weekCourseMapper.add(weekCourse);
         Timetable timetable = new Timetable();
         timetable.setWeekId(weekCourse.getId());
         timetable.setProfession(weekCourse.getProfession());
         timetable.setGrade(weekCourse.getGrade());
+        timetable.setYear(weekCourse.getYear());
+        timetable.setTerm(weekCourse.getTerm());
         timetableMapper.add(timetable);
       }
     }
@@ -123,6 +125,8 @@ public class TimetableServiceImpl implements TimetableService {
     Map<String, Object> map = new HashMap<>();
     map.put("profession", user.getProfession());
     map.put("grade", user.getGrade());
+    map.put("year", condition.get("year"));
+    map.put("term", condition.get("term"));
     return weekCourseMapper.getWeekCourse(map);
   }
 
@@ -141,6 +145,7 @@ public class TimetableServiceImpl implements TimetableService {
       Map<String, Object> map = new HashMap<>();
       map.put("profession", teacherCourse.getProfession());
       map.put("grade", teacherCourse.getGrade());
+      map.put("term", teacherCourse.getTerm());
       // 根据专业班级获取课程表
       List<WeekCourse> weekCourseList = weekCourseMapper.getWeekCourse(map);
       for (int i = 0; i < weekCourseList.size(); i++) {

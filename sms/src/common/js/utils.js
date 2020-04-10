@@ -2,7 +2,18 @@
     Message
 } from 'element-ui'
 let util = function (Vue) {
-
+    Vue.prototype.getLink = (h, text, click,) => {
+      return h('el-link', {
+        props: {
+          underline: false
+        },
+        on: {
+          click: () => {
+            click()
+          }
+        },
+      }, text)
+    };
     Vue.prototype.getOpBtn = (h, text, type, click, disabled, directives,color) => {
       //return h(" 定义的元素 "，{ 元素的性质 }，" 元素的内容"/[元素的内容])
       return h('el-button', {
@@ -24,12 +35,17 @@ let util = function (Vue) {
         }
       }, text)
     };
-    Vue.prototype.getSelect = (h, value, input, arr, size, multiple, change, attrs, disabled) => {
+    function empty (value) {
+      const flag = value === '' || value === undefined || value === null;
+      return !flag;
+    }
+    Vue.prototype.getSelect = (h, value, input, arr, size, multiple, change, attrs, clearable, disabled) => {
       return h('el-select', {
         props: {
           value: value,
-          multiple: multiple,
-          disabled: disabled,
+          multiple: empty(multiple),
+          disabled: empty(disabled),
+          clearable: empty(clearable),
           size: size || ''
         },
         on: {
