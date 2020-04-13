@@ -4,13 +4,13 @@ import login from '../components/login/login'
 import home from '../components/home'
 import score from '../components/score/score'
 import course from '../components/course/course'
-import registered from '../components/registered/index'
 import dashboard from '../components/dashboard/index'
 import account from '../components/account/account'
 import student from '../components/student/student'
 import teacher from '../components/teacher/teacher'
 import admin from '../components/admin/admin'
 import timetable from '../components/timetable/timetable'
+import analysis from '../components/analysis/analysis'
 
 // 导航栏点击点击多次报错警告处理
 const originalPush = Router.prototype.push;
@@ -44,11 +44,6 @@ export default new Router({
           meta: { requireAuth: true },
           component: score,
         }, {
-        //   path: '/point',
-        //   name: '绩点查询',
-        //   meta: { requireAuth: true },
-        //   component: point,
-        // }, {
           path: '/account',
           name: '账号管理',
           meta: { requireAuth: true, level: 0},
@@ -78,12 +73,13 @@ export default new Router({
           name: '课程表',
           meta: { requireAuth: true},
           component: timetable,
+        }, {
+          path: '/analysis',
+          name: '成绩详情',
+          meta: { requireAuth: true},
+          component: analysis,
         }
       ]
-    }, {
-      path: '/registered',
-      name: '注册',
-      component: registered
     }
   ]
 })

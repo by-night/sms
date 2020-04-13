@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 专业信息Service层
  * Author: zjh
  * Date2020/3/31 17:31
  **/

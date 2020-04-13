@@ -7,9 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author javen
+ * @author zjh
  * @date 2019/4/23 16:41
- * @description:
+ * @description: 分页工具类
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PagingResult<T> implements Iterable<T> {

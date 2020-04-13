@@ -2,7 +2,6 @@ package com.zjh.sms.controller.User;
 
 import com.zjh.sms.dto.User;
 import com.zjh.sms.service.User.AdminService;
-import com.zjh.sms.service.User.StudentService;
 import com.zjh.sms.utils.PagingResult;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 管理员账户控制层
  * Author: zjh
  * Date2020/3/28 11:05
  **/

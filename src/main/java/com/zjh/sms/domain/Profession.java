@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Description 专业
+ * Description 专业实体类
  * Author: zjh
  * Date2020/3/31 17:25
  **/

@@ -1,12 +1,11 @@
 package com.zjh.sms.dto;
 
-import com.alibaba.fastjson.JSONArray;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Description
+ * Description 课程表实体类
  * Author: zjh
  * Date2020/4/7 13:57
  **/

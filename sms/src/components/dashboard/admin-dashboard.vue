@@ -18,7 +18,7 @@
           <h2 class="distance" style="margin-bottom: 35px">{{userInfo.realName}}</h2>
           <div class="distance">
             <i class="el-icon-male" v-if="userInfo.sex === 0" title="性别"> {{sexName}}</i>
-            <i class="el-icon-female" v-else title="性别"> {{sexName}}</i>{{'&#12288'}}
+            <i class="el-icon-female" v-else title="性别"> {{sexName}}</i>{{'&#12288'}}{{'&#12288'}}
             <i class="el-icon-office-building" title="学校"> {{userInfo.school}}</i>
           </div>
           <div class="distance">

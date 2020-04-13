@@ -79,9 +79,6 @@
           {{loadingBtn}}
         </el-button>
       </el-form-item>
-      <div>
-        <el-link v-if="form.level === 2" @click="registered" class="registered" :underline="false">注册账号</el-link>
-      </div>
     </el-form>
   </div>
 </template>
@@ -222,9 +219,6 @@
                 });
               }
             },
-            registered() {
-              this.$router.push("/registered")
-            },
             // 获取本项目的所有cookies
             getCookies() {
               this.dealCookie = [];
@@ -336,10 +330,5 @@
     height: 50px;
     width: 35px;
     line-height: 50px;
-  }
-  .registered {
-    margin: -64px 0 0 6px;
-    color: #909399;
-    font-size: 14px;
   }
 </style>

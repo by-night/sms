@@ -1,8 +1,6 @@
 package com.zjh.sms.controller.Course;
 
-    import com.alibaba.fastjson.JSONArray;
     import com.zjh.sms.dto.Course;
-    import com.zjh.sms.dto.User;
     import com.zjh.sms.service.Course.CourseService;
     import com.zjh.sms.utils.PagingResult;
     import org.apache.ibatis.session.RowBounds;

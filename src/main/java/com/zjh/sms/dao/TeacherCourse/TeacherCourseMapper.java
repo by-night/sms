@@ -1,7 +1,6 @@
 package com.zjh.sms.dao.TeacherCourse;
 
 import com.zjh.sms.domain.TeacherCourse;
-import com.zjh.sms.dto.Course;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 教师课程Mapper层
  * Author: zjh
  * Date2020/3/29 15:13
  **/
@@ -45,9 +44,9 @@ public interface TeacherCourseMapper {
   void update(TeacherCourse teacherCourse);
 
   /**
-   * description:
-   * @param:
-   * return:
+   * description: 根据教师id获取教师课程信息
+   * @param: String
+   * return: List<TeacherCourse>
    * Author: zjh
    * @Date: 2020/3/29 14:33
    */
@@ -61,17 +60,17 @@ public interface TeacherCourseMapper {
    */
   List<TeacherCourse> getGradeInfoByMap(@Param("condition") Map<String, Object> condition);
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 根据专业、班级和课程名获取所授课的教师id
+  * @param: condition
+  * return: String
   * Author: zjh
   * @Date: 2020/4/7 16:17
   */
   String getTeacherId(@Param("condition") Map<String, Object> condition);
   /**
   * description: 课程表中获取课程详细信息
-  * @param:
-  * return:
+  * @param: condition
+  * return: TeacherCourse
   * Author: zjh
   * @Date: 2020/4/9 17:31
   */

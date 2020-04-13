@@ -1,17 +1,12 @@
 package com.zjh.sms.service.TeacherCourse;
 
 import com.zjh.sms.domain.TeacherCourse;
-import com.zjh.sms.dto.Course;
-import com.zjh.sms.dto.User;
-import com.zjh.sms.utils.PagingResult;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 教师课程Service层
  * Author: zjh
  * Date2020/3/29 15:09
  **/
@@ -45,33 +40,32 @@ public interface TeacherCourseService {
   void update(TeacherCourse teacherCourse);
 
   /**
-   * description:
-   * @param:
-   * return:
+   * description: 根据教师id获取教师课程信息
+   * @param: String
+   * return: List<TeacherCourse>
    * Author: zjh
    * @Date: 2020/3/29 14:31
    */
   List<TeacherCourse> getCourseListById(String id);
   /**
-  * description: 获取教师用户所管理的专业、班级、课程名等信息
-  * @param:
-  * return:
+  * description: 根据教师id获取教师用户所管理的专业、班级、课程名等信息
+  * @param: String
+  * return: List<Map<String, Object>>
   * Author: zjh
   * @Date: 2020/4/4 20:54
   */
   List<Map<String, Object>> getProfessionInfo(String teacherId);
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 管理员用户获取所有的班级和课程，渲染成下拉框选择
+  * return: List<Map<String, Object>>
   * Author: zjh
   * @Date: 2020/4/5 0:16
   */
   List<Map<String, Object>> getProfessionInfoByAdmin();
   /**
   * description: 课程表中获取课程详细信息
-  * @param:
-  * return:
+  * @param: Map<String, Object> condition
+  * return: TeacherCourse
   * Author: zjh
   * @Date: 2020/4/9 17:29
   */

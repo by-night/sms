@@ -3,11 +3,7 @@ package com.zjh.sms.controller.TeacherCourse;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zjh.sms.domain.TeacherCourse;
-import com.zjh.sms.dto.Course;
-import com.zjh.sms.service.Course.CourseService;
 import com.zjh.sms.service.TeacherCourse.TeacherCourseService;
-import com.zjh.sms.utils.PagingResult;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 教师课程控制层
  * Author: zjh
  * Date2020/3/29 15:03
  **/

@@ -1,16 +1,12 @@
 package com.zjh.sms.service.Timetable;
 
 import com.zjh.sms.domain.WeekCourse;
-import com.zjh.sms.dto.Timetable;
-import com.zjh.sms.dto.User;
-import com.zjh.sms.utils.PagingResult;
-import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 课程表Service层
  * Author: zjh
  * Date2020/4/7 14:03
  **/

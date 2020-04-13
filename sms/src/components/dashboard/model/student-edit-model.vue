@@ -3,13 +3,27 @@
     <el-form ref="form" :rules="rules" :model="form" label-width="90px">
       <el-row>
         <el-col :span="12">
+          <el-form-item label="学号：" :label-width="formLabelWidth">
+            <el-input v-model="form.id" disabled maxlength="15" clearable></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="姓名：" prop="realName" :label-width="formLabelWidth">
             <el-input v-model="form.realName" maxlength="15" clearable></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="学校：" prop="school" :label-width="formLabelWidth">
             <el-input v-model="form.school" disabled maxlength="15" clearable></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="性别：" :label-width="formLabelWidth">
+            <el-select v-model="form.sex" style="width: 100%">
+              <el-option v-for="item in sexArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -34,20 +48,6 @@
         <el-col :span="12">
           <el-form-item label="手机：" prop="phone" :label-width="formLabelWidth">
             <el-input v-model="form.phone" maxlength="15" clearable></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="性别：" :label-width="formLabelWidth">
-            <el-select v-model="form.sex" style="width: 100%">
-              <el-option v-for="item in sexArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="入学时间：" prop="admissionTime" :label-width="formLabelWidth">
-            <el-input v-model="form.admissionTime" disabled maxlength="15" clearable></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -107,7 +107,7 @@ export default {
         realName: '',
         sex: '',
         school: '',
-        admission_time: '',
+        id: '',
         email: '',
         profession: '',
         phone: '',
@@ -127,9 +127,6 @@ export default {
         phone: [
           {required: true, validator: validPhone, trigger: 'blur'},
         ],
-        code: [
-          {required: true, message: '请输入验证码', trigger: 'blur'}
-        ]
       }
     }
   },

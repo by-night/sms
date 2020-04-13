@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Description
+ * Description 课程表具体排布实体类
  * Author: zjh
  * Date2020/4/7 14:50
  **/

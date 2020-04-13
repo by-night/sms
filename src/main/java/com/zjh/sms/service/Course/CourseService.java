@@ -1,7 +1,6 @@
 package com.zjh.sms.service.Course;
 
 import com.zjh.sms.dto.Course;
-import com.zjh.sms.dto.User;
 import com.zjh.sms.utils.PagingResult;
 import org.apache.ibatis.session.RowBounds;
 
@@ -51,9 +50,9 @@ public interface CourseService {
   */
   PagingResult<Course> getCourseList(RowBounds rowBounds, Map<String, Object> condition);
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 根据专业、学期获取课程列表
+  * @param:  Map<String, Object> condition
+  * return: List<Course>
   * Author: zjh
   * @Date: 2020/3/31 22:28
   */

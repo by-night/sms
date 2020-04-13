@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 课程表Mapper层
  * Author: zjh
  * Date2020/4/7 14:18
  **/

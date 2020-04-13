@@ -126,6 +126,23 @@ public class ScoreServiceImpl implements ScoreService {
     return list;
   }
 
+  @Override
+  public Map<String, Object> getUserTotal(Map<String, Object> condition) {
+    List<Course> list = scoreMapper.getUserTotal(condition);
+    double credits = 0.00;
+    double point = 0.00;
+    for (Course course : list) {
+      double a = Double.parseDouble(course.getCreditsByUser());
+      credits += a;
+      double b = Double.parseDouble(course.getPointByUser());
+      point += b;
+    }
+    Map<String, Object> map = new HashMap<>();
+    map.put("credits", credits);
+    map.put("point", point);
+    return map;
+  }
+
   private List<Map<String, Object>> dealScore(List<Course> courseList) {
     if (courseList.size() > 0) {
       Map<String, Object> failCondition = new HashMap<>();

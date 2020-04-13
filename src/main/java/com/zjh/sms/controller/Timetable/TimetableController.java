@@ -3,8 +3,6 @@ package com.zjh.sms.controller.Timetable;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zjh.sms.domain.WeekCourse;
-import com.zjh.sms.dto.Score;
-import com.zjh.sms.dto.Timetable;
 import com.zjh.sms.service.Timetable.TimetableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description  课程表控制层
  * Author: zjh
  * Date2020/4/7 14:02
  **/

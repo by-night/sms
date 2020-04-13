@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Description 教师课程任命表
+ * Description 教师课程任命表实体类
  * Author: zjh
  * Date2020/3/29 15:04
  **/

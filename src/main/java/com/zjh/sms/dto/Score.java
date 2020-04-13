@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Description
+ * Description 分数信息实体类
  * Author: zjh
  * Date2020/3/19 10:55
  **/

@@ -144,6 +144,12 @@
             <if test="condition.studentName != null and condition.studentName != ''">
                 AND a.student_id = #{condition.studentName}
             </if>
+            <if test="condition.year != null and condition.year != ''">
+                AND a.year = #{condition.year}
+            </if>
+            <if test="condition.term != null and condition.term != ''">
+                AND a.term = #{condition.term}
+            </if>
         </where>
         order by a.id
     </select>
@@ -284,6 +290,17 @@
             </if>
         </where>
         ORDER BY c.id
+    </select>
+    <select id="getUserTotal" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+         credits as creditsByUser,
+         point as pointByUser
+        FROM student_course
+        <where>
+            <if test="condition.studentName != null and condition.studentName != ''">
+                AND student_id = #{condition.studentName}
+            </if>
+        </where>
     </select>
 </mapper>
 

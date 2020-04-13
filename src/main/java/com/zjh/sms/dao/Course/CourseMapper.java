@@ -2,7 +2,6 @@ package com.zjh.sms.dao.Course;
 
 import com.github.pagehelper.PageRowBounds;
 import com.zjh.sms.dto.Course;
-import com.zjh.sms.dto.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -61,18 +60,18 @@ public interface CourseMapper {
    */
   Integer checkCodeCount();
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 根据专业、学期获取课程列表
+  * @param: condition
+  * return:  List<Course>
   * Author: zjh
   * @Date: 2020/3/31 22:29
   */
   List<Course> getCourseByMap(@Param("condition") Map<String, Object> condition);
 
   /**
-   * description:
-   * @param:
-   * return:
+   * description: 根据课程id获取课程信息
+   * @param: String
+   * return: Course
    * Author: zjh
    * @Date: 2020/3/31 22:29
    */

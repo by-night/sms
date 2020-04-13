@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zjh.sms.dto.Course;
 import com.zjh.sms.dto.Score;
-import com.zjh.sms.dto.User;
-import com.zjh.sms.service.Course.CourseService;
 import com.zjh.sms.service.Score.ScoreService;
 import com.zjh.sms.utils.PagingResult;
 import org.apache.ibatis.session.RowBounds;
@@ -47,5 +45,10 @@ public class ScoreController {
   @GetMapping("/getUserNum")
   public List<Map<String, Object>> getUserNum (@RequestParam Map<String, Object> condition) {
     return scoreService.getUserNum(condition);
+  }
+
+  @GetMapping("/getUserTotal")
+  public Map<String, Object> getUserTotal (@RequestParam Map<String, Object> condition) {
+    return scoreService.getUserTotal(condition);
   }
 }

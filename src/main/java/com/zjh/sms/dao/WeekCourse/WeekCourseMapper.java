@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Description 课程表具体安排Mapper层
  * Author: zjh
  * Date2020/4/7 16:46
  **/
@@ -24,16 +24,16 @@ public interface WeekCourseMapper {
   void add(WeekCourse weekCourse);
   /**
   * description: 修改week表
-  * @param:
-  * return:
+  * @param: WeekCourse
+  * return: void
   * Author: zjh
   * @Date: 2020/4/7 17:46
   */
   void update(WeekCourse weekCourse);
   /**
   * description: 根据专业班级获取课程表信息
-  * @param:
-  * return:
+  * @param: condition
+  * return: List<WeekCourse>
   * Author: zjh
   * @Date: 2020/4/7 17:16
   */
