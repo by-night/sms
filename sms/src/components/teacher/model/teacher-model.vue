@@ -2,11 +2,6 @@
   <el-dialog v-dialogDrag :title="title" :visible.sync="dialog" :close-on-click-modal=false append-to-body width="800px">
     <el-form ref="form" :model="form" :rules="rules">
       <el-row>
-        <!--<el-col :span="12">-->
-          <!--<el-form-item label="编号：" prop="id" :label-width="formLabelWidth">-->
-            <!--<el-input v-model="form.id" maxlength="15" clearable></el-input>-->
-          <!--</el-form-item>-->
-        <!--</el-col>-->
         <el-form-item label="姓名：" prop="realName" :label-width="formLabelWidth">
           <el-input v-model="form.realName" maxlength="15" clearable></el-input>
         </el-form-item>
@@ -78,6 +73,7 @@
         }
       };
       return {
+        doneNum: 0,
         formLabelWidth: '100px',
         dialog: false,
         type: '',
@@ -168,21 +164,29 @@
         })
       },
       addMethod () {
+        ++this.doneNum;
+        if (this.doneNum === 1) {
+          this.add();
+        }
+      },
+      add () {
         this.axiosHelper.post(
           '/api/mis/user/teacher', this.form).then(() => {
+          this.doneNum = 0;
           this.$message.success({
             message: '新增成功'
           });
           this.dialog = false;
           this.$emit('search')
         }).catch(() => {
+          this.doneNum = 0;
           this.$message.error({
             message: '新增失败'
           });
           this.dialog = false;
         });
       },
-       editMethod () {
+      editMethod () {
         this.axiosHelper.put(
           '/api/mis/user/teacher', this.form).then(() => {
           this.$message.success({

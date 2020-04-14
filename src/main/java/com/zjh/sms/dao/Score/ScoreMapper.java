@@ -103,5 +103,5 @@ public interface ScoreMapper {
   * Author: zjh
   * @Date: 2020/4/12 23:03
   */
-  List<Course> getUserTotal(@Param("condition") Map<String, Object> condition);
+  List<Course> getStudentTotal(@Param("condition") Map<String, Object> condition);
 }

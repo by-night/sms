@@ -21,30 +21,26 @@
       </el-form>
     </el-card>
 
-    <!--饼状图-->
-    <!--<div style="margin-top: -15px" v-if="showPie">-->
-      <!--<ve-pie :data="pieData" :settings="pieSetting"></ve-pie>-->
-    <!--</div>-->
-    <!--<div v-else style="text-align: center;line-height: 200px">-->
-      <!--<span style="color: gray">暂无数据</span>-->
-    <!--</div>-->
-
-    <!--折线图-->
-    <el-card style="height:400px;width: 98%;margin: 0 0 12px 12px;">
-      <el-button v-if="showChart" title="切换图表" @click="changeMethod" class="changeChartStyle" type="text" icon="el-icon-refresh"></el-button>
-      <div style="margin-top: -15px" v-if="showChart">
-        <ve-line v-if="changeChart" :data="lineData" :width="lineWidth" :height="lineHeight"></ve-line>
-        <ve-histogram :data="histogramData" :height="lineHeight" v-else></ve-histogram>
+    <el-card style="height:470px;width: 98%;margin: 0 0 12px 12px;">
+      <div style="margin: 15px 15px 30px 15px">
+        <span style="font-size: 14px;color: #606266;">图表选择：</span>
+        <el-select size="small" v-model="chartValue" @change="changeChart">
+          <el-option v-for="item in chartArr" :key="item.value" :value="item.value" :label="item.label"></el-option>
+        </el-select>
       </div>
-      <div style="text-align: center;line-height: 354px;" v-else>
+      <div style="margin-top: -15px;height: 430px;" v-if="showChart">
+        <!--饼状图-->
+        <ve-pie  v-if="chartValue === 1" :data="pieData"></ve-pie>
+        <!--折线图-->
+        <ve-line v-if="chartValue === 2" :data="lineData" ref="chart" :width="lineWidth" :height="lineHeight"></ve-line>
+        <!--条形图-->
+        <ve-histogram  v-if="chartValue === 3" :data="histogramData" ref="chart" :height="lineHeight"></ve-histogram>
+      </div>
+      <div style="text-align: center;line-height: 335px;" v-else>
         <span style="color: gray">暂无数据</span>
       </div>
-      <el-row style="padding-left: 30px;font-weight: bold;">
-        <el-col :span="6">最高分：</el-col>
-        <el-col :span="6">平均分：</el-col>
-      </el-row>
     </el-card>
-    <el-card class="info" v-if="this.userInfo.level === 2">
+    <el-card class="info">
       <el-row style="">
         <el-col :span="6">总绩点：{{total.point}}</el-col>
         <el-col :span="6">总学分：{{total.credits}}</el-col>
@@ -57,15 +53,18 @@
   export default {
     name: "dashboard",
     data () {
-      this.pieSetting = {
-        offsetY: 150,
-        radius: 90,
-        labelLine: {
-          length: 8,
-          smooth: false
-        },
-      };
       return {
+        chartValue: 1,
+        chartArr: [{
+          label: '饼状图',
+          value: 1
+        }, {
+          label: '折线图',
+          value: 2
+        }, {
+          label: '柱形图',
+          value: 3
+        }],
         yearArr: [],
         form: {
           term: '',
@@ -83,11 +82,9 @@
           point: ''
         },
         userInfo: {},
-        showChart: false,
-        showPie: false,
-        lineHeight: '330px',
+        showChart: true,
+        lineHeight: '430px',
         lineWidth: '100%',
-        changeChart: true,
         pieData: {
           columns: ['label', 'value'],
           rows: [],
@@ -129,6 +126,9 @@
         }
         this.getDefault();
       },
+      changeChart () {
+        this.click();
+      },
       getDefault () {
         // 获取学年和学期的初始值
         this.form.year = this.yearArr[this.yearArr.length-1].value;
@@ -152,9 +152,6 @@
         };
         this.getChartData(obj);
         this.getPieData(obj);
-      },
-      changeMethod () {
-        this.changeChart = !this.changeChart;
       },
       getChartData (data) {
         this.axiosHelper.get(
@@ -183,8 +180,11 @@
           '/api/sms/score/getUserNum', {params: data}).then(
           response => {
             let data = response.data;
+            data = data.filter(item => {
+              return item.label !== '未录入'
+            });
             this.pieData.rows = data;
-            this.showPie = data.some(item => {
+            this.showChart = data.some(item => {
               return item.value !== 0;
             });
           }).catch(error => {
@@ -193,40 +193,11 @@
           }, error)
         })
       },
-      professionInfo (data) {
-        let userInfo = JSON.parse(localStorage.userInfo);
-        let obj = {
-          studentName: userInfo.username,
-          level: userInfo.level,
-          profession: data.profession || '',
-          grade: data.grade || ''
-        };
-        this.getChartData(obj);
-        this.getPieData(obj);
-      },
-      dealTotal (value) {
-        let str = value.toString();
-        // 是否存在小数
-        let len = str.lastIndexOf(".");
-        // num: 不存在小数则设为0，存在则等于小数点后面位数
-        let num = len === -1 ? 0 : str.substring(len+1).length;
-        switch (num) {
-          case 0:
-            str = str + '.00';
-            break;
-          case 1:
-            str = str + '0';
-            break;
-          case 2:
-            break;
-          default:
-            str = str.slice(0,4)
-        }
-        return str;
-      },
+      // 获取总学分和总绩点
       getTotal () {
         let obj = {
-          studentName: this.userInfo.id
+          studentName: this.userInfo.id,
+          level: this.userInfo.level,
         };
         this.axiosHelper.get(
           '/api/sms/score/getUserTotal', {params: obj}).then(
@@ -238,6 +209,18 @@
             };
             this.total = {...current};
           })
+      }
+    },
+    computed: {
+      collapse() {
+        return this.$store.state.collapse;
+      }
+    },
+    watch: {
+      collapse() {
+        setTimeout(() => {
+          this.$refs['chart'].resize()
+        }, 150)
       }
     },
     mounted() {

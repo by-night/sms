@@ -40,7 +40,7 @@
         LEFT JOIN student c
         ON a.profession = c.profession and a.grade = c.grade
         LEFT JOIN student_course d
-        ON c.id = d.student_id
+        ON c.id = d.student_id and a.name = d.name
         <where>
             <if test="condition.profession != null and condition.profession != ''">
                 a.profession = #{condition.profession}
@@ -177,6 +177,12 @@
             <if test="condition.studentName != null and condition.studentName != ''">
                 AND a.student_id = #{condition.studentName}
             </if>
+            <if test="condition.year != null and condition.year != ''">
+                AND a.year = #{condition.year}
+            </if>
+            <if test="condition.term != null and condition.term != ''">
+                AND a.term = #{condition.term}
+            </if>
         </where>
         order by a.id
     </select>
@@ -271,7 +277,7 @@
         LEFT JOIN student c
         ON a.profession = c.profession and a.grade = c.grade
         LEFT JOIN student_course d
-        ON c.id = d.student_id
+        ON c.id = d.student_id  and a.name = d.name
         <where>
             <if test="condition.profession != null and condition.profession != ''">
                 a.profession = #{condition.profession}
@@ -291,7 +297,7 @@
         </where>
         ORDER BY c.id
     </select>
-    <select id="getUserTotal" resultMap="BaseUserMap" parameterType="map">
+    <select id="getStudentTotal" resultMap="BaseUserMap" parameterType="map">
         SELECT
          credits as creditsByUser,
          point as pointByUser
@@ -302,5 +308,6 @@
             </if>
         </where>
     </select>
+
 </mapper>
 

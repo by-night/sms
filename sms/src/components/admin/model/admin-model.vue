@@ -78,6 +78,7 @@
         }
       };
       return {
+        doneNum: 0,
         formLabelWidth: '100px',
         dialog: false,
         type: '',
@@ -168,14 +169,22 @@
         })
       },
       addMethod () {
+        ++this.doneNum;
+        if (this.doneNum === 1) {
+          this.add();
+        }
+      },
+      add () {
         this.axiosHelper.post(
           '/api/mis/user/admin', this.form).then(() => {
+          this.doneNum = 0;
           this.$message.success({
             message: '新增成功'
           });
           this.dialog = false;
           this.$emit('search')
         }).catch(() => {
+          this.doneNum = 0;
           this.$message.error({
             message: '新增失败'
           });

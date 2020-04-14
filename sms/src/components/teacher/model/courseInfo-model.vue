@@ -1,6 +1,6 @@
 <template>
   <el-dialog v-dialogDrag title="任课信息" :visible.sync="dialog" :close-on-click-modal=false append-to-body width="800px">
-    <el-button type="primary" size="small" @click="add" style="margin-bottom: 10px">新增</el-button>
+    <el-button type="primary" size="small" @click="add" style="margin-bottom: 10px" v-if="userInfo.level === 0">新增</el-button>
     <VmBaseTable
       :setTableHigh="true"
       ref="teacher_table"
@@ -10,7 +10,7 @@
       noPage
       :tableHigh="tableHigh"
     ></VmBaseTable>
-    <div slot="footer">
+    <div slot="footer" v-if="userInfo.level === 0">
       <el-button type="primary" @click="click" size="small">确定</el-button>
       <el-button @click="cancel" size="small">取消</el-button>
     </div>
@@ -26,6 +26,8 @@ export default {
   },
     data () {
       return {
+        doneNum: 0,
+        userInfo: {},
         courseArr: [],
         classArr: [],
         gradeArr: [],
@@ -199,23 +201,31 @@ export default {
           return data.courseId !== '' && data.profession !== '' && data.grade !== ''
         });
         if (flag) {
-          this.axiosHelper.post('/api/sms/teacher/course', this.dataTable).then(
-            () => {
-              this.$message.success({
-                message: '任课信息录入成功'
-              });
-              this.dialog = false;
-            }).catch(() => {
-            this.$message.error({
-              message: '任课信息录入失败'
-            });
-            this.dialog = false;
-          });
+          ++this.doneNum;
+          if (this.doneNum === 1) {
+            this.clickMethod();
+          }
         } else {
           this.$message.warning({
             message: '存在未填项'
           });
         }
+      },
+      clickMethod () {
+        this.axiosHelper.post('/api/sms/teacher/course', this.dataTable).then(
+          () => {
+            this.doneNum = 0;
+            this.$message.success({
+              message: '任课信息录入成功'
+            });
+            this.dialog = false;
+          }).catch(() => {
+          this.doneNum = 0;
+          this.$message.error({
+            message: '任课信息录入失败'
+          });
+          this.dialog = false;
+        });
       },
       cancel () {
         this.dialog = false;
@@ -288,6 +298,14 @@ export default {
         })
       }
     },
+    created () {
+      this.userInfo = JSON.parse(localStorage.userInfo);
+      if (this.userInfo.level === 1) {
+        this.dataColumns = this.dataColumns.filter(data => {
+          return data.label !== '操作'
+        })
+      }
+    }
   }
 </script>
 

@@ -22,7 +22,6 @@
             <if test="name != null and name != ''">`name`,</if>
             <if test="number != null and number != ''">`number`,</if>
             <if test="credits != null and credits != ''">`credits`,</if>
-            <if test="point != null and point != ''">`point`,</if>
             <if test="score != null and score != ''">`score`,</if>
             <if test="year != null and year != ''">`year`,</if>
             <if test="type != null and type != ''">`type`,</if>
@@ -34,7 +33,6 @@
             <if test="name != null and name != ''">#{name},</if>
             <if test="number != null and number != ''">#{number},</if>
             <if test="credits != null and credits != ''">#{credits},</if>
-            <if test="point != null and point != ''">#{point},</if>
             <if test="score != null and score != ''">#{score},</if>
             <if test="year != null and year != ''">#{year},</if>
             <if test="type != null and type != ''">#{type},</if>
@@ -63,9 +61,6 @@
             </if>
             <if test="credits != null and credits != ''">
                 credits = #{credits},
-            </if>
-            <if test="point != null and point != ''">
-                point = #{point},
             </if>
             <if test="score != null and score != ''">
                 score = #{score},

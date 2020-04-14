@@ -42,8 +42,8 @@
     <el-card class="content" style="width: 98%;margin: 0 0 12px 12px">
       <el-button v-if="showChart" title="切换图表" @click="changeMethod" class="changeChartStyle" type="text" icon="el-icon-refresh"></el-button>
       <div style="margin-top: -15px" v-if="showChart">
-        <ve-line v-if="changeChart" :data="lineData" :width="lineWidth" :height="lineHeight"></ve-line>
-        <ve-histogram :data="histogramData" :height="lineHeight" v-else></ve-histogram>
+        <ve-line v-if="changeChart" :data="lineData" :width="lineWidth" ref="chart" :height="lineHeight"></ve-line>
+        <ve-histogram :data="histogramData" :height="lineHeight" ref="chart" v-else></ve-histogram>
       </div>
       <div style="text-align: center;line-height: 290px" v-else>
         <span style="color: gray">暂无数据</span>
@@ -139,6 +139,9 @@ export default {
           '/api/sms/score/getUserNum', {params: data}).then(
           response => {
             let data = response.data;
+            data = data.filter(item => {
+              return item.label !== '未录入'
+            });
             this.pieData.rows = data;
             this.showPie = data.some(item => {
               return item.value !== 0;
@@ -160,6 +163,18 @@ export default {
         this.getChartData(obj);
         this.getPieData(obj);
       },
+    },
+    computed: {
+      collapse() {
+        return this.$store.state.collapse;
+      }
+    },
+    watch: {
+      collapse() {
+        setTimeout(() => {
+          this.$refs['chart'].resize()
+        }, 150)
+      }
     },
     mounted() {
       this.userInfo = JSON.parse(localStorage.userInfo);

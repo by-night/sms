@@ -1,14 +1,31 @@
 <template>
   <div>
     <el-card class="cardStyle">
-      <el-button @click="change" size="small" style="margin-bottom: 15px" v-if="userInfo.level !== 2">筛选</el-button>
+      <el-button @click="change" size="small" style="margin-bottom: 15px">筛选</el-button>
       <el-button @click="batchMethod" type="info" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">批量编辑</el-button>
       <el-button @click="addEntry" type="primary" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">成绩录入</el-button>
       <el-button @click="exportMethod" type="success" :disabled="dataTable.length <= 0" size="small" style="margin-bottom: 15px">导出</el-button>
+      <!--过滤框-->
       <el-collapse-transition>
         <div v-if="show" style="background-color: white;height: 100px;;box-sizing: border-box">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-row>
+            <el-row v-if="userInfo.level === 2">
+              <el-col :span="8">
+                <el-form-item label="学年：">
+                  <el-select v-model="form.year" style="width: 90%">
+                    <el-option v-for="item in yearArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="学期：">
+                  <el-select v-model="form.term" style="width: 90%">
+                    <el-option v-for="item in termArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row v-else>
               <el-col :span="8">
                 <el-form-item label="专业：" prop="profession">
                   <el-select v-model="form.professionObj" style="width: 90%" @change="professionChange" value-key="profession">
@@ -61,7 +78,6 @@
       VmBaseTable
     },
     data () {
-      let that = this;
       return {
         courseArr: [],
         classArr: [],
@@ -76,8 +92,17 @@
           profession: '',
           grade: '',
           term: '',
-          courseName: ''
+          courseName: '',
+          year: '',
         },
+        yearArr: [],
+        termArr: [{
+          label: '上',
+          value: 1
+        },{
+          label: '下',
+          value: 2
+        }],
         table: null,
         searchValue: {
           $limit: 10,
@@ -119,11 +144,6 @@
                       value = value.replace(/[^\d]/g, '') && value.slice(0, 5);
                       params.row.scoreByUser = value>params.row.score?params.row.score:value;
                     },
-                    // blur() {
-                    //   params.row.creditsByUser = params.row.scoreByUser>=params.row.score*0.6?params.row.credits.toFixed(2):0.00;
-                    //   params.row.pointByUser = params.row.scoreByUser>59?(params.row.scoreByUser/10-5).toFixed(2):0;
-                    //   that.showInput = '';
-                    // }
                   }
                 })
               } else {
@@ -197,6 +217,45 @@
       }
     },
     methods : {
+      getYear () {
+        let now = new Date().getFullYear();
+        let old = parseInt(this.userInfo.admissionTime);
+        for (let i = old; i < now; i++) {
+          if (this.yearArr.length < 4) {
+            let num = i - old;
+            let obj = {};
+            switch (num) {
+              case 0:
+                obj = {label: '大一', value: i};
+                break;
+              case 1:
+                obj = {label: '大二', value: i};
+                break;
+              case 2:
+                obj = {label: '大三', value: i};
+                break;
+              case 3:
+                obj = {label: '大四', value: i};
+                break;
+            }
+            this.yearArr.push(obj);
+          }
+        }
+        this.getDefault();
+      },
+      getDefault () {
+        // 获取学年和学期的初始值
+        this.form.year = this.yearArr[this.yearArr.length-1].value;
+        let month = new Date().getMonth()+1;
+        if (month > 2 && month < 6) {
+          // 上学期
+          this.form.term = this.termArr[0].value;
+        } else {
+          // 下学期
+          this.form.term = this.termArr[1].value;
+        }
+        this.click(this.searchValue);
+      },
       cancel () {
         this.form = {
           profession: '',
@@ -250,7 +309,9 @@
           username: userInfo.level === 1 ? userInfo.username : '',
           courseName: this.form.courseName,
           studentName: userInfo.level === 2 ? userInfo.username : '',
-          level: userInfo.level
+          level: userInfo.level,
+          year: this.form.year,
+          term: this.form.term
         };
         this.clickMethod(obj);
       },
@@ -370,7 +431,8 @@
         if (this.userInfo.level === 2) {
           this.dataColumns = this.dataColumns.filter(data => {
             return data.label !== '操作'
-          })
+          });
+          this.getYear();
         }
         this.click(this.searchValue);
       }
@@ -379,7 +441,7 @@
       this.userInfo = JSON.parse(localStorage.userInfo);
       if (this.userInfo.level === 0) {
         this.getProfessionByAdmin();
-      } else {
+      } else if (this.userInfo.level === 1) {
         this.getProfessionByTeacher();
       }
     },

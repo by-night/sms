@@ -58,8 +58,8 @@
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button type="primary" @click="click('form')">确定</el-button>
-      <el-button @click="cancel">取消</el-button>
+      <el-button type="primary" @click="click('form')" size="small">确定</el-button>
+      <el-button @click="cancel" size="small">取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -69,6 +69,7 @@
     name: "course-model",
     data() {
       return {
+        doneNum: 0,
         title: '',
         termArr: [{
           value: 1,
@@ -163,14 +164,22 @@
         })
       },
       addMethod () {
+        ++this.doneNum;
+        if (this.doneNum === 1) {
+          this.add();
+        }
+      },
+      add () {
         this.axiosHelper.post(
           '/api/sms/course', this.form).then(() => {
+          this.doneNum = 0;
           this.$message.success({
             message: '新增成功'
           });
           this.dialog = false;
           this.$emit('search')
         }).catch(() => {
+          this.doneNum = 0;
           this.$message.error({
             message: '新增失败'
           });

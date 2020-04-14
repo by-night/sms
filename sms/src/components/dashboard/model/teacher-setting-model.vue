@@ -11,6 +11,11 @@
           <el-option v-for="item in gradeArr" :key="item" :label="item" :value="item"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="课程：" prop="course">
+        <el-select v-model="form.course" style="width: 90%">
+          <el-option v-for="item in courseArr" :key="item" :label="item" :value="item"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <div slot="footer">
       <el-button type="primary" @click="click" size="small">确定</el-button>
@@ -28,10 +33,12 @@ export default {
       userInfo: {},
       classArr: [],
       gradeArr: [],
+      courseArr: [],
       form: {
         professionObj: {},
         grade: '',
-        profession: ''
+        profession: '',
+        course: ''
       }
     }
   },
@@ -43,13 +50,18 @@ export default {
       this.axiosHelper.get(
         '/api/sms/teacher/course/getProfessionInfoByTeacher/' + this.userInfo.id
       ).then(response => {
-        this.classArr = response.data;
-        this.form = {
-          profession: this.classArr[0].profession,
-          grade: this.classArr[0].grade[0],
-          professionObj: this.classArr[0]
-        };
-        this.click();
+        if (response.data.length > 0) {
+          this.classArr = response.data;
+          this.form = {
+            profession: this.classArr[0].profession,
+            grade: this.classArr[0].grade[0],
+            professionObj: this.classArr[0],
+            course: this.classArr[0].course[0],
+          };
+          this.gradeArr = this.form.professionObj.grade;
+          this.courseArr = this.form.professionObj.course;
+          this.click();
+        }
       }).catch(error => {
         this.$message.error({
           message: '获取专业信息失败'

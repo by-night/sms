@@ -11,12 +11,10 @@
         <el-main style="background-color: #ededed; padding: 0; height: 100%">
           <Tabs></Tabs>
           <!--内容区-->
-          <!--<el-card style="height: 93%;background-color: #f2f2f2">-->
-            <router-view />
-            <div class="copyright">
-              Copyright @2020 庄江辉
-            </div>
-          <!--</el-card>-->
+          <router-view />
+          <div class="copyright">
+            Copyright @2020 庄江辉
+          </div>
         </el-main>
       </el-container>
     </el-container>

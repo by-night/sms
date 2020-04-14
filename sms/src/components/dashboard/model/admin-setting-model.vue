@@ -67,6 +67,8 @@
             professionObj: this.classArr[0],
             course: this.classArr[0].course[0],
           };
+          this.gradeArr = this.form.professionObj.grade;
+          this.courseArr = this.form.professionObj.course;
           this.postValue();
         }).catch(error => {
           this.$message.error({

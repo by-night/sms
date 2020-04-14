@@ -1,6 +1,7 @@
 ﻿import ElementUI, {
     Message
 } from 'element-ui'
+import system from './fill'
 let util = function (Vue) {
     Vue.prototype.getLink = (h, text, click,) => {
       return h('el-link', {
@@ -35,6 +36,9 @@ let util = function (Vue) {
         }
       }, text)
     };
+
+    Vue.prototype.dealTotal = system.dealTotal;
+
     function empty (value) {
       const flag = value === '' || value === undefined || value === null;
       return !flag;
@@ -107,7 +111,7 @@ let util = function (Vue) {
         size: 'small'
     });
     // 命名根据需要
-    Vue.prototype.$message = new DonMessage()
+    Vue.prototype.$message = new DonMessage();
 };
 
 

@@ -14,13 +14,14 @@
             <i class="el-icon-user-solid"></i>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="17">
           <h2 class="distance" style="margin-bottom: 35px">{{userInfo.realName}}</h2>
           <div class="distance">
             <i class="el-icon-user" title="编号"> {{userInfo.id}}</i>{{'&#12288'}}
             <i class="el-icon-male" v-if="userInfo.sex === 0" title="性别"> {{sexName}}</i>
             <i class="el-icon-female" v-else title="性别"> {{sexName}}</i>{{'&#12288'}}
-            <i class="el-icon-office-building" title="学校"> {{userInfo.school}}</i>
+            <i class="el-icon-office-building" title="学校"> {{userInfo.school}}</i>{{'&#12288'}}
+            <a class="courseInfo el-icon-reading" @click="courseClick"> 任课信息</a>
           </div>
           <div class="distance">
             <i class="el-icon-phone-outline" title="联系方式"> {{userInfo.phone}}</i> {{'&#12288&#12288'}}
@@ -43,8 +44,8 @@
     <el-card class="content" style="width: 98%;margin: 0 0 12px 12px">
       <el-button v-if="showChart" title="切换图表" @click="changeMethod" class="changeChartStyle" type="text" icon="el-icon-refresh"></el-button>
       <div style="margin-top: -15px" v-if="showChart">
-        <ve-line v-if="changeChart" :data="lineData" :width="lineWidth" :height="lineHeight"></ve-line>
-        <ve-histogram :data="histogramData" :height="lineHeight" v-else></ve-histogram>
+        <ve-line v-if="changeChart" :data="lineData" :width="lineWidth" ref="chart" :height="lineHeight"></ve-line>
+        <ve-histogram :data="histogramData" :height="lineHeight" ref="chart" v-else></ve-histogram>
       </div>
       <div style="text-align: center;line-height: 290px" v-else>
         <span style="color: gray">暂无数据</span>
@@ -74,12 +75,14 @@
     </div>
     <editInfo ref="editInfo_model" @refresh="refresh"></editInfo>
     <teacherSetting ref="setting_model" @professionInfo="professionInfo"></teacherSetting>
+    <courseInfo ref="Vm_courseInfo"></courseInfo>
   </div>
 </template>
 
 <script>
   import teacherSetting from './model/teacher-setting-model'
   import editInfo from './model/teacher-edit-model'
+  import courseInfo from '../teacher/model/courseInfo-model'
   export default {
     inject:['reload'],
     name: "dashboard",
@@ -154,6 +157,9 @@
       setting () {
         this.$refs.setting_model.init();
       },
+      courseClick () {
+        this.$refs.Vm_courseInfo.init(this.userInfo);
+      },
       changeMethod () {
         this.changeChart = !this.changeChart;
       },
@@ -162,6 +168,13 @@
           '/api/sms/score/getUserNum', {params: data}).then(
             response => {
               let data = response.data;
+              data = data.filter(item => {
+                let flag = true;
+                if (item.label === '未录入') {
+                  flag = item.value !== 0
+                }
+                return flag
+              });
               this.pieData.rows = data;
               this.showPie = data.some(item => {
                 return item.value !== 0;
@@ -178,18 +191,31 @@
           username: userInfo.username,
           level: userInfo.level,
           profession: data.profession || '',
-          grade: data.grade || ''
+          grade: data.grade || '',
+          courseName: data.course || ''
         };
         this.getChartData(obj);
         this.getPieData(obj);
       },
+    },
+    computed: {
+      collapse() {
+        return this.$store.state.collapse;
+      }
+    },
+    watch: {
+      collapse() {
+        setTimeout(() => {
+          this.$refs['chart'].resize()
+        }, 150)
+      }
     },
     mounted() {
       this.userInfo = JSON.parse(localStorage.userInfo);
       this.getSchoolInfo();
     },
     components: {
-      editInfo, teacherSetting
+      editInfo, teacherSetting, courseInfo
     }
   }
 </script>
@@ -246,6 +272,11 @@
   .changeChartStyle:hover {
     transform: scale(1.2);
     color: #409EFF;
+  }
+  .courseInfo:hover{
+    color: #409EFF;
+    cursor: pointer;
+    transform:  scale(1.05)
   }
 </style>
 <style>

@@ -84,6 +84,7 @@
     },
     data () {
       return {
+        doneNum: 0,
         show: false,
         courseArr: [],
         gradeArr: [],
@@ -331,7 +332,10 @@
       termChange () {
       },
       click () {
-        this.addTimetable();
+        ++this.doneNum;
+        if (this.doneNum === 1) {
+          this.addTimetable();
+        }
       },
       change () {
         this.show = !this.show;
@@ -353,11 +357,13 @@
         this.axiosHelper.post(
           '/api/sms/timetable', this.dataTable
         ).then(() => {
+          this.doneNum = 0;
           this.$message.success({
             message: '录入课程表成功'
           });
           this.gradeChange();
         }).catch(error => {
+          this.doneNum = 0;
           this.$message.error({
             message: '录入课程表失败'
           }, error)

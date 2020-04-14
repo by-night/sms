@@ -10,7 +10,7 @@ import student from '../components/student/student'
 import teacher from '../components/teacher/teacher'
 import admin from '../components/admin/admin'
 import timetable from '../components/timetable/timetable'
-import analysis from '../components/analysis/analysis'
+import analysis from '../components/analysis/index'
 
 // 导航栏点击点击多次报错警告处理
 const originalPush = Router.prototype.push;
