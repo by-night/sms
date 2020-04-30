@@ -46,7 +46,7 @@
         </where>
     </select>
     <update id="update" parameterType="map">
-        UPDATE student
+        UPDATE ${condition.table}
         <trim prefix="set" suffixOverrides=",">
             <if test="condition.passwordAgain != null and condition.passwordAgain != ''">
                 password = #{condition.passwordAgain},
@@ -62,6 +62,6 @@
         </where>
     </update>
     <select id="checkPasswordCount" resultType="int" parameterType="map">
-        select count(0) from student where password = #{condition.password} AND username = #{condition.username}
+        select count(0) from ${condition.table} where password = #{condition.password} AND username = #{condition.username}
     </select>
 </mapper>

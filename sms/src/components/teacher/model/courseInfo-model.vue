@@ -122,8 +122,14 @@ export default {
               if (this.showInput === params.row.id) {
                 return this.getSelect(h, params.row.courseId, (value) => {
                   this.$set(params.row, 'courseId', value);
-                }, this.courseArr)
+                }, this.courseArr, '', false, (value) => {
+                  const obj = this.courseArr.find(data => {
+                    return data.value === value
+                  });
+                  params.row.name = obj.label;
+                })
               } else {
+                console.log(params)
                 return h('div', {}, params.row.name)
               }
             }
@@ -168,7 +174,7 @@ export default {
       },
       getClass () {
         this.axiosHelper.get(
-          '/api/mis/user/getTree'
+          '/api/sms/user/getTree'
         ).then(response => {
           this.classArr = response.data[0].children;
         }).catch(error => {

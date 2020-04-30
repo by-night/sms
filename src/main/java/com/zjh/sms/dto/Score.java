@@ -62,4 +62,8 @@ public class Score {
    * 学生账号id
    */
   private String studentId;
+  /**
+   * 课程id
+   */
+  private String courseId;
 }

@@ -1,5 +1,6 @@
 package com.zjh.sms.service.User;
 
+import com.zjh.sms.domain.Upload;
 import com.zjh.sms.dto.User;
 
 import java.util.List;
@@ -28,25 +29,24 @@ public interface UserService {
    */
   boolean update(Map<String, Object> condition);
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 获取树状数据
+  * return: List<Object>
   * Author: zjh
   * @Date: 2020/3/27 22:13
   */
   List<Object> getTree();
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 获取token
+  * @param: User
+  * return: String
   * Author: zjh
   * @Date: 2020/3/30 23:21
   */
-  String getToken(User user);
+  String getToken(User user, long time);
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 根据等级和id获取用户信息
+  * @param: condition
+  * return: User
   * Author: zjh
   * @Date: 2020/3/30 23:42
   */

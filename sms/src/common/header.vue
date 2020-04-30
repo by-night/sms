@@ -48,7 +48,7 @@
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                this.$router.push("/");
+                this.$router.push("/login");
                 // 退出登录时，清除身份信息
                 localStorage.clear();
               })

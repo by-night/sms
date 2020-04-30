@@ -50,7 +50,7 @@
     <el-card class="info">
       <el-row>
         <el-col :span="6">最高分：{{total.max}}</el-col>
-        <el-col :span="6">平均分：{{total.min}}</el-col>
+        <el-col :span="6">最低分：{{total.min}}</el-col>
         <el-col :span="6">平均分：{{total.average}}</el-col>
       </el-row>
     </el-card>
@@ -155,6 +155,7 @@
         this.axiosHelper.get(
           '/api/sms/score/export',
           {params: data}).then(response => {
+          console.log(response.data)
           let data = response.data;
           this.lineData.rows = data.map(item => {
             let obj = {

@@ -6,10 +6,8 @@ import com.zjh.sms.utils.PagingResult;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description 管理员账户控制层
@@ -17,7 +15,7 @@ import java.util.Map;
  * Date2020/3/28 11:05
  **/
 @RestController
-@RequestMapping("/api/mis/user/admin")
+@RequestMapping("/api/sms/user/admin")
 public class AdminController {
   @Autowired
   private AdminService adminService;
@@ -45,4 +43,5 @@ public class AdminController {
     RowBounds rowBounds = new RowBounds(offset, limit);
     return adminService.getAdminList(rowBounds, condition);
   }
+
 }

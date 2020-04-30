@@ -331,6 +331,7 @@
         this.selection = selection;
       },
       addEntry () {
+        console.log(this.selection)
         let flag = this.selection.every(data => {
           return data.scoreByUser !== null && data.scoreByUser !== ''
         });
@@ -409,7 +410,7 @@
           this.classArr = response.data;
         }).catch(error => {
           this.$message.error({
-            message: '失败'
+            message: '获取班级列表'
           }, error)
         })
       },
@@ -420,7 +421,7 @@
           this.classArr = response.data;
         }).catch(error => {
           this.$message.error({
-            message: '失败'
+            message: '获取班级列表'
           }, error)
         })
       },

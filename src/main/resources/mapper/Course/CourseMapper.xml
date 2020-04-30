@@ -97,6 +97,14 @@
     </select>
     <select id="checkCodeCount" resultType="int">
         select count(0) from course
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                profession = #{condition.profession}
+            </if>
+            <if test="condition.year != null and condition.year != ''">
+                AND year  = #{condition.year}
+            </if>
+        </where>
     </select>
     <select id="getCourseByMap" resultMap="BaseUserMap" parameterType="map">
         SELECT

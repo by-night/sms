@@ -45,7 +45,9 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="专业:" prop="profession">
-            <el-input v-model="form.profession" maxlength="30" clearable></el-input>
+            <el-select v-model="form.profession" style="width: 100%">
+              <el-option v-for="item in professionArr" :key="item.value" :label="item.label" :value="item.label"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -69,6 +71,7 @@
     name: "course-model",
     data() {
       return {
+        professionArr: [],
         doneNum: 0,
         title: '',
         termArr: [{
@@ -116,7 +119,7 @@
             { required: true, message: '课时不能为空', trigger: 'blur' },
           ],
           profession: [
-            { required: true, message: '专业名不能为空', trigger: 'blur' },
+            { required: true, message: '专业名不能为空', trigger: 'change' },
           ],
         }
       }
@@ -144,7 +147,7 @@
           year: year,
           type: 1,
           term: 1,
-          profession: ''
+          profession: this.professionArr[0].label || null
         };
         if(this.$refs['form'] !== undefined) {
           this.$refs['form'].clearValidate();
@@ -204,23 +207,12 @@
       cancel () {
         this.dialog = false;
       },
-      registered (rulesForm) {
-        this.$refs[rulesForm].validate((valid) => {
-          if (valid) {
-            this.axiosHelper.post('/api/student/mis', this.form).then(
-              response => {
-                if(response.status === 200) {
-                  this.$message.success({
-                    message: '注册成功'
-                  });
-                  this.$router.push('/home');
-                } else {
-                  this.$message.error({
-                    message: '注册失败'
-                  })
-                }
-              })
-          }
+      getProfession () {
+        this.axiosHelper.get('/api/sms/profession/getProfessionList').then(response => {
+          let data = response.data;
+          this.professionArr = data.map(item => {
+            return {label: item.name,value: item.name}
+          });
         })
       }
     },
@@ -230,6 +222,7 @@
       for (let i = 2010; i < year + 2; i++) {
         this.yearArr.push(i);
       }
+      this.getProfession();
     }
   }
 </script>

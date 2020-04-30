@@ -11,6 +11,7 @@ import teacher from '../components/teacher/teacher'
 import admin from '../components/admin/admin'
 import timetable from '../components/timetable/timetable'
 import analysis from '../components/analysis/index'
+import error from '../common/error/error'
 
 // 导航栏点击点击多次报错警告处理
 const originalPush = Router.prototype.push;
@@ -22,7 +23,11 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/404',
+      name: 'error',
+      component: error,
+    }, {
+      path: '/login',
       name: 'login',
       component: login,
     }, {

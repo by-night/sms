@@ -8,7 +8,6 @@
         <result column="id" property="id" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="credits" property="credits" jdbcType="DECIMAL" />
-        <result column="point" property="point" jdbcType="DECIMAL" />
         <result column="number" property="number" jdbcType="INTEGER" />
         <result column="score" property="score" jdbcType="INTEGER" />
         <result column="year" property="year" jdbcType="INTEGER" />
@@ -36,7 +35,7 @@
             d.score as scoreByUser
         FROM teacher_course a
         LEFT JOIN course b
-        ON a.name = b.name
+        ON a.course_id = b.id
         LEFT JOIN student c
         ON a.profession = c.profession and a.grade = c.grade
         LEFT JOIN student_course d
@@ -273,7 +272,7 @@
         d.score as scoreByUser
         FROM teacher_course a
         LEFT JOIN course b
-        ON a.name = b.name
+        ON a.course_id = b.id
         LEFT JOIN student c
         ON a.profession = c.profession and a.grade = c.grade
         LEFT JOIN student_course d

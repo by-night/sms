@@ -32,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
     int num = adminMapper.checkCodeCount();
     String username = "980502" + Integer.toString(num);
     user.setUsername(username);
-    user.setPassword("980502");
+    user.setPassword("password");
     adminMapper.add(user);
   }
 

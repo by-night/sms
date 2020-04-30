@@ -1,5 +1,5 @@
 <template>
-  <div style="">
+  <div>
     <!--个人信息-->
     <el-card class="content" style="width: 60%;margin: 12px">
       <div class="title">
@@ -9,13 +9,28 @@
         </div>
       </div>
       <el-row style="color: #666666;padding: 20px">
-        <el-col :span="6" style="margin-left: 10px">
-          <div class="header">
-            <i class="el-icon-user-solid"></i>
-          </div>
+        <el-col :span="6" style="margin-left: 10px;margin-top: 10px" class="upload" v-loading="loading">
+            <el-upload
+              action=""
+              :http-request="submitUpload"
+              :on-change="onchange"
+              :show-file-list="false"
+              accept=".png,.jpg"
+            >
+              <div class="header">
+                <el-image :src="imageUrl" class="header imgStyle">
+                  <div slot="error" class="image-slot">
+                    <div style="width: 120px; height: 140px">
+                      <i class="el-icon-user-solid"></i>
+                    </div>
+                  </div>
+                </el-image>
+              </div>
+              <div class="camera" @click="submitUpload"><i class="el-icon-camera"></i></div>
+            </el-upload>
         </el-col>
-        <el-col :span="12">
-          <h2 class="distance" style="margin-bottom: 35px">{{userInfo.realName}}</h2>
+        <el-col :span="14" style="margin-left: 50px">
+          <h2 class="distance" style="margin-bottom: 35px;margin-left: 15px">{{userInfo.realName}}</h2>
           <div class="distance">
             <i class="el-icon-male" v-if="userInfo.sex === 0" title="性别"> {{sexName}}</i>
             <i class="el-icon-female" v-else title="性别"> {{sexName}}</i>{{'&#12288'}}{{'&#12288'}}
@@ -49,35 +64,15 @@
         <span style="color: gray">暂无数据</span>
       </div>
     </el-card>
-    <div>
-      <!--<div style="float: right;margin: 20px 150px 0 0">-->
-      <!--<div style="background-color: #5f91ff;width: 300px;height: 150px">-->
-      <!--<p class="view-title">绩点查询</p>-->
-      <!--<img class="view-icon" src="../../assets/project_icon_b.png" alt="">-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<el-row>-->
-      <!--<el-col :span="6" class="divBlock block_b">-->
-      <!--<p class="view-title">绩点查询</p>-->
-      <!--<img class="view-icon" src="../../assets/project_icon_b.png" alt="">-->
-      <!--</el-col>-->
-      <!--<el-col :span="6" class="divBlock block_c">-->
-      <!--<p class="view-title">成绩查询</p>-->
-      <!--<img class="view-icon" src="../../assets/project_icon_c.png" alt="">-->
-      <!--</el-col>-->
-      <!--<el-col :span="6" class="divBlock block_d">-->
-      <!--<p class="view-title">成绩查询</p>-->
-      <!--<img class="view-icon" src="../../assets/project_icon_d.png" alt="">-->
-      <!--</el-col>-->
-      <!--</el-row>-->
-    </div>
     <editInfo ref="editInfo_model" @refresh="refresh"></editInfo>
     <adminSetting ref="setting_model" @professionInfo="professionInfo"></adminSetting>
+    <VmUpload ref="upload_model" @propUrl="propUrl"></VmUpload>
   </div>
 </template>
 
 <script>
   import adminSetting from './model/admin-setting-model'
+  import VmUpload from './model/upload-model'
   import editInfo from './model/admin-edit-model'
   export default {
     inject:['reload'],
@@ -92,6 +87,9 @@
         },
       };
       return {
+        loading: false,
+        form: null,
+        imageUrl: '',
         showChart: false,
         showPie: false,
         lineHeight: '330px',
@@ -127,6 +125,49 @@
       refresh () {
         // 刷新页面
         this.reload();
+      },
+      propUrl (url) {
+        this.imageUrl = url;
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+        }, 500);
+      },
+      onchange () {
+        const event = event || window.event;
+        const data = event.target.files[0];
+        const reader = new FileReader();
+        //转base64
+        reader.onload = e => {
+          const imageUrl = e.target.result; //将图片路径赋值给src
+          this.$refs.upload_model.init(imageUrl, this.form)
+        };
+        reader.readAsDataURL(data);
+      },
+      submitUpload (params) {
+        const file = params.file;
+        const fileType = file.type;
+        const isImage = fileType.indexOf("image") !== -1;
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        // 这里常规检验，看项目需求而定
+        if (!isImage) {
+          this.$message.warning({
+            message: '只能上传图片格式png、jpg!'
+          });
+          return;
+        }
+        if (!isLt2M) {
+          this.$message.warning({
+            message: '只能上传图片大小小于2M'
+          });
+          return;
+        }
+        // 根据后台需求数据格式
+        this.form = new FormData();
+        // 文件对象
+        this.form.append("file", file);
+        this.form.append("id", this.userInfo.id);
+        this.form.append("level", this.userInfo.level);
       },
       getChartData (data) {
         this.axiosHelper.get(
@@ -190,6 +231,21 @@
         this.getChartData(obj);
         this.getPieData(obj);
       },
+      getHead() {
+        const obj = {
+          userId: this.userInfo.id,
+          level: this.userInfo.level
+        };
+        this.axiosHelper.get(
+          '/api/sms/upload/getHeadImg', {params: obj}).then(
+          response => {
+            this.imageUrl = response.data;
+          }).catch(error => {
+          this.$message.error({
+            message: '获取头像失败'
+          }, error)
+        })
+      }
     },
     computed: {
       collapse() {
@@ -198,34 +254,72 @@
     },
     watch: {
       collapse() {
-        setTimeout(() => {
-          this.$refs['chart'].resize()
-        }, 150)
+        if (this.$refs['chart']) {
+          setTimeout(() => {
+            this.$refs['chart'].resize()
+          }, 150)
+        }
       }
     },
     mounted() {
       this.userInfo = JSON.parse(localStorage.userInfo);
       this.getSchoolInfo();
+      this.getHead();
     },
     components: {
-      editInfo, adminSetting
+      editInfo, adminSetting, VmUpload
     }
   }
 </script>
 
 <style scoped>
   .header {
-    background-color: gray;
-    opacity: 0.1;
-    font-size:50px;
+    background-color: #ccc;
+    font-size: 80px;
     color: white;
-    border-radius: 50px;
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
+    width: 120px;
+    border-radius: 5px;
+    height: 140px;
+    line-height: 140px;
     text-align: center;
-    margin: 30px 20px
+    transition: .2s;
   }
+  .upload:hover .imgStyle{
+    opacity: 0.2;
+  }
+  /*“修改我的头像” 样式*/
+  .upload:hover .header::after {
+    transition: .2s;
+    content: "修改我的头像";
+    font-size: 13px;
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    color: #333;
+  }
+  /*父组件大小*/
+  .upload {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 120px;
+  }
+  /*照相icon样式*/
+  .camera {
+    color: #555;
+    font-size: 35px;
+    position: absolute;
+    top: 35px;
+    right: 42px;
+    opacity: 0;
+    cursor: pointer;
+  }
+  /*显示照相icon*/
+  .upload:hover .camera {
+    transition: .2s;
+    opacity: 1;
+  }
+
   .distance {
     margin: 15px 0;
   }

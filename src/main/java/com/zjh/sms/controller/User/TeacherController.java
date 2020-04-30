@@ -17,7 +17,7 @@ import java.util.Map;
  * Date2020/3/7 11:51
  **/
 @RestController
-@RequestMapping("/api/mis/user/teacher")
+@RequestMapping("/api/sms/user/teacher")
 public class TeacherController {
   @Autowired
   private TeacherService teacherService;

@@ -140,7 +140,7 @@
       },
       editMethod () {
         this.axiosHelper.put(
-          '/api/mis/user/student', this.form).then(() => {
+          '/api/sms/user/student', this.form).then(() => {
           this.$message.success({
             message: '修改成功'
           });

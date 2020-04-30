@@ -1,11 +1,30 @@
 <template>
   <el-dialog v-dialogDrag title="详细信息" :visible.sync="dialog" :close-on-click-modal=false append-to-body width="350px">
     <div>
-      <p class="info">课程：&#12288{{form.courseName}}</p>
-      <p class="info">学分：&#12288{{courseInfo.credits}}</p>
-      <p class="info">类型：&#12288{{courseInfo.type === 1 ? '必修' : '选修'}}</p>
-      <p class="info">课时：&#12288{{courseInfo.number}}</p>
-      <p class="info">任课老师：&#12288{{courseInfo.realName}}</p>
+      <el-row class="info">
+        <el-col :span="6" class="title">课程：</el-col>
+        <el-col :span="18" class="content">{{form.courseName}}</el-col>
+      </el-row>
+      <el-row class="info">
+        <el-col :span="6" class="title">学分：</el-col>
+        <el-col :span="18" class="content">{{courseInfo.credits}}</el-col>
+      </el-row>
+      <el-row class="info">
+        <el-col :span="6" class="title">类型：</el-col>
+        <el-col :span="18" class="content">{{courseInfo.type === 1 ? '必修' : '选修'}}</el-col>
+      </el-row>
+      <el-row class="info">
+        <el-col :span="6" class="title">周数：</el-col>
+        <el-col :span="18" class="content">{{form.courseName}}</el-col>
+      </el-row>
+      <el-row class="info">
+        <el-col :span="6" class="title">课时：</el-col>
+        <el-col :span="18" class="content">{{courseInfo.number}}</el-col>
+      </el-row>
+      <el-row class="info">
+        <el-col :span="6" class="title">任课老师：</el-col>
+        <el-col :span="18" class="content">{{courseInfo.realName}}</el-col>
+      </el-row>
     </div>
   </el-dialog>
 </template>
@@ -61,5 +80,12 @@ export default {
 <style scoped>
   .info {
     margin-bottom: 10px
+  }
+  .title {
+    text-align: center;
+    font-weight: bold;
+  }
+  .content {
+    text-align: center;
   }
 </style>

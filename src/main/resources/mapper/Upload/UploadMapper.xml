@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.Upload.UploadMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.domain.Upload" >
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+    </resultMap>
+    <insert id="add" parameterType="com.zjh.sms.dto.Timetable">
+        INSERT INTO upload
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="level != null and level != ''">level,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="level != null and level != ''">#{level},</if>
+        </trim>
+    </insert>
+    <select id="getHead" resultType="string" parameterType="map">
+        SELECT
+            url
+        FROM upload
+        <where>
+                user_id = #{condition.userId}
+                AND level = #{condition.level}
+        </where>
+    </select>
+    <select id="checkCount" resultType="int" parameterType="map">
+        select count(0) from upload
+        <where>
+            user_id = #{condition.userId}
+            AND level = #{condition.level}
+        </where>
+    </select>
+    <update id="update" parameterType="com.zjh.sms.domain.Upload">
+        UPDATE upload
+        <trim prefix="set" suffixOverrides=",">
+            <if test="url != null and url != ''">
+                url = #{url},
+            </if>
+        </trim>
+        <where>
+            <if test="userId != null and userId != ''">
+                user_id = #{userId}
+            </if>
+            <if test="level != null and level != ''">
+                AND level = #{level}
+            </if>
+        </where>
+    </update>
+</mapper>
+

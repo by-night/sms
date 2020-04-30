@@ -171,7 +171,7 @@
       },
       add () {
         this.axiosHelper.post(
-          '/api/mis/user/teacher', this.form).then(() => {
+          '/api/sms/user/teacher', this.form).then(() => {
           this.doneNum = 0;
           this.$message.success({
             message: '新增成功'
@@ -188,7 +188,7 @@
       },
       editMethod () {
         this.axiosHelper.put(
-          '/api/mis/user/teacher', this.form).then(() => {
+          '/api/sms/user/teacher', this.form).then(() => {
           this.$message.success({
             message: '修改成功'
           });

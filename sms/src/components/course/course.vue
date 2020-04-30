@@ -182,7 +182,9 @@
       },
       deleteSelect () {
         let ids = this.table.getIds();
-        this.deleteTable(ids);
+        if (ids.length > 0) {
+          this.deleteTable(ids);
+        }
       },
       deleteTable(ids) {
         let _this = this;
@@ -218,7 +220,7 @@
             message: '删除失败'
           }, error)
         })
-      }
+      },
     },
     mounted () {
       this.table = this.$refs['course_table'];

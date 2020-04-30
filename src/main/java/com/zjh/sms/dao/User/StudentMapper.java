@@ -61,9 +61,9 @@ public interface StudentMapper {
   */
   List<User> getStudentTree();
   /**
-  * description:
-  * @param:
-  * return:
+  * description: 根据专业获取该专业下的所有班级
+  * @param: String
+  * return: List<String>
   * Author: zjh
   * @Date: 2020/3/28 11:46
   */

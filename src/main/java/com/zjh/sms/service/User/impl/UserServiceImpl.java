@@ -6,13 +6,14 @@ import com.zjh.sms.dao.User.AdminMapper;
 import com.zjh.sms.dao.User.StudentMapper;
 import com.zjh.sms.dao.User.TeacherMapper;
 import com.zjh.sms.dao.User.UserMapper;
-import com.zjh.sms.dto.Tree;
+import com.zjh.sms.dao.Upload.UploadMapper;
+import com.zjh.sms.domain.Upload;
 import com.zjh.sms.dto.User;
 import com.zjh.sms.service.User.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -45,6 +46,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean update(Map<String, Object> condition) {
+    switch (condition.get("level").toString()) {
+      case "0":
+        condition.put("table", "admin");
+        break;
+      case "1":
+        condition.put("table", "teacher");
+        break;
+      case "2":
+        condition.put("table", "student");
+        break;
+    }
     Integer num = userMapper.checkPasswordCount(condition);
     if (num != 0) {
       userMapper.update(condition);
@@ -99,28 +111,34 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public String getToken(User user) {
+  public String getToken(User user, long time) {
     Date start = new Date();
-    long currentTime = System.currentTimeMillis() + 60* 60 * 1000;//一小时有效时间
+    long currentTime = System.currentTimeMillis() + time;//一小时有效时间
     Date end = new Date(currentTime);
     String token = "";
     token = JWT.create().withAudience(user.getLevel().toString()+user.getId().toString()).withIssuedAt(start).withExpiresAt(end)
-        .sign(Algorithm.HMAC256(user.getPassword()));
+       // 储存id和level
+        .sign(Algorithm.HMAC256(user.getPassword())); // 储存password，用于解密
     return token;
   }
 
   @Override
   public User findUser(Map<String, Object> condition) {
     String id = condition.get("id").toString();
-    if (condition.get("level") == "0") {
-      return adminMapper.getUserById(id);
-    } else if (condition.get("level") == "1") {
-      return teacherMapper.getUserById(id);
-    } else if (condition.get("level") == "2"){
-      return studentMapper.getUserById(id);
-    } else {
-      System.out.println("=== 若执行这步，则出错 ===");
-      return new User();
+    String level = condition.get("level").toString();
+    User user = new User();
+    switch (level) {
+      case "0":
+        user = adminMapper.getUserById(id);
+        break;
+      case "1":
+        user = teacherMapper.getUserById(id);
+        break;
+      case "2":
+        user = studentMapper.getUserById(id);
+        break;
     }
+    return user;
   }
+
 }

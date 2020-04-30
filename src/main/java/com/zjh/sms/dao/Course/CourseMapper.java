@@ -58,7 +58,7 @@ public interface CourseMapper {
    * Author: zjh
    * @Date: 2020/3/11 15:03
    */
-  Integer checkCodeCount();
+  Integer checkCodeCount(@Param("condition") Map<String, Object> condition);
   /**
   * description: 根据专业、学期获取课程列表
   * @param: condition

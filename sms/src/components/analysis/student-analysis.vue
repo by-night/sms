@@ -131,7 +131,7 @@
       },
       getDefault () {
         // 获取学年和学期的初始值
-        this.form.year = this.yearArr[this.yearArr.length-1].value;
+        this.form.year = 2016;
         let month = new Date().getMonth()+1;
         if (month > 2 && month < 6) {
           // 上学期

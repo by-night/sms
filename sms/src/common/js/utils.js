@@ -3,7 +3,7 @@
 } from 'element-ui'
 import system from './fill'
 let util = function (Vue) {
-    Vue.prototype.getLink = (h, text, click,) => {
+    Vue.prototype.getLink = (h, text, click) => {
       return h('el-link', {
         props: {
           underline: false
@@ -40,6 +40,9 @@ let util = function (Vue) {
     Vue.prototype.dealTotal = system.dealTotal;
 
     function empty (value) {
+      if (typeof value === 'boolean') {
+        return value
+      }
       const flag = value === '' || value === undefined || value === null;
       return !flag;
     }

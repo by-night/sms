@@ -100,7 +100,7 @@
     methods: {
       getTree () {
         this.axiosHelper.get(
-          '/api/mis/user/getTree'
+          '/api/sms/user/getTree'
         ).then(response => {
           this.treeData = response.data;
         }).catch(error => {
@@ -155,7 +155,7 @@
       },
       getStudentList (obj) {
         this.axiosHelper.get(
-          '/api/mis/user/student/getStudentList',
+          '/api/sms/user/student/getStudentList',
           {params: obj}
         ).then(response => {
           this.dataTable = response.data.items;
@@ -168,7 +168,7 @@
       },
       getTeacherList (obj) {
         this.axiosHelper.get(
-          '/api/mis/user/teacher/getTeacherList',
+          '/api/sms/user/teacher/getTeacherList',
           {params: obj}
         ).then(response => {
           this.dataTable = response.data.items;
@@ -181,7 +181,7 @@
       },
       getAdminList (obj) {
         this.axiosHelper.get(
-          '/api/mis/user/admin/getAdminList',
+          '/api/sms/user/admin/getAdminList',
           {params: obj}
         ).then(response => {
           this.dataTable = response.data.items;
@@ -229,13 +229,13 @@
           type: 'warning'
         }).then(() => {
           if (this.lastNode === '学生') {
-            let src = '/api/mis/user/student/';
+            let src = '/api/sms/user/student/';
             this.deleteMethod(src, ids, _this);
           } else if (this.lastNode === '教师') {
-            let src = '/api/mis/user/teacher/';
+            let src = '/api/sms/user/teacher/';
             this.deleteMethod(src, ids, _this);
           } else if (this.lastNode === '管理员') {
-          let src = '/api/mis/user/admin/';
+          let src = '/api/sms/user/admin/';
           this.deleteMethod(src, ids, _this);
         }
         }).catch(() => {

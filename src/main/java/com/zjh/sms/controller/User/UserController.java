@@ -2,11 +2,12 @@ package com.zjh.sms.controller.User;
 
 import com.zjh.sms.dto.User;
 import com.zjh.sms.service.User.UserService;
+import com.zjh.sms.utils.PassToken;
 import com.zjh.sms.utils.UserLoginToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
+
 
 /**
  * Description 登陆用户控制层
@@ -14,28 +15,26 @@ import java.util.*;
  * Date2019/10/21 21:00
  **/
 @RestController
-@RequestMapping("/api/mis/user")
+@UserLoginToken
+@RequestMapping("/api/sms/user")
 public class UserController {
   @Autowired
   private UserService userService;
 
   @GetMapping("/login")
+  @PassToken
   public User getStudentInfo (@RequestParam Map<String, Object> condition) {
     Map<String, Object> map = new HashMap<>();
     map.put("username", condition.get("username").toString());
     map.put("password", condition.get("password").toString());
     map.put("level", condition.get("level"));
     User user = userService.getStudentInfo(map);
-    user.setToken(userService.getToken(user));
-    user.setTime(60*30);
+//    String token = userService.getToken(user, 60* 60 * 1000); // 有效期1h
+    String token = userService.getToken(user, 24*60* 60 * 1000);
+    String refreshToken = userService.getToken(user, 24*60*60*1000); // 有效期一天
+    user.setToken(token);
+    user.setRefreshToken(refreshToken);
     return user;
-  }
-
-  /*测试token  不登录没有token*/
-  @UserLoginToken
-  @GetMapping("/getMessage")
-  public String getMessage(){
-    return "你已通过验证";
   }
 
   @GetMapping("/edit/password")
@@ -43,7 +42,8 @@ public class UserController {
     Map<String, Object> map = new HashMap<>();
     map.put("username", condition.get("username").toString());
     map.put("password", condition.get("password").toString());
-    map.put("passwordAgain", condition.get("passwordAgain").toString());
+    map.put("passwordAgain", condition.get("passwordAgain").toString());;
+    map.put("level", condition.get("level").toString());
     return userService.update(map);
   }
 

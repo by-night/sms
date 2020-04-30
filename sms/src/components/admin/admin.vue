@@ -102,7 +102,7 @@
       search() {
         let that = this;
         this.axiosHelper.get(
-          '/api/mis/user/admin/getAdminList',
+          '/api/sms/user/admin/getAdminList',
           {params: that.searchValue}
         ).then(response => {
           this.dataTable = response.data.items;
@@ -172,7 +172,7 @@
       },
       deleteMethod(params, _this) {
         _this.axiosHelper.delete(
-          '/api/mis/user/admin/' + params
+          '/api/sms/user/admin/' + params
         ).then(response => {
           let status = response.status;
           if (status === 200) {

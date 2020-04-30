@@ -76,7 +76,7 @@ public class User {
    */
   private String token;
   /**
-   * token 时间
+   * refreshToken
    */
-  private Integer time;
+  private String refreshToken;
 }

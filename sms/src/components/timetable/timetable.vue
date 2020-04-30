@@ -1,11 +1,24 @@
 <template>
-  <el-card style="margin: 10px;padding: 15px 10px 10px 10px;height: 78vh">
-    <el-button @click="change" size="small" style="margin-bottom: 15px" v-if="this.userInfo.level === 0">筛选</el-button>
-    <el-button type="success" size="small" @click="click" v-if="this.userInfo.level === 0"
-                 :disabled="form.grade === '' || form.year === '' || form.term === ''">录入</el-button>
-    <el-button type="danger" size="small" @click="empty" v-if="this.userInfo.level === 0">清空</el-button>
+  <el-card style="margin: 10px;padding: 10px 10px 0 10px;height: 80vh;">
+    <el-row>
+      <el-button @click="change" size="small" style="margin-bottom: 15px" v-if="this.userInfo.level === 0">筛选</el-button>
+      <el-button
+        @click="edit"
+        type="primary"
+        size="small"
+        style="margin-bottom: 15px"
+        v-if="this.userInfo.level === 0">{{showContent ? '编辑' : '取消'}}</el-button>
+      <el-button type="success" size="small" @click="click" v-if="this.userInfo.level === 0"
+                   :disabled="form.grade === '' || form.year === '' || form.term === ''">录入</el-button>
+      <el-button type="danger" size="small" @click="empty" v-if="this.userInfo.level === 0">清空</el-button>
+
+      <el-select v-model="week" size="small" @change="weekChange"
+                 style="width: 100px;float: right;margin: 3px">
+        <el-option v-for="item in weekArr" :key="item" :label="item" :value="item"></el-option>
+      </el-select>
+    </el-row>
     <el-collapse-transition>
-      <el-form ref="form" :model="form" label-width="80px" v-if="show">
+      <el-form ref="form" :model="form" label-width="80px" v-if="show" style="height: 50px;overflow: hidden">
         <el-row>
           <el-col :span="6" v-if="userInfo.level === 0">
             <el-form-item label="专业：" prop="profession">
@@ -38,18 +51,18 @@
         </el-row>
       </el-form>
     </el-collapse-transition>
-    <el-form ref="form" :model="form" label-width="80px" v-if="userInfo.level === 2">
+    <el-form ref="form" :model="form" label-width="80px" v-if="userInfo.level === 2" style="height: 50px;overflow: hidden">
       <el-row>
         <el-col :span="6">
           <el-form-item label="学年：">
-            <el-select v-model="form.year" style="width: 90%" @change="getTimetableByStudent">
+            <el-select v-model="form.year" size="small" style="width: 90%" @change="getTimetableByStudent">
               <el-option v-for="item in yearArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="学期：">
-            <el-select v-model="form.term" style="width: 90%" @change="getTimetableByStudent">
+            <el-select v-model="form.term" style="width: 90%" size="small" @change="getTimetableByStudent">
               <el-option v-for="item in termArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
@@ -63,11 +76,11 @@
         :data="dataTable"
         :columns="dataColumns"
         :tableHigh="tableHigh"
-        :headerStyle="headerStyle"
-        :rowStyle="rowStyle"
         stripe
         noPage
         rowLight
+      :headerStyle="headerStyle"
+      :rowStyle="rowStyle"
       ></VmBaseTable>
     </div>
     <VmTimetable ref="timetable_model"></VmTimetable>
@@ -84,6 +97,9 @@
     },
     data () {
       return {
+        week: '',
+        weekArr: [],
+        showContent: true,
         doneNum: 0,
         show: false,
         courseArr: [],
@@ -131,11 +147,7 @@
             style: 'center',
             minWidth: '80',
             render: (h, params) => {
-              if (this.userInfo.level === 0) {
-                return this.getSelect(h, params.row.monday, (value) => {
-                  this.$set(params.row, 'monday', value);
-                }, this.courseArr, 'small', '', '', '', true)
-              } else {
+              if (this.userInfo.level !== 0 || this.showContent) {
                 let monday = params.row.monday || '一';
                 if (monday === '一') {
                   return h('div', {}, monday)
@@ -144,6 +156,10 @@
                     this.clickCourse(monday);
                   })
                 }
+              } else {
+                return this.getSelect(h, params.row.monday, (value) => {
+                  this.$set(params.row, 'monday', value);
+                }, this.courseArr, 'small', '', '', '', true)
               }
             }
           } , {
@@ -152,11 +168,7 @@
             style: 'center',
             minWidth: '80',
             render: (h, params) => {
-              if (this.userInfo.level === 0) {
-                return this.getSelect(h, params.row.tuesday, (value) => {
-                  this.$set(params.row, 'tuesday', value);
-                }, this.courseArr, 'small', '', '', '', true)
-              } else {
+              if (this.userInfo.level !== 0 || this.showContent) {
                 let tuesday = params.row.tuesday || '一';
                 if (tuesday === '一') {
                   return h('div', {}, tuesday)
@@ -165,6 +177,10 @@
                     this.clickCourse(tuesday);
                   })
                 }
+              } else {
+                return this.getSelect(h, params.row.tuesday, (value) => {
+                  this.$set(params.row, 'tuesday', value);
+                }, this.courseArr, 'small', '', '', '', true)
               }
             }
           } , {
@@ -173,11 +189,7 @@
             style: 'center',
             minWidth: '80',
             render: (h, params) => {
-              if (this.userInfo.level === 0) {
-                return this.getSelect(h, params.row.wednesday, (value) => {
-                  this.$set(params.row, 'wednesday', value);
-                }, this.courseArr, 'small', '', '', '', true)
-              } else {
+              if (this.userInfo.level !== 0 || this.showContent) {
                 let wednesday = params.row.wednesday || '一';
                 if (wednesday === '一') {
                   return h('div', {}, wednesday)
@@ -186,6 +198,10 @@
                     this.clickCourse(wednesday);
                   })
                 }
+              } else {
+                return this.getSelect(h, params.row.wednesday, (value) => {
+                  this.$set(params.row, 'wednesday', value);
+                }, this.courseArr, 'small', '', '', '', true)
               }
             }
           }, {
@@ -194,11 +210,7 @@
             style: 'center',
             minWidth: '80',
             render: (h, params) => {
-              if (this.userInfo.level === 0) {
-                return this.getSelect(h, params.row.thursday, (value) => {
-                  this.$set(params.row, 'thursday', value);
-                }, this.courseArr, 'small', '', '', '', true)
-              } else {
+              if (this.userInfo.level !== 0 || this.showContent) {
                 let thursday = params.row.thursday || '一';
                 if (thursday === '一') {
                   return h('div', {}, thursday)
@@ -207,6 +219,10 @@
                     this.clickCourse(thursday);
                   })
                 }
+              } else {
+                return this.getSelect(h, params.row.thursday, (value) => {
+                  this.$set(params.row, 'thursday', value);
+                }, this.courseArr, 'small', '', '', '', true)
               }
             }
           } , {
@@ -215,11 +231,7 @@
             style: 'center',
             minWidth: '80',
             render: (h, params) => {
-              if (this.userInfo.level === 0) {
-                return this.getSelect(h, params.row.friday, (value) => {
-                  this.$set(params.row, 'friday', value);
-                }, this.courseArr, 'small', '', '', '', true)
-              } else {
+              if (this.userInfo.level !== 0 || this.showContent) {
                 let friday = params.row.friday || '一';
                 if (friday === '一') {
                   return h('div', {}, friday)
@@ -228,6 +240,10 @@
                     this.clickCourse(friday);
                   })
                 }
+              } else {
+                return this.getSelect(h, params.row.friday, (value) => {
+                  this.$set(params.row, 'friday', value);
+                }, this.courseArr, 'small', '', '', '', true)
               }
             }
           } , {
@@ -236,11 +252,7 @@
             style: 'center',
             minWidth: '80',
             render: (h, params) => {
-              if (this.userInfo.level === 0) {
-                return this.getSelect(h, params.row.saturday, (value) => {
-                  this.$set(params.row, 'saturday', value);
-                }, this.courseArr, 'small', '', '', '', true)
-              } else {
+              if (this.userInfo.level !== 0 || this.showContent) {
                 let saturday = params.row.saturday || '一';
                 if (saturday === '一') {
                   return h('div', {}, saturday)
@@ -249,6 +261,10 @@
                     this.clickCourse(saturday);
                   })
                 }
+              } else {
+                return this.getSelect(h, params.row.saturday, (value) => {
+                  this.$set(params.row, 'saturday', value);
+                }, this.courseArr, 'small', '', '', '', true)
               }
             }
           } , {
@@ -257,11 +273,7 @@
             style: 'center',
             minWidth: '',
             render: (h, params) => {
-              if (this.userInfo.level === 0) {
-                return this.getSelect(h, params.row.sunday, (value) => {
-                  this.$set(params.row, 'sunday', value);
-                }, this.courseArr, 'small', '', '', '', true)
-              } else {
+              if (this.userInfo.level !== 0 || this.showContent) {
                 let sunday = params.row.sunday || '一';
                 if (sunday === '一') {
                   return h('div', {}, sunday)
@@ -270,6 +282,11 @@
                     this.clickCourse(sunday);
                   })
                 }
+
+              } else {
+                return this.getSelect(h, params.row.sunday, (value) => {
+                  this.$set(params.row, 'sunday', value);
+                }, this.courseArr, 'small', '', '', '', true)
               }
             }
           }
@@ -285,6 +302,9 @@
         }
         this.dataTable = arr;
       },
+      edit () {
+        this.showContent = !this.showContent;
+      },
       // 获取专业
       getProfessionByAdmin () {
         this.axiosHelper.get(
@@ -292,7 +312,7 @@
           this.classArr = response.data;
         }).catch(error => {
           this.$message.error({
-            message: '失败'
+            message: '获取专业失败'
           }, error)
         })
       },
@@ -307,6 +327,7 @@
         });
       },
       gradeChange () {
+        this.week = this.weekArr[0];
         if (this.form.grade !== '') {
           let obj = {
             profession: this.form.profession,
@@ -336,11 +357,13 @@
         if (this.doneNum === 1) {
           this.addTimetable();
         }
+        this.showContent = true;
       },
       change () {
         this.show = !this.show;
       },
       empty () {
+        this.showContent = false;
         this.search();
       },
       clickCourse (data) {
@@ -447,9 +470,12 @@
         }
         this.getDefault();
       },
+      weekChange () {
+
+      },
       getDefault () {
         // 获取学年和学期的初始值
-        this.form.year = this.yearArr[this.yearArr.length-1].value;
+        this.form.year = 2016;
         let month = new Date().getMonth()+1;
         if (month > 2 && month < 6) {
           // 上学期
@@ -463,9 +489,9 @@
     computed: {
       tableHigh () {
         if (this.userInfo.level === 0) {
-          return this.show ? '62vh' : '70vh';
+          return this.show ? '63vh' : '72vh';
         } else {
-          return '70vh'
+          return '72vh'
         }
       }
     },
@@ -481,6 +507,10 @@
         this.getYearArr();
         this.getTimetableByStudent();
       }
+      for (let i = 1; i < 31; i++) {
+        this.weekArr.push('第 ' + i + ' 周')
+      }
+      this.week = this.weekArr[0];
     },
     mounted () {
       this.table = this.$refs['time_table'];

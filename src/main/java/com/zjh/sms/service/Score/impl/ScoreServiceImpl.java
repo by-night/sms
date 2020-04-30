@@ -210,8 +210,10 @@ public class ScoreServiceImpl implements ScoreService {
       String failLabel = "不及格(" + "0-" + (passLine - 1) + ")";
       String passLabel = "及格(" + passLine + "-" + (goodLine - 1) + ")";
       String goodLabel = "优秀(" + goodLine + "-" + FullLine + ")";
-      unknownCondition.put("label", unknownLabel);
-      unknownCondition.put("value", unknown);
+      if (unknown != 0) {
+        unknownCondition.put("label", unknownLabel);
+        unknownCondition.put("value", unknown);
+      }
       failCondition.put("label", failLabel);
       failCondition.put("value", fail);
       passCondition.put("label", passLabel);

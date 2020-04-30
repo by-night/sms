@@ -45,6 +45,22 @@ public interface UserMapper {
    * @Date: 2020/3/4 23:05
    */
   void update(@Param("condition") Map<String, Object> condition);
+//  /**
+//   * description: 查询是否与原密码相同
+//   * @params: condition
+//   * @return: Integer
+//   * @Author: zjh
+//   * @Date: 2020/3/4 23:05
+//   */
+//  Integer checkStudentPassword(@Param("condition") Map<String, Object> condition);
+//  /**
+//   * description: 查询是否与原密码相同
+//   * @params: condition
+//   * @return: Integer
+//   * @Author: zjh
+//   * @Date: 2020/3/4 23:05
+//   */
+//  Integer checkTeacherPassword(@Param("condition") Map<String, Object> condition);
   /**
    * description: 查询是否与原密码相同
    * @params: condition
@@ -53,6 +69,4 @@ public interface UserMapper {
    * @Date: 2020/3/4 23:05
    */
   Integer checkPasswordCount(@Param("condition") Map<String, Object> condition);
-
-
 }

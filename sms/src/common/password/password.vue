@@ -68,24 +68,30 @@
             this.clearForm();
             let userInfo = JSON.parse(localStorage.userInfo);
             this.form.username = userInfo.username;
+            this.form.level = userInfo.level;
           },
           clearForm () {
             this.form =  {
               username: '',
               password: '',
               newPassword: '',
-              passwordAgain: ''
+              passwordAgain: '',
+              level: null
             };
           },
           click () {
+            console.log(this.form)
             this.$refs['form'].validate((valid) => {
               if (valid) {
-                this.axiosHelper.get('/api/mis/user/edit/password', {params: this.form}).then(
+                this.axiosHelper.get('/api/sms/user/edit/password', {params: this.form}).then(
                   response => {
                     if (response.data) {
                       this.$message.success({
-                        message: '修改密码成功'
+                        message: '密码更改成功，请重新登录'
                       });
+                      this.$router.push("/login");
+                      // 退出登录时，清除身份信息
+                      localStorage.clear();
                       this.dialog = false;
                     } else {
                       this.$message.error({

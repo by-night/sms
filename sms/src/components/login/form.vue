@@ -157,7 +157,7 @@
                   this.loadingBtn = '登陆中 ...';
                   this.loginBtn = true;
                   this.$nextTick(() => {
-                    _this.axiosHelper.get('/api/mis/user/login', {params: this.form}).then(
+                    _this.axiosHelper.get('/api/sms/user/login', {params: this.form}).then(
                       response => {
                         this.loginBtn = false;
                         this.loginState = 0;
@@ -192,7 +192,8 @@
                 obj.password = this.isKeep ? obj.password : '';
                 // 设置cookies
                 this.$cookies.set(`sms_${data.username}`, obj, 60*60*24*3);
-                this.$cookies.set('userToken', data.token, data.time);
+                localStorage.setItem('userToken', data.token);
+                localStorage.setItem('refreshToken', data.refreshToken);
                 localStorage.setItem('cookiesName', `sms_${data.username}`);
                 // 跳转到主页
                 _this.$router.push('/dashboard');
@@ -249,6 +250,8 @@
           // 登录界面时，清除身份信息
           localStorage.removeItem('cookiesName');
           localStorage.removeItem('userInfo');
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('refreshToken');
       }
     }
 </script>

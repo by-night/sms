@@ -1,11 +1,15 @@
 package com.zjh.sms.utils;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.zjh.sms.dto.User;
+import com.zjh.sms.service.Upload.impl.UploadServiceImpl;
 import com.zjh.sms.service.User.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +24,7 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description 拦截器去获取token并验证token
@@ -31,12 +33,20 @@ import java.util.Map;
  **/
 @Slf4j
 public class AuthenticationInterceptor implements HandlerInterceptor {
+  private final Log logger = LogFactory.getLog(UploadServiceImpl.class);
+
   @Autowired
   UserService userService;
 
   @Override
   public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
-    String token = httpServletRequest.getHeader("accessToken");// 从 http 请求头中取出 token
+    //通过所有OPTION请求
+    if(httpServletRequest.getMethod().toUpperCase().equals("OPTIONS")){
+      return true;
+    }
+
+    String token = httpServletRequest.getHeader("Authorization");// 从 http 请求头中取出 token
+    String refreshToken = httpServletRequest.getHeader("freshToken");// 从 http 请求头中取出 token
     Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
            //2.遍历
      while(headerNames.hasMoreElements()){
@@ -58,39 +68,62 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         return true;
       }
     }
+
+    // 获取 token 中的 用户信息
+    String userValue = null;
+    try {
+      userValue = JWT.decode(token).getAudience().get(0);
+    } catch (JWTDecodeException j) {
+      throw new RuntimeException("401");
+    }
+    Map<String, Object> map = new HashMap<>();
+    map.put("level", (userValue).substring(0,1));
+    map.put("id", (userValue).substring(1));
+    User user = userService.findUser(map);
+    if (user == null) {
+      throw new RuntimeException("用户不存在，请重新登录");
+    }
+
+
+    Date oldTime = JWT.decode(token).getExpiresAt();
+    Date refreshTime = JWT.decode(refreshToken).getExpiresAt();
+    long oldDiff = oldTime.getTime() - new Date().getTime();//这样得到的差值是毫秒级别
+    long refreshDiff = refreshTime.getTime() - new Date().getTime();//这样得到的差值是毫秒级别
+    if (oldDiff <= 0) {
+      if (refreshDiff <= 0) {
+        logger.error("=== token 已过期, 请重新登录 ===");
+        httpServletResponse.sendError(401);
+        return false;
+//        throw new RuntimeException("401");
+      }
+    }
+    String newToken = userService.getToken(user, 60* 60 * 1000);
+    String newRefToken = userService.getToken(user, 24*60*60*1000);
+    // 更新token
+    httpServletResponse.setHeader("Authorization", newToken);
+    httpServletResponse.setHeader("freshToken", newRefToken);
+
     //检查有没有需要用户权限的注解
-    if (method.isAnnotationPresent(UserLoginToken.class)) {
-      UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
-      if (userLoginToken.required()) {
+//    if (method.isAnnotationPresent(UserLoginToken.class)) {  // 是否使用@UserLoginToken注解
+//      UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
+//      if (userLoginToken.required()) {
         // 执行认证
         if (token == null) {
-          throw new RuntimeException("无token，请重新登录");
+          throw new RuntimeException("=== 无token，请重新登录 ===");
         }
-        // 获取 token 中的 user id
-        String userId = null;
-        int id = Integer.parseInt(userId);
-        try {
-          userId = JWT.decode(token).getAudience().get(0);
-        } catch (JWTDecodeException j) {
-          throw new RuntimeException("401");
-        }
-        Map<String, Object> map = new HashMap<>();
-        map.put("level", Integer.toString(id).substring(0,1));
-        map.put("id", Integer.toString(id).substring(1));
-        User user = userService.findUser(map);
-        if (user == null) {
-          throw new RuntimeException("用户不存在，请重新登录");
-        }
-        // 验证 token
+        // 利用用户密码，解密验证 token
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
         try {
           jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-          throw new RuntimeException("401");
+          logger.error("=== token验证失败 ===");
+          httpServletResponse.sendError(401);
+          return false;
+//          throw new RuntimeException("401");
         }
-        return true;
-      }
-    }
+//        return true;
+//      }
+//    }
     return true;
   }
 

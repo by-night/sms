@@ -10,6 +10,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,10 @@ public class CourseServiceImpl implements CourseService {
   public void addCourse(Course course) {
     String id = "";
     String str = course.getYear().toString() + "0" + course.getTerm();
-    Integer num = courseMapper.checkCodeCount();
+    Map<String, Object> condition = new HashMap<>();
+    condition.put("profession", course.getProfession());
+    condition.put("year", course.getYear());
+    Integer num = courseMapper.checkCodeCount(condition);
     if (num < 100) {
       id = str + "00" + num;
     } else if (num < 1000) {
