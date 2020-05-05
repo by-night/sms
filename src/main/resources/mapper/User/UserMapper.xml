@@ -16,6 +16,7 @@
         <result column="profession" property="profession" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="INTEGER" />
     </resultMap>
 
     <select id="getStudentInfo" resultMap="BaseUserMap" parameterType="map">
@@ -64,4 +65,15 @@
     <select id="checkPasswordCount" resultType="int" parameterType="map">
         select count(0) from ${condition.table} where password = #{condition.password} AND username = #{condition.username}
     </select>
+    <select id="getSilent" resultType="int">
+        select state from silent
+    </select>
+    <update id="setSilent" parameterType="int">
+        UPDATE silent
+        <trim prefix="set" suffixOverrides=",">
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </trim>
+    </update>
 </mapper>

@@ -52,4 +52,13 @@ public class UserController {
     return userService.getTree();
   }
 
+  @PassToken
+  @GetMapping("/getSilent")
+  public boolean getSilent () {
+    return userService.getSilent();
+  }
+  @PutMapping("/setSilent/{state}")
+  public boolean setSilent (@PathVariable("state") Integer state) {
+    return userService.setSilent(state);
+  }
 }

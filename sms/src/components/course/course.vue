@@ -102,9 +102,9 @@
             style: 'center',
             minWidth: '100',
             render (h, params) {
-              if (params.row.type === 1) {
+              if (params.row.term === 1) {
                 return h('div', {}, '上学期')
-              } else if (params.row.type === 2) {
+              } else if (params.row.term === 2) {
                 return h('div', {}, '下学期')
               }
             }

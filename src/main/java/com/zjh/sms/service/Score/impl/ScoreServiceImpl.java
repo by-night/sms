@@ -68,7 +68,7 @@ public class ScoreServiceImpl implements ScoreService {
       String credits = scoreByUser >= score.getScore()*0.6 ? score.getCredits() : "0.00";
       score.setPointByUser(point);
       score.setCreditsByUser(credits);
-
+      score.setCourseId(Integer.toString(score.getId()));
       Map<String, Object> condition = new HashMap<>();
       condition.put("StudentId", score.getNo());
       condition.put("CourseName", score.getName());

@@ -114,6 +114,17 @@
               professionObj: this.classArr[0],
               course: this.classArr[0].course[0],
             };
+            for (let obj of this.classArr) {
+              if (obj.profession === '电子信息工程') {
+                this.form = {
+                  profession: obj.profession,
+                  grade: obj.grade[0],
+                  professionObj: obj,
+                  course: obj.course[0],
+                };
+                break;
+              }
+            }
             this.gradeArr = this.form.professionObj.grade;
             this.courseArr = this.classArr[0].course;
             this.click();
@@ -155,7 +166,6 @@
         this.axiosHelper.get(
           '/api/sms/score/export',
           {params: data}).then(response => {
-          console.log(response.data)
           let data = response.data;
           this.lineData.rows = data.map(item => {
             let obj = {

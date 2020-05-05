@@ -14,6 +14,10 @@
         <result column="term" property="term" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
         <result column="profession" property="profession" jdbcType="VARCHAR" />
+        <result column="start" property="start" jdbcType="INTEGER" />
+        <result column="end" property="end" jdbcType="INTEGER" />
+        <result column="room" property="room" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
     <insert id="addCourse" parameterType="com.zjh.sms.dto.Course">
         INSERT INTO course
@@ -93,10 +97,10 @@
                 name LIKE CONCAT('%',#{condition.code},'%') OR profession LIKE CONCAT('%',#{condition.code},'%')
             </if>
         </where>
-        ORDER BY id desc
+        ORDER BY create_time desc
     </select>
-    <select id="checkCodeCount" resultType="int">
-        select count(0) from course
+    <select id="checkCodeCount" resultType="string">
+        select MAX(id) from course
         <where>
             <if test="condition.profession != null and condition.profession != ''">
                 profession = #{condition.profession}
@@ -108,17 +112,27 @@
     </select>
     <select id="getCourseByMap" resultMap="BaseUserMap" parameterType="map">
         SELECT
-        *
-        FROM course
+        a.*,
+        c.real_name,
+        d.start,
+        d.end,
+        d.room
+        FROM course a
+        left join teacher_course b
+        on a.id = b.course_id
+        left join teacher c
+        on b.teacher_id = c.id
+        left join course_info d
+        on a.id = d.course_id
         <where>
             <if test="condition.profession != null and condition.profession != ''">
-                profession = #{condition.profession}
+                a.profession = #{condition.profession}
             </if>
             <if test="condition.term != null and condition.term != ''">
-                AND term  = #{condition.term}
+                AND a.term  = #{condition.term}
             </if>
             <if test="condition.courseName != null and condition.courseName != ''">
-                AND name  = #{condition.courseName}
+                AND a.name  = #{condition.courseName}
             </if>
         </where>
     </select>

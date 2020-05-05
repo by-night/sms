@@ -245,7 +245,7 @@
       },
       getDefault () {
         // 获取学年和学期的初始值
-        this.form.year = this.yearArr[this.yearArr.length-1].value;
+        this.form.year = 2016;
         let month = new Date().getMonth()+1;
         if (month > 2 && month < 6) {
           // 上学期
@@ -431,7 +431,7 @@
       if (this.userInfo.level !== 0) {
         if (this.userInfo.level === 2) {
           this.dataColumns = this.dataColumns.filter(data => {
-            return data.label !== '操作'
+            return (data.label !== '操作' && data.label !== '学号' && data.label !== '姓名')
           });
           this.getYear();
         }

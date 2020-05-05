@@ -141,4 +141,16 @@ public class UserServiceImpl implements UserService {
     return user;
   }
 
+  @Override
+  public boolean getSilent() {
+    int value = userMapper.getSilent();
+    return value == 1;
+  }
+
+  @Override
+  public boolean setSilent(Integer state) {
+    userMapper.setSilent(state);
+    return state == 1;
+  }
+
 }

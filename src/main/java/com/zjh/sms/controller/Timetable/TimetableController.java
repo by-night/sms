@@ -2,6 +2,7 @@ package com.zjh.sms.controller.Timetable;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.zjh.sms.domain.CourseInfo;
 import com.zjh.sms.domain.WeekCourse;
 import com.zjh.sms.service.Timetable.TimetableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,4 +41,9 @@ public class TimetableController {
   public List<WeekCourse> getTimetableByTeacher (@RequestParam Map<String, Object> condition) {
     return timetableService.getTimetableByTeacher(condition);
   }
+  @PostMapping("/updateCourseInfo")
+  public void updateCourseInfo(@RequestBody CourseInfo courseInfo) {
+    timetableService.updateCourseInfo(courseInfo);
+  }
+
 }

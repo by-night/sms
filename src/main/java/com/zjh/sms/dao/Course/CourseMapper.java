@@ -53,12 +53,12 @@ public interface CourseMapper {
   */
   List<Course> getCourseList(PageRowBounds rowBounds, @Param("condition") Map<String, Object> condition);
   /**
-   * description: 查看课程数量
+   * description: 查看课程最大id
    * return: Integer
    * Author: zjh
    * @Date: 2020/3/11 15:03
    */
-  Integer checkCodeCount(@Param("condition") Map<String, Object> condition);
+  String checkCodeCount(@Param("condition") Map<String, Object> condition);
   /**
   * description: 根据专业、学期获取课程列表
   * @param: condition

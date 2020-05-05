@@ -152,7 +152,7 @@
     <select id="getUserById" resultMap="BaseUserMap" parameterType="string">
         SELECT
         *
-        FROM admin
+        FROM student
         <where>
             id = #{id}
         </where>

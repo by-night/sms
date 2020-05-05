@@ -1,8 +1,15 @@
 <template>
-  <div style="color: white">
+  <div style="color: white" >
     <img src="../assets/header.png" alt="" width="40" height="40" style="margin: 10px 90px 10px 50px;float: left" />
     <i class="el-icon-menu collapse" @click="clickCollapse" style="margin-right: 20px;float: left"></i>
     <div class="misName">学生成绩管理系统</div>
+    <el-switch v-model="silent"
+               v-if="userInfo.level === 0"
+               @change="switchChange"
+               :active-color="'#67c23a'"
+               :inactive-color="'#ccc'"
+               inactive-text="默哀模式"
+               style="margin: 20px 0 20px 480px;color: white"></el-switch>
     <div style="float: right; margin-right: 16px">
       <!--日期-->
       <div class="font" v-html="day"></div>
@@ -42,20 +49,26 @@
           clickCollapse () {
             this.$emit('click_collapse')
           },
-            exit() {
-              this.$confirm('是否注销当前用户?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
-                this.$router.push("/login");
-                // 退出登录时，清除身份信息
-                localStorage.clear();
-              })
-            },
-            editPassword () {
-              this.$refs.edit_password.init();
-            }
+          exit() {
+            this.$confirm('是否注销当前用户?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.$router.push("/login");
+              // 退出登录时，清除身份信息
+              localStorage.clear();
+            })
+          },
+          editPassword () {
+            this.$refs.edit_password.init();
+          },
+          switchChange (data) {
+            const value = data ? 1: 0;
+            this.axiosHelper.put('/api/sms/user/setSilent/' + value).then(response => {
+              this.silent = response.data;
+            });
+          }
         },
         created() {
             let today = new Date();
@@ -63,6 +76,16 @@
             let date = today.getFullYear() + '年 ' + (today.getMonth() + 1) + '月 ' + today.getDate() + '日';
             let week = weekday[today.getDay()];
             this.day = date + "&#x3000;" + week;
+        },
+        computed: {
+          silent: {
+            set (newValue) {
+              this.$store.commit('SAVE_SILENT', newValue);
+            },
+            get () {
+              return this.$store.state.silent;
+            }
+          }
         },
         mounted() {
           this.userInfo = JSON.parse(localStorage.userInfo);
@@ -133,5 +156,14 @@
     font-family: cursive;
     margin-top: 4px;
     background-color: white;
+  }
+  /*打开默哀模式时*/
+  /deep/ .el-switch__label.is-active {
+   /*filter:progid:DXImageTransform.Microsoft. BasicImage(grayscale=1); -webkit-filter: grayscale(100%);*/
+    color: #fff !important;
+  }
+  /*关闭默哀模式时*/
+  /deep/ .el-switch__label--left {
+    color: white !important;
   }
 </style>

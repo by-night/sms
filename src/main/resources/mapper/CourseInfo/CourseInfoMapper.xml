@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.sms.dao.CourseInfo.CourseInfoMapper" >
+    <resultMap id="BaseUserMap" type="com.zjh.sms.domain.CourseInfo" >
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="course_id" property="courseId" jdbcType="VARCHAR" />
+        <result column="start" property="start" jdbcType="INTEGER" />
+        <result column="end" property="end" jdbcType="INTEGER" />
+        <result column="room" property="room" jdbcType="INTEGER" />
+        <result column="profession" property="profession" jdbcType="VARCHAR" />
+    </resultMap>
+    <insert id="addCourseInfo" parameterType="com.zjh.sms.domain.CourseInfo">
+        INSERT INTO course_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseId != null and courseId != ''">course_id,</if>
+            <if test="start != null and start != ''">`start`,</if>
+            <if test="end != null and end != ''">`end`,</if>
+            <if test="room != null and room != ''">room,</if>
+            <if test="profession != null and profession != ''">profession,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseId != null and courseId != ''">#{courseId},</if>
+            <if test="start != null and start != ''">#{start},</if>
+            <if test="end != null and end != ''">#{end},</if>
+            <if test="room != null and room != ''">#{room},</if>
+            <if test="profession != null and profession != ''">#{profession},</if>
+        </trim>
+    </insert>
+    <update id="updateCourseInfo" parameterType="com.zjh.sms.domain.CourseInfo">
+        UPDATE course_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="start != null and start != ''">
+                `start` = #{start},
+            </if>
+            <if test="end != null and end != ''">
+                `end` = #{end},
+            </if>
+            <if test="room != null and room != ''">
+                room = #{room},
+            </if>
+            <if test="profession != null and profession != ''">
+                profession = #{profession},
+            </if>
+        </trim>
+        <where>
+            <if test="courseId != null and courseId != ''">
+                course_id = #{courseId}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteInfo" parameterType="string">
+        DELETE FROM
+        course_info
+        <where>
+            course_id = #{id}
+        </where>
+    </delete>
+
+    <select id="getInfo" resultType="com.zjh.sms.domain.CourseInfo" parameterType="map">
+        select
+            a.*
+        from
+            course_info a
+        left join course b
+        on a.course_id = b.id
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                a.profession = #{condition.profession}
+            </if>
+            <if test="condition.name != null and condition.name != ''">
+                AND b.name  = #{condition.name}
+            </if>
+        </where>
+    </select>
+</mapper>
+

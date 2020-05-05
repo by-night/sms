@@ -58,6 +58,17 @@ export default {
             professionObj: this.classArr[0],
             course: this.classArr[0].course[0],
           };
+          for (let obj of this.classArr) {
+            if (obj.profession === '电子信息工程') {
+              this.form = {
+                profession: obj.profession,
+                grade: obj.grade[0],
+                professionObj: obj,
+                course: obj.course[0],
+              };
+              break;
+            }
+          }
           this.gradeArr = this.form.professionObj.grade;
           this.courseArr = this.form.professionObj.course;
           this.click();
@@ -72,10 +83,20 @@ export default {
       this.form.grade = '';
       this.form.profession = data.profession;
       this.gradeArr = data.grade;
+
+      this.form.course = '';
+      this.courseArr = data.course;
     },
     click () {
-      this.$emit('professionInfo', this.form);
-      this.dialog = false;
+      const flag = this.form.grade !== '' && this.form.profession !== '' && this.form.course !== '';
+      if (flag) {
+        this.$emit('professionInfo', this.form);
+        this.dialog = false;
+      } else {
+        this.$message.warning({
+          message: '存在未填项'
+        })
+      }
     },
     cancel () {
       this.dialog = false;

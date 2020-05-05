@@ -211,6 +211,7 @@
             <if test="scoreByUser != null and scoreByUser != ''">`score`,</if>
             <if test="year != null and year != ''">`year`,</if>
             <if test="term != null and term != ''">term,</if>
+            <if test="courseId != null and courseId != ''">course_id,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="no != null and no != ''">#{no},</if>
@@ -220,6 +221,7 @@
             <if test="scoreByUser != null and scoreByUser != ''">#{scoreByUser},</if>
             <if test="year != null and year != ''">#{year},</if>
             <if test="term != null and term != ''">#{term},</if>
+            <if test="courseId != null and courseId != ''">#{courseId},</if>
         </trim>
     </insert>
     <update id="updateEntry" parameterType="com.zjh.sms.dto.Score">

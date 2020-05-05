@@ -81,7 +81,7 @@
                 flip.style.transition = '0.2s';
                 flip.style.transform = 'rotateY(0)'
               }, 240)
-            }
+            },
         },
         components: {
             Form

@@ -204,7 +204,7 @@
           response => {
             let obj = response.data;
             let current = {
-              credits: this.dealTotal(obj.point),
+              credits: this.dealTotal(obj.credits),
               point: this.dealTotal(obj.point)
             };
             this.total = {...current};

@@ -1,5 +1,6 @@
 package com.zjh.sms.service.Timetable;
 
+import com.zjh.sms.domain.CourseInfo;
 import com.zjh.sms.domain.WeekCourse;
 
 import java.util.List;
@@ -44,4 +45,12 @@ public interface TimetableService {
   * @Date: 2020/4/7 21:31
   */
   List<WeekCourse> getTimetableByTeacher(Map<String, Object> condition);
+  /**
+  * description: 新增课程具体安排（周数等）
+  * @param: CourseInfo
+  * return: void
+  * Author: zjh
+  * @Date: 2020/5/3 14:50
+  */
+  void updateCourseInfo(CourseInfo courseInfo);
 }

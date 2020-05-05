@@ -51,4 +51,19 @@ public interface UserService {
   * @Date: 2020/3/30 23:42
   */
   User findUser(Map<String, Object> condition);
+  /**
+  * description: 获取默哀模式
+  * return: boolean
+  * Author: zjh
+  * @Date: 2020/5/1 13:09
+  */
+  boolean getSilent();
+  /**
+  * description: 修改默哀模式
+  * @param: String
+  * return: boolean
+  * Author: zjh
+  * @Date: 2020/5/1 13:29
+  */
+  boolean setSilent(Integer state);
 }

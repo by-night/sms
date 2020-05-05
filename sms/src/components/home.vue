@@ -40,7 +40,7 @@ export default {
       },
       isCollapse (collapse) {
         this.collapse = collapse
-      }
+      },
     },
     mounted() {
       // 初始化导航栏宽度
@@ -50,7 +50,7 @@ export default {
         state: this.collapse,
         width: collapseWidth.style.width
       };
-      this.$store.commit('SAVE_COLLAPSE', collapseInfo)
+      this.$store.commit('SAVE_COLLAPSE', collapseInfo);
     },
     components: {
         Aside, Header, Tabs

@@ -79,4 +79,8 @@ public class User {
    * refreshToken
    */
   private String refreshToken;
+  /**
+   * 默哀模式
+   */
+  private Integer state;
 }

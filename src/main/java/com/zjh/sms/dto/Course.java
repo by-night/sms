@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * Description 课程信息实体类
  * Author: zjh
@@ -77,4 +79,20 @@ public class Course {
    * 查询的学生学分
    */
   private String creditsByUser;
+  /**
+   *周数 start
+   */
+  private Integer start;
+  /**
+   * 周数 end
+   */
+  private Integer end;
+  /**
+   * 教室
+   */
+  private String room;
+  /**
+   * 创建时间
+   */
+  private Date createTime;
 }

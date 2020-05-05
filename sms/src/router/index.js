@@ -36,7 +36,6 @@ export default new Router({
       component: home,
       redirect: '/dashboard',
       children: [
-
         {
           path: '/dashboard',
           name: '主页',

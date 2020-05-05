@@ -12,9 +12,9 @@
                    :disabled="form.grade === '' || form.year === '' || form.term === ''">录入</el-button>
       <el-button type="danger" size="small" @click="empty" v-if="this.userInfo.level === 0">清空</el-button>
 
-      <el-select v-model="week" size="small" @change="weekChange"
+      <el-select v-model="week" size="small" @change="weekChange" v-if="this.userInfo.level !== 2"
                  style="width: 100px;float: right;margin: 3px">
-        <el-option v-for="item in weekArr" :key="item" :label="item" :value="item"></el-option>
+        <el-option v-for="item in weekArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </el-row>
     <el-collapse-transition>
@@ -43,7 +43,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="学期：">
-              <el-select v-model="form.term" style="width: 90%" @change="termChange">
+              <el-select v-model="form.term" style="width: 90%" @change="gradeChange">
                 <el-option v-for="item in termArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -67,9 +67,13 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-select v-model="week" size="small" @change="weekChange" v-if="this.userInfo.level === 2"
+                   style="width: 100px;float: right;margin: 3px">
+          <el-option v-for="item in weekArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
       </el-row>
     </el-form>
-    <div :style="userInfo.level === 1 ? {marginTop: '30px'} : {}">
+    <div :style="userInfo.level === 1 ? {marginTop: '8px'} : {}">
       <VmBaseTable
         :setTableHigh="true"
         ref="time_table"
@@ -327,13 +331,13 @@
         });
       },
       gradeChange () {
-        this.week = this.weekArr[0];
         if (this.form.grade !== '') {
           let obj = {
             profession: this.form.profession,
             grade: this.form.grade,
             year: this.form.year,
-            term: this.form.term
+            term: this.form.term,
+            week: this.week
           };
           this.axiosHelper.get(
             '/api/sms/timetable/getTimetable', {params: obj}
@@ -350,8 +354,6 @@
           });
         }
       },
-      termChange () {
-      },
       click () {
         ++this.doneNum;
         if (this.doneNum === 1) {
@@ -367,7 +369,7 @@
         this.search();
       },
       clickCourse (data) {
-        this.$refs.timetable_model.init(data);
+        this.$refs.timetable_model.init(data, this.form);
       },
       addTimetable () {
         this.dataTable = this.dataTable.map(data => {
@@ -396,7 +398,8 @@
         let obj = {
           studentName: this.userInfo.id,
           year: this.form.year,
-          term: this.form.term
+          term: this.form.term,
+          week: this.week
         };
         this.axiosHelper.get(
           '/api/sms/timetable/getTimetableByStudent', {params: obj}
@@ -418,7 +421,8 @@
       },
       getTimetableByTeacher () {
         let obj = {
-          teacherId: this.userInfo.id
+          teacherId: this.userInfo.id,
+          week: this.week
         };
         this.axiosHelper.get(
           '/api/sms/timetable/getTimetableByTeacher', {params: obj}
@@ -471,7 +475,14 @@
         this.getDefault();
       },
       weekChange () {
-
+        this.userInfo = JSON.parse(localStorage.userInfo);
+        if (this.userInfo.level === 0) {
+          this.gradeChange();
+        } else if (this.userInfo.level === 1) {
+          this.getTimetableByTeacher();
+        } else {
+          this.getTimetableByStudent();
+        }
       },
       getDefault () {
         // 获取学年和学期的初始值
@@ -496,6 +507,13 @@
       }
     },
     created () {
+      for (let i = 1; i < 31; i++) {
+        this.weekArr.push({
+          label: '第 ' + i + ' 周',
+          value: i
+        })
+      }
+      this.week = this.weekArr[0].value;
       this.userInfo = JSON.parse(localStorage.userInfo);
       if (this.userInfo.level === 0) {
         this.getProfessionByAdmin();
@@ -507,10 +525,6 @@
         this.getYearArr();
         this.getTimetableByStudent();
       }
-      for (let i = 1; i < 31; i++) {
-        this.weekArr.push('第 ' + i + ' 周')
-      }
-      this.week = this.weekArr[0];
     },
     mounted () {
       this.table = this.$refs['time_table'];

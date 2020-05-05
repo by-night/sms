@@ -54,7 +54,7 @@ export default {
               if (this.showInput === params.row.id) {
                 return this.getSelect(h, params.row.profession, (value) => {
                   this.$set(params.row, 'profession', value);
-                }, this.professionArr, '', false, (value) => {
+                }, this.professionArr, 'small', false, (value) => {
                   params.row.grade = '';
                   params.row.name = '';
                   this.getCourse(value, params.row.term);
@@ -82,7 +82,7 @@ export default {
               if (this.showInput === params.row.id) {
                 return this.getSelect(h, params.row.grade, (value) => {
                   this.$set(params.row, 'grade', value);
-                }, this.gradeArr)
+                }, this.gradeArr, 'small')
               } else {
                 return h('div', {}, params.row.grade)
               }
@@ -96,7 +96,7 @@ export default {
               if (this.showInput === params.row.id) {
                 return this.getSelect(h, params.row.term, (value) => {
                   this.$set(params.row, 'term', value);
-                }, this.termArr, '', false, (value) => {
+                }, this.termArr, 'small', false, (value) => {
                   params.row.name = '';
                   let profession = params.row.profession;
                   if (profession !== '') {
@@ -120,16 +120,15 @@ export default {
             minWidth: '100',
             render: (h, params) => {
               if (this.showInput === params.row.id) {
-                return this.getSelect(h, params.row.courseId, (value) => {
+                return this.getSelect(h, params.row.name, (value) => {
                   this.$set(params.row, 'courseId', value);
-                }, this.courseArr, '', false, (value) => {
+                }, this.courseArr, 'small', false, (value) => {
                   const obj = this.courseArr.find(data => {
                     return data.value === value
                   });
                   params.row.name = obj.label;
                 })
               } else {
-                console.log(params)
                 return h('div', {}, params.row.name)
               }
             }

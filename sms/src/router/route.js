@@ -5,9 +5,9 @@ import router from './index'
 // import that from '../main'
 import { Message } from 'element-ui';
 
-let routeName = localStorage.getItem('cookiesName');
-
+let routeName = null;
 router.beforeEach((to, from, next) => {
+  routeName = localStorage.getItem('cookiesName');
   // 需要路由守卫时，meta: {requireAuth = true}
   if (to.matched.some(record => record.meta.requireAuth)) {
     // cookie失效时

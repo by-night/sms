@@ -7,12 +7,16 @@ Vue.use(Vuex);
 
 // 状态
 const state = {
+  silent: null,
   collapse: {},
   userInfo: JSON.parse(localStorage.getItem('userInfo')),
 };
 
 // mutations 主要用来操作 state
 const mutations = {
+  SAVE_SILENT (state, silent) {
+    state.silent = silent;
+  },
   SAVE_COLLAPSE (state, collapse) {
     state.collapse = Object.assign({}, collapse);
   },
