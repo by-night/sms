@@ -41,11 +41,11 @@ export default {
       this.axiosHelper.post(
         '/api/sms/upload/headImg',
         form,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
         }
+      }
       ).then(response => {
         const url = response.data;
         this.$message.success({

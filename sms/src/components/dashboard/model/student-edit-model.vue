@@ -53,8 +53,8 @@
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button type="primary" @click="click('form')">确定</el-button>
-      <el-button @click="cancel">取消</el-button>
+      <el-button type="primary" @click="click('form')" size="small">确定</el-button>
+      <el-button @click="cancel" size="small">取消</el-button>
     </div>
   </el-dialog>
 </template>

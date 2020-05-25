@@ -109,7 +109,7 @@
         FROM student
         <where>
             <if test="condition.code != null and condition.code != ''">
-                id LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%')
+                id LIKE CONCAT('%',#{condition.code},'%') OR real_name LIKE CONCAT('%',#{condition.code},'%') OR profession LIKE CONCAT('%',#{condition.code},'%')
             </if>
             <if test="condition.profession != null and condition.profession != ''">
                 AND profession = #{condition.profession}

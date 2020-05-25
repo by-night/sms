@@ -17,6 +17,9 @@
         <result column="real_name" property="realName" jdbcType="INTEGER" />
         <result column="credits" property="credits" jdbcType="VARCHAR" />
         <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="start" property="start" jdbcType="INTEGER" />
+        <result column="end" property="end" jdbcType="INTEGER" />
+        <result column="room" property="room" jdbcType="VARCHAR" />
     </resultMap>
 
     <insert id="add" parameterType="com.zjh.sms.domain.TeacherCourse">
@@ -124,12 +127,17 @@
             b.number,
             b.credits,
             b.type,
-            c.real_name
+            c.real_name,
+            d.start,
+            d.end,
+            d.room
         FROM teacher_course a
         left join course b
         on a.course_id = b.id
         left join teacher c
         on a.teacher_id = c.id
+        left join course_info d
+        on b.id = d.course_id
         <where>
             <if test="condition.profession != null and condition.profession != ''">
                 AND a.profession = #{condition.profession}

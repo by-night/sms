@@ -75,6 +75,7 @@ export default {
   methods: {
     init (data, form) {
       this.dialog = true;
+      this.courseArr = [];
       this.form.courseName = data;
       this.propForm = form;
       this.course.profession = this.propForm.profession;
@@ -122,7 +123,8 @@ export default {
       this.form.teacherId = this.userInfo.id;
       this.axiosHelper.get('/api/sms/teacher/course/getCourseInfo',
         {params: this.form}).then(response => {
-        this.courseObj = response.data;
+        this.courseArr.push(response.data);
+        this.dealCourse(this.form.courseName);
       })
     },
     getCourseInfoByStudent () {
@@ -130,7 +132,8 @@ export default {
       this.form.grade = this.userInfo.grade;
       this.axiosHelper.get('/api/sms/teacher/course/getCourseInfo',
         {params: this.form}).then(response => {
-        this.courseInfo = response.data;
+        this.courseArr.push(response.data);
+        this.dealCourse(this.form.courseName);
       })
     },
     getCourseInfoByAdmin () {

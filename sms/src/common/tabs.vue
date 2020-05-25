@@ -85,7 +85,7 @@
    background-color: white !important;
  }
  /deep/ .tag:active {
-   transform: scale(0.95);
+   transform: scale(0.9);
  }
 
   .tagClick {

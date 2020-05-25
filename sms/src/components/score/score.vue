@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="cardStyle">
+    <el-card class="cardStyle" v-loading="loading">
       <el-button @click="change" size="small" style="margin-bottom: 15px">筛选</el-button>
       <el-button @click="batchMethod" type="info" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">批量编辑</el-button>
       <el-button @click="addEntry" type="primary" size="small" :disabled="dataTable.length <= 0" style="margin-bottom: 15px" v-if="userInfo.level !== 2">成绩录入</el-button>
@@ -79,6 +79,7 @@
     },
     data () {
       return {
+        loading: false,
         courseArr: [],
         classArr: [],
         professionArr: [],
@@ -331,23 +332,25 @@
         this.selection = selection;
       },
       addEntry () {
-        console.log(this.selection)
         let flag = this.selection.every(data => {
           return data.scoreByUser !== null && data.scoreByUser !== ''
         });
         if (this.selection.length > 0) {
           if (flag) {
+            this.loading = true;
             this.axiosHelper.post('/api/sms/score', this.selection).then(() => {
               this.$message.success({
                 message: '录入成绩成功'
               });
+              this.loading = false;
               this.click(this.searchValue);
               this.batch = false;
               this.showInput = false;
             }).catch(() => {
               this.$message.warning({
                 message: '录入成绩失败'
-              })
+              });
+              this.loading = false;
             })
           } else {
             this.$message.warning({
@@ -435,8 +438,8 @@
           });
           this.getYear();
         }
-        this.click(this.searchValue);
       }
+      this.click(this.searchValue);
     },
     created () {
       this.userInfo = JSON.parse(localStorage.userInfo);

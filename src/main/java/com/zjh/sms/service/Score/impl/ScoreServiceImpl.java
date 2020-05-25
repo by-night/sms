@@ -171,7 +171,7 @@ public class ScoreServiceImpl implements ScoreService {
     for (Double score : list) {
       count += score;
     }
-    average = count / list.size();
+    average = list.size()==0 ? 0.00 : count / list.size();
     Map<String, Object> map = new HashMap<>();
     map.put("max", max);
     map.put("min", min);

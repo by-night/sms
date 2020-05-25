@@ -136,6 +136,7 @@
         })
       },
       professionChange (data) {
+        this.total = {};
         this.showChart = false;
         this.form.grade = '';
         this.form.profession = data.profession;
@@ -161,6 +162,7 @@
         };
         this.getChartData(obj);
         this.getPieData(obj);
+        this.getTotal();
       },
       getChartData (data) {
         this.axiosHelper.get(
@@ -212,8 +214,8 @@
           response => {
             let obj = response.data;
             let current = {
-              max: this.dealTotal(obj.max),
-              min: this.dealTotal(obj.min),
+              max: this.dealTotal(obj.max || 0),
+              min: this.dealTotal(obj.min || 0),
               average: this.dealTotal(obj.average)
             };
             this.total = {...current};

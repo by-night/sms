@@ -61,4 +61,16 @@ public class TeacherCourse {
    * 类型
    */
   private Integer type;
+  /**
+   * 开始时间
+   */
+  private Integer start;
+  /**
+   * 结束时间
+   */
+  private Integer end;
+  /**
+   * 教室
+   */
+  private Integer room;
 }

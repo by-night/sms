@@ -3,7 +3,7 @@
     <el-row style="margin-bottom: 10px">
       <el-button type="primary" size="small" @click="addMethod">新增</el-button>
       <el-button type="danger" size="small" @click="deleteSelect">删除</el-button>
-      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入学号或姓名" clearable @keyup.enter.native="filterData">
+      <el-input style="float:right;width:300px;" size="small" v-model="searchValue.code" placeholder="请输入学号或姓名或专业" clearable @keyup.enter.native="filterData">
         <el-button slot="append" @click="filterData" type="primary">过滤</el-button>
       </el-input>
     </el-row>

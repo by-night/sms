@@ -96,6 +96,7 @@
             a.admission_time as year,
             a.grade,
             a.profession,
+            b.id,
             b.name,
             b.credits,
             b.score,
