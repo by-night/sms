@@ -9,7 +9,7 @@
 ![account](https://github.com/Zjh-project/sms/blob/master/photo/account.png)
 
 
-后端
+后端  
     1. idea 打开项目，等待自动下载依赖完成；
     2.（非必须）idea 打开 File -> Setting -> Build, Execution, Deployment -> Build Tools -> Maven;
 	Maven home directory 选项  导入 maven 文件;
