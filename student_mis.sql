@@ -14,6 +14,9 @@
  Date: 25/05/2020 16:51:49
 */
 
+create database student_mis;
+use student_mis;
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
