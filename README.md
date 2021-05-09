@@ -22,7 +22,7 @@
         2. npm run dev   启动;  
 ## 数据库：  
     根目录下的 student_mis.sql, 直接导入即可;  
-    可在 application.properties 文件下更改 数据库账号密码，默认为 账号：root， 密码：password;  
+    可在 application.properties 文件下更改数据库账号密码，默认为： 账号：root， 密码：password;  
     
         
         
