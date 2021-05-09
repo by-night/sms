@@ -19,6 +19,19 @@
         <mybatis-spring-boot>1.2.0</mybatis-spring-boot>
         <mysql-connector>5.1.39</mysql-connector>
 		<java.version>1.8</java.version>
+
+		<repositories>
+			<repository>
+				<id>alimaven</id>
+				<url>https://maven.aliyun.com/repository/public</url>
+			</repository>
+		</repositories>
+		<pluginRepositories>
+			<pluginRepository>
+				<id>alimaven</id>
+				<url>https://maven.aliyun.com/repository/public</url>
+			</pluginRepository>
+		</pluginRepositories>
     </properties>
 
 	<dependencies>
