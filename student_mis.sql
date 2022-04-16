@@ -41,7 +41,7 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
-INSERT INTO `admin` VALUES (1, 'root', 'password', '庄江辉', 0, '福建工程学院', '1258663146@qq.com', '15658596944', 0, '2020-03-28 15:06:24');
+INSERT INTO `admin` VALUES (1, 'root', 'password', '时光', 0, '福建工程学院', '1258663146@qq.com', '15658596944', 0, '2020-03-28 15:06:24');
 
 -- ----------------------------
 -- Table structure for course
